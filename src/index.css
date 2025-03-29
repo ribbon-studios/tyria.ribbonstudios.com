@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+body {
+  font-family: Inter var, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+
+  @apply flex flex-col bg-black text-white;
+}
+
+#root {
+  @apply flex flex-1 flex-col;
+}
+
+@theme {
+  --color-tui-primary: #8e44ad;
+  --color-tui-success: #0a3e11;
+  --color-tui-error: #c0392b;
+  --color-tui-warning: #d35400;
+  --color-tui-info: #2980b9;
+
+  --color-tui-dark: #0d0d0d;
+  --color-tui-gray: #141414;
+  --color-tui-light-gray: #212121;
+}

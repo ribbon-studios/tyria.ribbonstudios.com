@@ -1,0 +1,25 @@
+@reference '@/index.css';
+
+.item {
+  @apply flex flex-col;
+}
+
+.target {
+  @apply relative flex items-center gap-2 px-4 py-2 cursor-pointer;
+
+  &:before {
+    @apply content-[''] absolute inset-0 bg-amber-300 opacity-0 transition-opacity;
+  }
+
+  &:hover:before {
+    @apply opacity-20;
+  }
+
+  &.open {
+    @apply bg-white/10;
+  }
+}
+
+.sideBarItemChildren {
+  @apply flex flex-col overflow-hidden transition-all h-0;
+}

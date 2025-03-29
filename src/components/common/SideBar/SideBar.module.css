@@ -1,0 +1,13 @@
+@reference '@/index.css';
+
+.sidebar {
+  @apply bg-tui-dark max-h-dvh w-full max-w-[300px];
+}
+
+.items {
+  @apply flex flex-col flex-1 overflow-auto;
+
+  > .alternating:nth-child(odd) {
+    @apply bg-tui-gray;
+  }
+}

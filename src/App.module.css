@@ -1,0 +1,26 @@
+@reference '@/index.css';
+
+.app {
+  @apply flex min-h-dvh;
+}
+
+.container {
+  @apply flex flex-col flex-1 max-h-dvh;
+}
+
+.content {
+  @apply relative flex flex-col flex-1 max-h-dvh overflow-auto;
+}
+
+.background {
+  background-size: auto 100vh;
+  z-index: -1;
+
+  @apply flex flex-col absolute inset-0 pointer-events-none;
+
+  &:before {
+    z-index: -1;
+
+    @apply content-[''] bg-linear-to-t from-tui-gray to-tui-gray/50 backdrop-blur-md flex-1;
+  }
+}

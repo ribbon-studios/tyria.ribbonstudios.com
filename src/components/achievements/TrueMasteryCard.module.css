@@ -1,0 +1,5 @@
+@reference '@/index.css';
+
+.trueMasteryCard {
+  @apply gap-2! flex-col justify-between;
+}

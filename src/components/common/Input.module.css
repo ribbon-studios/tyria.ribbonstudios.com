@@ -1,0 +1,21 @@
+@reference '@/index.css';
+
+.container {
+  @apply relative inline-flex rounded-full overflow-hidden;
+
+  &:has(input[disabled]) {
+    @apply bg-gray-500/50;
+
+    > input {
+      @apply text-white/50;
+    }
+  }
+}
+
+.input {
+  @apply pl-4 pr-10 py-2 flex-1 outline-none;
+}
+
+.clear {
+  @apply absolute cursor-pointer top-1/2 -translate-y-1/2 right-2 p-[2px] rounded-full transition-all bg-transparent hover:bg-white/20;
+}

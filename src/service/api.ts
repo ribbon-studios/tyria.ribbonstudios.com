@@ -1,0 +1,112 @@
+import { GuildWars2 } from '@ribbon-studios/guild-wars-2';
+import { Achievement, type AchievementCategory, type Schema } from '@ribbon-studios/guild-wars-2/v2';
+
+export const api = new GuildWars2();
+
+export type CategoryAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'prerequisites'> & {
+  category: string;
+  tier: Achievement.Tier;
+  icon: string;
+  done: boolean;
+  prerequisites?: Achievement<Schema.LATEST>[];
+  progress?: {
+    current: number;
+    max: number;
+  };
+  meta?: boolean;
+};
+
+export async function getCategoryAchievements(
+  category: AchievementCategory<Schema.LATEST>
+): Promise<CategoryAchievement[]> {
+  const [achievements = [], accountAchievements = []] =
+    category.achievements.length === 0
+      ? []
+      : await Promise.all([
+          api.v2.achievements.list({
+            ids: category.achievements.map(({ id }) => id),
+          }),
+          api.v2.account.achievements(),
+        ]);
+
+  const prerequisiteIds = achievements.reduce<number[]>(
+    (output, { prerequisites }) => (prerequisites ? output.concat(prerequisites) : output),
+    []
+  );
+
+  const prerequisiteAchievements =
+    prerequisiteIds.length > 0
+      ? await api.v2.achievements.list({
+          ids: prerequisiteIds,
+        })
+      : [];
+
+  const categoryAchievements = achievements.map<CategoryAchievement>(({ tiers, ...achievement }) => {
+    const accountAchievement = accountAchievements.find(({ id }) => achievement.id === id);
+
+    const tier = tiers.reduce((output, tier) => ({
+      count: tier.count,
+      points: output.points + tier.points,
+    }));
+
+    let progress: CategoryAchievement['progress'] | undefined;
+    if (
+      accountAchievement !== undefined &&
+      accountAchievement.current !== undefined &&
+      accountAchievement.max !== undefined
+    ) {
+      progress = {
+        current: accountAchievement.current,
+        max: accountAchievement.max,
+      };
+    }
+
+    const prerequisites: Achievement.V0[] | undefined = achievement.prerequisites
+      ?.filter((id) => {
+        const accountAchievement = accountAchievements.find((accountAchievement) => accountAchievement.id === id);
+
+        return !accountAchievement?.done;
+      })
+      ?.map((id) => prerequisiteAchievements.find((prerequisiteAchievement) => prerequisiteAchievement.id === id)!);
+
+    return {
+      ...achievement,
+      category: category.name,
+      tier,
+      icon: achievement.icon ?? category.icon,
+      done: accountAchievement?.done ?? false,
+      prerequisites: prerequisites && prerequisites.length > 0 ? prerequisites : undefined,
+      meta: achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY),
+      progress,
+    };
+  });
+
+  return categoryAchievements
+    .sort((a, b) => {
+      if (a.done === b.done) return 0;
+
+      if (a.done) {
+        return 1;
+      }
+
+      return -1;
+    })
+    .sort((a, b) => {
+      if (a.prerequisites === b.prerequisites) return 0;
+
+      if (a.prerequisites) {
+        return 1;
+      }
+
+      return -1;
+    })
+    .sort((a, b) => {
+      if (a.meta === b.meta) return 0;
+
+      if (a.meta) {
+        return -1;
+      }
+
+      return 1;
+    });
+}

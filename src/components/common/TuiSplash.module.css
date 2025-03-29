@@ -1,0 +1,13 @@
+@reference '@/index.css';
+
+.splash {
+  @apply blur-2xl;
+
+  &:not(.grayscale) {
+    @apply contrast-200 brightness-200;
+  }
+
+  &.grayscale {
+    @apply grayscale brightness-75;
+  }
+}

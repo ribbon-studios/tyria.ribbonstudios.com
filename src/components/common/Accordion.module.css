@@ -1,0 +1,5 @@
+@reference '@/index.css';
+
+.accordion {
+  @apply flex flex-col overflow-hidden transition-all h-0;
+}

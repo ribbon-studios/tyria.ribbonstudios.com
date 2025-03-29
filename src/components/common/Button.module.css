@@ -1,0 +1,43 @@
+@reference '@/index.css';
+
+.button {
+  @apply relative p-2 border rounded-lg cursor-pointer overflow-hidden;
+
+  &.dark {
+    @apply bg-tui-dark border-tui-gray;
+  }
+
+  &.light {
+    @apply bg-tui-light-gray border-tui-gray;
+  }
+
+  &:before {
+    @apply content-[''] absolute inset-0 pointer-events-none bg-transparent transition-colors;
+  }
+
+  &[disabled] {
+    @apply pointer-events-none;
+
+    &:before {
+      @apply bg-white/20;
+    }
+  }
+
+  .loader {
+    @apply absolute top-1/2 left-1/2 -translate-1/2 pointer-events-none transition-opacity opacity-0 animate-spin;
+  }
+
+  .content {
+    @apply flex gap-2 transition-opacity opacity-100;
+  }
+
+  &.loading {
+    .loader {
+      @apply opacity-100;
+    }
+
+    .content {
+      @apply opacity-0 pointer-events-none;
+    }
+  }
+}

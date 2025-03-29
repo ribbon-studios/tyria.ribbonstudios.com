@@ -1,0 +1,34 @@
+{
+  "name": "tyria-ui",
+  "type": "module",
+  "scripts": {
+    "ci": "bun install --frozen-lockfile",
+    "dev": "vite dev",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
+    "@ribbon-studios/guild-wars-2": "^1.6.0",
+    "@ribbon-studios/js-utils": "^1.5.0",
+    "@ribbon-studios/react-utils": "^3.0.2",
+    "@tanstack/react-query": "^5.69.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.484.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.4.0",
+    "tailwind-merge": "^3.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.16",
+    "@types/bun": "^1.2.6",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.0.16",
+    "vite": "^6.2.3",
+    "vitest": "^3.0.9"
+  }
+}
