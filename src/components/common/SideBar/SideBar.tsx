@@ -29,7 +29,9 @@ export const SideBar: FC = () => {
         }),
       ]);
 
-      const sortedCategories = categories.sort((a, b) => a.order - b.order);
+      const activeCategories = categories.filter((category) => category.achievements.length > 0);
+
+      const sortedCategories = activeCategories.sort((a, b) => a.order - b.order);
 
       return {
         groups: groups.sort((a, b) => a.order - b.order),

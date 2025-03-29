@@ -19,15 +19,12 @@ export type CategoryAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'pr
 export async function getCategoryAchievements(
   category: AchievementCategory<Schema.LATEST>
 ): Promise<CategoryAchievement[]> {
-  const [achievements = [], accountAchievements = []] =
-    category.achievements.length === 0
-      ? []
-      : await Promise.all([
-          api.v2.achievements.list({
-            ids: category.achievements.map(({ id }) => id),
-          }),
-          api.v2.account.achievements(),
-        ]);
+  const [achievements = [], accountAchievements = []] = await Promise.all([
+    api.v2.achievements.list({
+      ids: category.achievements.map(({ id }) => id),
+    }),
+    api.v2.account.achievements(),
+  ]);
 
   const prerequisiteIds = achievements.reduce<number[]>(
     (output, { prerequisites }) => (prerequisites ? output.concat(prerequisites) : output),
