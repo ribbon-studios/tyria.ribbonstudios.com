@@ -1,13 +1,17 @@
 import { ProgressBar } from '@/components/common/ProgressBar';
 import { Card } from '@/components/common/Card';
 import { cn } from '@/utils/cn';
-import { useMemo, type FC, type ReactNode } from 'react';
+import { useEffect, useMemo, type FC, type ReactNode } from 'react';
 import type { CategoryAchievement } from '@/service/api';
 import * as styles from './TrueMasteryCard.module.css';
 import { TuiIcon } from '../common/TuiIcon';
 import type { AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
+import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/store';
+import { setTrueMastery } from '@/store/true-mastery.slice';
 
 export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achievements, children, className }) => {
+  const dispatch = useAppDispatch();
   const current = useMemo(
     () => achievements?.reduce((output, achievement) => (achievement.done ? output + 1 : output), 0),
     [achievements]
@@ -18,6 +22,12 @@ export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achieveme
 
     return current >= achievements.length;
   }, [achievements, current]);
+
+  useEffect(() => {
+    if (!isDone) return;
+
+    dispatch(setTrueMastery(category.id));
+  }, [isDone]);
 
   return (
     <Card

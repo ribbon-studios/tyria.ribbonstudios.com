@@ -13,6 +13,7 @@ export function SideBarItem<T extends ElementType = 'div'>({
   className,
   isOpen,
   onClick,
+  append,
   ...props
 }: SideBarItem.Props<T>) {
   const Component = as ?? 'div';
@@ -21,11 +22,14 @@ export function SideBarItem<T extends ElementType = 'div'>({
     <Component {...props} className={cn(styles.item, className)}>
       <div className={cn(styles.target, isOpen && styles.open)} onClick={onClick}>
         {icon ? (
-          <TuiIcon icon={icon} size={{ img: 30, icon: 24 }} />
+          <>
+            <TuiIcon icon={icon} size={{ img: 30, icon: 24 }} />
+          </>
         ) : (
           <ChevronRight className={cn('transition-transform', isOpen && 'rotate-90')} />
         )}
-        {label}
+        <div className="flex-1">{label}</div>
+        {append}
       </div>
       {children && <Accordion isOpen={isOpen}>{children}</Accordion>}
     </Component>
@@ -38,6 +42,7 @@ export namespace SideBarItem {
     label: string;
     className?: string;
     onClick?: () => void;
+    append?: ReactNode;
   } & (
     | {
         children: ReactNode;

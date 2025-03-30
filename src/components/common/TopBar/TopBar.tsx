@@ -20,8 +20,10 @@ export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
           {header ? (
             <>
               {header.image && <TuiIcon icon={header.image} size={48} />}
-              <TuiLink to="/">Tyria UI</TuiLink>
-              {header.label && `/ ${header.label}`}
+              <TuiLink className="hidden lg:inline-block" to="/">
+                Tyria UI
+              </TuiLink>
+              {header.label}
             </>
           ) : (
             'Tyria UI'

@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import appReducer from './app.slice';
 import settingsReducer from './settings.slice';
+import trueMasteryReducer from './true-mastery.slice';
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     settings: settingsReducer,
+    true_mastery: trueMasteryReducer,
   },
 });
 

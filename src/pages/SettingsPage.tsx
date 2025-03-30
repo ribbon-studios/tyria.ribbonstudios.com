@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { UseValidate } from '@/hooks/use-validate';
 import { setHeader } from '@/store/app.slice';
 import { TuiLink } from '@/components/common/TuiLink';
+import { resetTrueMastery } from '@/store/true-mastery.slice';
 
 export const Component: FC = () => {
   const dispatch = useAppDispatch();
@@ -87,6 +88,7 @@ export const Component: FC = () => {
             await verifyToken(value);
 
             dispatch(setApiKey(value));
+            dispatch(resetTrueMastery());
           }}
         />
         <TuiInput

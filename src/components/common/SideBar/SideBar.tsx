@@ -1,17 +1,22 @@
 import { api } from '@/service/api';
 import { useQuery } from '@tanstack/react-query';
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
 import { Loading } from '../Loading';
 import * as styles from './SideBar.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
 import { cn } from '@/utils/cn';
 import { Button } from '../Button';
+import { TuiIcon } from '../TuiIcon';
+import { useSelector } from 'react-redux';
+import { selectTrueMasteries } from '@/store/true-mastery.slice';
 
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
+  const true_masteries = useSelector(selectTrueMasteries);
   const [activeGroupId, setActiveGroupId] = useState<string>();
+  const params = useParams();
 
   const { data, isLoading } = useQuery({
     queryKey: ['groups'],
@@ -42,6 +47,32 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
     },
   });
 
+  useEffect(() => {
+    if (!data || !params.id) return;
+
+    const id = Number(params.id);
+
+    if (isNaN(id)) return;
+
+    const group = data.groups.find((group) => group.categories.includes(id));
+
+    if (!group) return;
+
+    setActiveGroupId(group.id);
+
+    const category = document.getElementById(`category-${id}`);
+
+    if (!category) return;
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        category.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }, 200);
+    });
+  }, [data]);
+
   return (
     <>
       <div
@@ -59,7 +90,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
           </Button>
           <div className="text-2xl font-bold">Tyria UI</div>
         </div>
-        <div className={styles.items}>
+        <div id="items" className={styles.items}>
           <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
           <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />
           {data?.groups.map((group) => (
@@ -74,9 +105,18 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
                 <SideBarItem
                   as={Link}
                   key={category.id}
+                  id={`category-${category.id}`}
                   label={category.name}
                   icon={category.icon}
                   to={`/categories/${category.id}`}
+                  append={
+                    true_masteries.includes(category.id) ? (
+                      <TuiIcon
+                        icon={'https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png'}
+                        size={30}
+                      />
+                    ) : undefined
+                  }
                 />
               ))}
             </SideBarItem>
