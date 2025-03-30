@@ -31,7 +31,6 @@ export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achieveme
         <div className="flex gap-2 items-center text-lg font-bold">
           {isDone && (
             <TuiIcon
-              className={styles.icon}
               icon="https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png"
               size={36}
             />
