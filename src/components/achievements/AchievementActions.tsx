@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { TuiIcon } from '../common/TuiIcon';
 
 const sanitize = (name: string) => {
-  return name.replace(/\s/g, '_').replace(/[\[\]]/g, '');
+  return name.replace(/\s/g, '_').replace(/[\[\]"]/g, '');
 };
 
 export function AchievementActions({ achievement }: AchievementActions.Props) {
