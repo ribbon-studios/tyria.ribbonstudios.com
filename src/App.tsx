@@ -43,7 +43,7 @@ export const Component: FC = () => {
               }}
               toastOptions={{
                 classNames: {
-                  toast: 'bg-tui-dark! left-[150px] gap-4!',
+                  toast: 'bg-tui-dark! md:left-[150px] gap-4!',
                 },
               }}
               icons={{

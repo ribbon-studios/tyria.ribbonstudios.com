@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .sidebar {
-  @apply bg-tui-dark max-h-dvh w-full max-w-[300px];
+  @apply hidden md:flex bg-tui-dark max-h-dvh w-full max-w-[300px];
 }
 
 .items {
