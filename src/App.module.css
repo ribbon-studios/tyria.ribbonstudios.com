@@ -21,6 +21,6 @@
   &:before {
     z-index: -1;
 
-    @apply content-[''] bg-linear-to-t from-tui-gray to-tui-gray/50 backdrop-blur-md flex-1;
+    @apply content-[''] bg-linear-to-t from-tui-gray to-tui-gray/50 flex-1;
   }
 }

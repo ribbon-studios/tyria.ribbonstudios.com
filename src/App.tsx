@@ -6,15 +6,11 @@ import { SideBar } from './components/common/SideBar';
 import { TopBar } from './components/common/TopBar';
 import { Info, Siren, TriangleAlert } from 'lucide-react';
 
-// 'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/GuildWars2-09-1920x1080.jpg',
-// 'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/fbd0cgw2-ex5-jw-qr1-wallpaper-1920x1080.jpg',
-// 'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/1ceebqr3-now-live-wallpaper-1920x1080.jpg',
-
 const images = [
-  'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/GuildWars2-11-1920x1080.jpg',
-  'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/GuildWars2-13-1920x1080.jpg',
-  'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/Sylvari-02-1920x1080.jpg',
-  'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/af6953a10506-1920x1080.jpg',
+  '/backgrounds/background-1.jpg',
+  '/backgrounds/background-2.jpg',
+  '/backgrounds/background-3.jpg',
+  '/backgrounds/background-4.jpg',
 ];
 
 export const Component: FC = () => {
