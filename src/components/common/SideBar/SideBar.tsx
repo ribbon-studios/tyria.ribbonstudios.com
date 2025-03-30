@@ -1,7 +1,7 @@
 import { api } from '@/service/api';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState, type FC } from 'react';
-import { Eye, Menu } from 'lucide-react';
+import { Bug, Code2, Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
 import { Loading } from '../Loading';
 import * as styles from './SideBar.module.css';
@@ -121,6 +121,35 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
               ))}
             </SideBarItem>
           ))}
+        </div>
+        <div className="flex gap-4 px-4 py-3 bg-tui-dark items-center">
+          <div className="flex flex-col gap-2 flex-1 text-white/70">
+            <div>
+              Built with ❤️ by the{' '}
+              <Link className="underline" to="https://github.com/ribbon-studios" target="_blank">
+                Ribbon Studios
+              </Link>{' '}
+              Team~
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <Button
+              color="light"
+              as={Link}
+              to="https://github.com/ribbon-studios/tyria.ribbonstudios.com/issues"
+              target="_blank"
+            >
+              <Bug />
+            </Button>
+            <Button
+              color="light"
+              as={Link}
+              to="https://github.com/ribbon-studios/tyria.ribbonstudios.com"
+              target="_blank"
+            >
+              <Code2 />
+            </Button>
+          </div>
         </div>
       </Loading>
     </>
