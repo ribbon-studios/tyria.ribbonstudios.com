@@ -1,18 +1,59 @@
-import { useRef, type FC, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type FC, type ReactNode } from 'react';
 import * as styles from './Accordion.module.css';
+import { cn } from '@/utils/cn';
 
-export const Accordion: FC<Accordion.Props> = ({ children, isOpen }) => {
-  const childrenElement = useRef<HTMLDivElement>(null);
+export const Accordion: FC<Accordion.Props> = ({
+  children,
+  className,
+  activeClassName,
+  contentClassName,
+  isOpen,
+  onOpenFinished,
+  onCloseFinished,
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const childrenRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (!childrenRef.current || !containerRef.current) {
+      return;
+    }
+
+    if (!isOpen) {
+      setHeight(0);
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      setHeight(childrenRef.current!.scrollHeight);
+    });
+
+    resizeObserver.observe(childrenRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [containerRef.current, childrenRef.current, isOpen]);
 
   return (
     <div
-      className={styles.accordion}
+      ref={containerRef}
+      className={cn(styles.accordion, className, isOpen && [styles.open, activeClassName])}
       style={{
-        height: isOpen ? childrenElement.current?.scrollHeight : undefined,
+        height: `${height}px`,
       }}
-      ref={childrenElement}
+      onTransitionEnd={(event) => {
+        // Ignore events from the children.
+        if (event.target !== event.currentTarget) return;
+
+        if (isOpen) onOpenFinished?.();
+        else onCloseFinished?.();
+      }}
     >
-      {children}
+      <div ref={childrenRef} className={contentClassName}>
+        {children}
+      </div>
     </div>
   );
 };
@@ -20,6 +61,11 @@ export const Accordion: FC<Accordion.Props> = ({ children, isOpen }) => {
 export namespace Accordion {
   export type Props = {
     children: ReactNode;
+    activeClassName?: string;
+    className?: string;
+    contentClassName?: string;
     isOpen?: boolean;
+    onOpenFinished?: () => void;
+    onCloseFinished?: () => void;
   };
 }

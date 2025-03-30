@@ -1,30 +1,28 @@
-import { cn } from '@/utils/cn';
-
 import * as styles from './TuiMessages.module.css';
-import { useEffect, useMemo, useRef, useState, type FC } from 'react';
-import { useAnimating } from '@/hooks/use-animating';
+import { useEffect, useMemo, useState, type FC } from 'react';
+import { Accordion } from './Accordion';
 
-export const TuiMessages: FC<TuiMessages.Props> = ({ messages, ...props }) => {
-  const messagesContainer = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
+export const TuiMessages: FC<TuiMessages.Props> = ({ messages }) => {
+  const isOpen = useMemo(() => {
+    return messages.length > 0;
+  }, [messages]);
+  const [cachedMessages, setCachedMessages] = useState<string[]>(messages);
 
   useEffect(() => {
-    if (!messagesContainer.current) return;
+    if (messages.length === 0) return;
 
-    const element = messagesContainer.current;
-
-    if (messages.length > 0) {
-      setOpen(true);
-      element.style.height = `${element.scrollHeight}px`;
-    } else {
-      element.style.height = '';
-    }
-  }, [messagesContainer, messages]);
+    setCachedMessages([...messages]);
+  }, [messages]);
 
   return (
-    <div {...props} className={cn(styles.messages, open && styles.open)} ref={messagesContainer}>
-      {messages}
-    </div>
+    <Accordion
+      activeClassName={styles.active}
+      contentClassName={styles.messages}
+      isOpen={isOpen}
+      onCloseFinished={() => setCachedMessages(messages)}
+    >
+      {cachedMessages}
+    </Accordion>
   );
 };
 

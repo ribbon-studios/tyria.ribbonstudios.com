@@ -10,14 +10,14 @@ export const TuiCheckbox: FC<TuiCheckbox.Props> = ({ label, value, variant = 'ch
   const [internalValue, setInternalValue] = useCachedState(() => value, [value]);
 
   return (
-    <div className={styles.container}>
+    <div className={cn(styles.container, styles[variant], internalValue && styles.checked)}>
       {label && (
         <label className={styles.label} htmlFor={id}>
           {label}
         </label>
       )}
       <div
-        className={cn(styles.input, styles[variant], internalValue && styles.checked)}
+        className={styles.input}
         onClick={() => {
           const newValue = !internalValue;
           setInternalValue(newValue);

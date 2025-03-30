@@ -11,6 +11,7 @@ export type SettingsSlice = {
   };
   toggles: {
     hide_completed_achievements: boolean;
+    debug_mode: boolean;
   };
 };
 
@@ -20,6 +21,7 @@ const initialState: SettingsSlice = {
   ...cachedState,
   toggles: {
     hide_completed_achievements: false,
+    debug_mode: false,
     ...cachedState?.toggles,
   },
   api: {
@@ -89,7 +91,8 @@ export const SettingsSlice = createAppSlice({
 export const { setApiKey, setApiSetting, setToggle } = SettingsSlice.actions;
 
 export const selectSettings = (state: AppState) => state.settings;
-export const selectApi = (state: AppState) => selectSettings(state).api;
-export const selectRefreshInterval = (state: AppState) => selectApi(state).refresh_interval;
+export const selectApi = (state: AppState) => state.settings.api;
+export const selectToggles = (state: AppState) => state.settings.toggles;
+export const selectToggle = (key: keyof SettingsSlice['toggles']) => (state: AppState) => selectToggles(state)[key];
 
 export default SettingsSlice.reducer;

@@ -45,7 +45,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
               setInternalValue(event.target.value);
             }}
             onBlur={(event) => {
-              if (event.target.value == value || !validate(event.target.value)) return;
+              if (!validate(event.target.value) || event.target.value == value) return;
 
               onChange?.(event.target.value);
             }}

@@ -12,6 +12,7 @@ import { Button } from '../Button';
 import { TuiIcon } from '../TuiIcon';
 import { useSelector } from 'react-redux';
 import { selectTrueMasteries } from '@/store/true-mastery.slice';
+import { DebugInfo } from '@/components/DebugInfo';
 
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   const true_masteries = useSelector(selectTrueMasteries);
@@ -100,6 +101,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
               className={styles.alternating}
               isOpen={group.id === activeGroupId}
               onClick={() => setActiveGroupId(activeGroupId === group.id ? undefined : group.id)}
+              append={<DebugInfo className="max-w-16">{group.id}</DebugInfo>}
             >
               {data?.categories[group.id].map((category) => (
                 <SideBarItem
@@ -110,12 +112,17 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
                   icon={category.icon}
                   to={`/categories/${category.id}`}
                   append={
-                    true_masteries.includes(category.id) ? (
-                      <TuiIcon
-                        icon={'https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png'}
-                        size={30}
-                      />
-                    ) : undefined
+                    <>
+                      {true_masteries.includes(category.id) && (
+                        <TuiIcon
+                          icon={
+                            'https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png'
+                          }
+                          size={30}
+                        />
+                      )}
+                      <DebugInfo>{category.id}</DebugInfo>
+                    </>
                   }
                 />
               ))}

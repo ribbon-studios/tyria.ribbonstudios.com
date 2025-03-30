@@ -132,6 +132,12 @@ export const Component: FC = () => {
             }
           }}
         />
+        <TuiCheckbox
+          label="Debug Mode"
+          value={settings.toggles.debug_mode}
+          variant="toggle"
+          onChange={(value) => dispatch(setToggle(['debug_mode', value]))}
+        />
       </Card>
     </div>
   );
