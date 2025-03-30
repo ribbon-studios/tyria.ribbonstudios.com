@@ -5,6 +5,7 @@ import { Settings } from 'lucide-react';
 import { Button } from '../Button';
 import { Link } from 'react-router-dom';
 import { TuiIcon } from '../TuiIcon';
+import { TuiLink } from '../TuiLink';
 
 export const TopBar: FC = () => {
   const header = useSelector(selectHeader);
@@ -13,8 +14,15 @@ export const TopBar: FC = () => {
     <div className="flex px-6 bg-tui-dark min-h-[72px]">
       <div className="flex flex-1 items-center justify-between mx-auto w-full max-w-[1200px]">
         <div className="flex gap-4 items-center text-2xl font-bold">
-          {header.image && <TuiIcon icon={header.image} size={48} />}
-          Tyria UI - {header.label}
+          {header ? (
+            <>
+              {header.image && <TuiIcon icon={header.image} size={48} />}
+              <TuiLink to="/">Tyria UI</TuiLink>
+              {header.label && `/ ${header.label}`}
+            </>
+          ) : (
+            'Tyria UI'
+          )}
         </div>
         <div className="flex gap-2">
           <Button as={Link} color="light" to="/settings">

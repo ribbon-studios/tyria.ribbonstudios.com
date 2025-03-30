@@ -17,6 +17,7 @@ import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import { useSticky } from '@/hooks/use-sticky';
 import { cn } from '@/utils/cn';
 import * as styles from './CategoryPage.module.css';
+import { TuiLink } from '@/components/common/TuiLink';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const id = Number(params.id);
@@ -99,9 +100,9 @@ export const Component: FC = () => {
           ) : (
             <div className="flex gap-1 text-sm text-white/50">
               Provide an
-              <Link className="text-tui-info hover:underline" to="/settings">
+              <TuiLink color="info" to="/settings">
                 Api Key
-              </Link>
+              </TuiLink>
               to enable auto refresh...
             </div>
           )}

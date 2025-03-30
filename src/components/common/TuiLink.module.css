@@ -1,0 +1,11 @@
+@reference '@/index.css';
+
+.tuiLink {
+  &:hover {
+    @apply underline;
+  }
+
+  &.color__info {
+    @apply text-tui-info;
+  }
+}

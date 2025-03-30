@@ -12,10 +12,21 @@ import { TuiCheckbox } from '@/components/common/TuiCheckbox';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { UseValidate } from '@/hooks/use-validate';
+import { setHeader } from '@/store/app.slice';
+import { TuiLink } from '@/components/common/TuiLink';
 
 export const Component: FC = () => {
   const dispatch = useAppDispatch();
   const settings = useSelector(selectSettings);
+
+  useEffect(() => {
+    dispatch(
+      setHeader({
+        label: 'Settings',
+        image: '',
+      })
+    );
+  }, []);
 
   const {
     mutateAsync: verifyToken,
@@ -63,9 +74,9 @@ export const Component: FC = () => {
           description={
             <>
               Your Guild Wars 2&nbsp;
-              <Link className="text-tui-info" to="https://account.arena.net/applications" target="_blank">
+              <TuiLink color="info" to="https://account.arena.net/applications" target="_blank">
                 API Key
-              </Link>
+              </TuiLink>
               . (requires the account and progression scopes)
             </>
           }

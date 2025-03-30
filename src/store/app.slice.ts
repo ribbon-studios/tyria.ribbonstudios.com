@@ -3,7 +3,7 @@ import { createAppSlice } from './utils';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type AppSlice = {
-  header: {
+  header?: {
     label?: string;
     image?: string;
   };
@@ -11,9 +11,7 @@ export type AppSlice = {
 
 export const appSlice = createAppSlice({
   name: 'app',
-  initialState: {
-    header: {},
-  } satisfies AppSlice as AppSlice,
+  initialState: {} satisfies AppSlice as AppSlice,
   reducers: () => ({
     setHeader: (state, action: PayloadAction<AppSlice['header']>) => {
       state.header = action.payload;
