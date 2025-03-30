@@ -7,6 +7,8 @@ export const TimeTill: FC<TimeTill.Props> = ({ timestamp, stale, interval = 100,
   const [message, setMessage] = useState<string>();
 
   useEffect(() => {
+    if (!stale) return undefined;
+
     const staleTimestamp = timestamp + stale;
 
     const timer = setInterval(() => {
@@ -24,13 +26,13 @@ export const TimeTill: FC<TimeTill.Props> = ({ timestamp, stale, interval = 100,
 
   if (!message) return null;
 
-  return <div className={cn(styles.timeTill, loading && styles.loading)}>auto refresh in {message}...</div>;
+  return <div className={cn(styles.timeTill, (!stale || loading) && styles.loading)}>auto refresh in {message}...</div>;
 };
 
 export namespace TimeTill {
   export type Props = {
     timestamp: number;
-    stale: number;
+    stale: number | null;
     interval?: number;
     loading?: boolean;
   };

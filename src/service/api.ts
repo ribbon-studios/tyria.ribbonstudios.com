@@ -23,7 +23,7 @@ export async function getCategoryAchievements(
     api.v2.achievements.list({
       ids: category.achievements.map(({ id }) => id),
     }),
-    api.v2.account.achievements(),
+    api.config.access_token ? api.v2.account.achievements() : [],
   ]);
 
   const prerequisiteIds = achievements.reduce<number[]>(

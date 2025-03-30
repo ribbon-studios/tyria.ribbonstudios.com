@@ -1,0 +1,47 @@
+@reference '@/index.css';
+
+.label {
+  @apply font-bold mb-2;
+}
+
+.container {
+  @apply flex flex-col leading-none;
+}
+
+.description {
+  @apply mb-2 inline-block text-sm text-white/50;
+}
+
+.subtext {
+  @apply mt-2 inline-block ml-4 text-xs text-white/50;
+}
+
+.input {
+  @apply relative inline-flex flex-1 rounded-lg overflow-hidden bg-tui-light-gray text-white;
+
+  > input {
+    @apply pl-4 pr-10 py-2 flex-1 outline-none;
+  }
+
+  &:before {
+    @apply content-[''] absolute inset-0 pointer-events-none bg-transparent transition-colors;
+  }
+
+  &:not(:has(input[disabled])):hover:before {
+    @apply bg-white/5;
+  }
+
+  &:has(input[disabled]) {
+    input {
+      @apply pointer-events-none;
+    }
+
+    &:before {
+      @apply bg-white/20;
+    }
+  }
+}
+
+.clear {
+  @apply absolute cursor-pointer top-1/2 -translate-y-1/2 right-2 p-[2px] rounded-full transition-all bg-transparent hover:bg-white/20;
+}

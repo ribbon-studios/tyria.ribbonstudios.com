@@ -5,8 +5,14 @@ import { Card } from '../common/Card';
 import * as styles from './AchievementCard.module.css';
 import React from 'react';
 import { AchievementActions } from './AchievementActions';
+import { useSelector } from 'react-redux';
+import { selectSettings } from '@/store/settings.slice';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
+  const settings = useSelector(selectSettings);
+
+  if (settings.toggles.hide_completed_achievements && achievement.done) return null;
+
   return (
     <Card
       className={cn(styles.achievementCard, achievement.meta && styles.meta, className)}

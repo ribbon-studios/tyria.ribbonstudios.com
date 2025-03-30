@@ -1,0 +1,55 @@
+@reference '@/index.css';
+
+.container {
+  @apply flex gap-4 items-center;
+
+  .label {
+    @apply font-bold;
+  }
+
+  .input {
+    @apply relative min-h-10 flex rounded-lg overflow-hidden bg-tui-light-gray text-white cursor-pointer p-2;
+
+    .check {
+      @apply flex items-center justify-center h-full rounded-md;
+    }
+
+    &.checkbox {
+      @apply aspect-square;
+
+      .check {
+        @apply transition-transform scale-0 w-full bg-white;
+      }
+
+      &.checked .check {
+        @apply scale-100;
+      }
+    }
+
+    &.toggle {
+      @apply w-15 h-10;
+
+      .check {
+        @apply aspect-square h-full bg-tui-error transition-all;
+      }
+
+      &.checked .check {
+        @apply translate-x-3/4 bg-tui-success;
+      }
+    }
+
+    &:before {
+      @apply content-[''] absolute inset-0 pointer-events-none bg-transparent transition-colors;
+    }
+
+    &:not(.disabled):hover:before {
+      @apply bg-white/5;
+    }
+
+    &:has(.disabled) {
+      &:before {
+        @apply bg-white/20;
+      }
+    }
+  }
+}

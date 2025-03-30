@@ -1,6 +1,9 @@
 import { selectHeader } from '@/store/app.slice';
 import { type FC } from 'react';
 import { useSelector } from 'react-redux';
+import { Settings } from 'lucide-react';
+import { Button } from '../Button';
+import { Link } from 'react-router-dom';
 
 export const TopBar: FC = () => {
   const header = useSelector(selectHeader);
@@ -13,7 +16,12 @@ export const TopBar: FC = () => {
         <div className="font-bold text-xl">{header.label}</div>
         {header.image && <img src={header.image} />}
       </div>
-      <div className="flex-1"></div>
+      <div className="flex flex-1 gap-2 justify-end">
+        <Button as={Link} color="light" to="/settings">
+          <Settings />
+          Settings
+        </Button>
+      </div>
     </div>
   );
 };

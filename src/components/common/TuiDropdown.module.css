@@ -1,0 +1,13 @@
+@reference '@/index.css';
+
+.container {
+  @apply relative;
+
+  .dropdown {
+    @apply absolute flex-col top-full mt-2 -translate-y-2 opacity-0 transition-all right-0 min-w-[400px] z-[9999] shadow-lg shadow-tui-dark;
+
+    &.open {
+      @apply translate-y-0 opacity-100;
+    }
+  }
+}

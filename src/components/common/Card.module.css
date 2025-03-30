@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .card {
-  @apply relative flex gap-10 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray bg-linear-to-r from-tui-gray via-transparent overflow-hidden;
+  @apply relative flex gap-4 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray bg-linear-to-r from-tui-gray via-transparent overflow-hidden;
 
   .cardSplash {
     @apply absolute top-1/2 -translate-y-1/2 -translate-x-1/4;

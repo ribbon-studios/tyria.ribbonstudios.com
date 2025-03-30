@@ -1,8 +1,10 @@
 import { useMemo, type FC } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import * as styles from './App.module.css';
 import { SideBar } from './components/common/SideBar';
 import { TopBar } from './components/common/TopBar';
+import { Info, Siren, TriangleAlert } from 'lucide-react';
 
 // 'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/GuildWars2-09-1920x1080.jpg',
 // 'https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/wallpapers/fbd0cgw2-ex5-jw-qr1-wallpaper-1920x1080.jpg',
@@ -33,6 +35,19 @@ export const Component: FC = () => {
         <div className={styles.container}>
           <TopBar />
           <div className={styles.content}>
+            <Toaster
+              theme="dark"
+              position="top-center"
+              offset={{
+                top: 80,
+              }}
+              icons={{
+                warning: <TriangleAlert />,
+                error: <Siren />,
+                info: <Info />,
+              }}
+              duration={Infinity}
+            />
             <Outlet />
           </div>
         </div>

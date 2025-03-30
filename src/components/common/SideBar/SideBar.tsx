@@ -6,15 +6,9 @@ import { SideBarItem } from './SideBarItem';
 import { Loading } from '../Loading';
 import * as styles from './SideBar.module.css';
 import { Link } from 'react-router-dom';
-import { Input } from '../Input';
-import { useSelector } from 'react-redux';
-import { selectApi, setApiKey } from '@/store/api.slice';
-import { useAppDispatch } from '@/store';
-import { cn } from '@/utils/cn';
+import { TuiInput } from '../TuiInput';
 
 export const SideBar: FC = () => {
-  const dispatch = useAppDispatch();
-  const apiState = useSelector(selectApi);
   const [activeGroupId, setActiveGroupId] = useState<string>();
 
   const { data, isLoading } = useQuery({
@@ -48,14 +42,7 @@ export const SideBar: FC = () => {
 
   return (
     <Loading loading={isLoading} className={styles.sidebar} contentClassName="max-h-dvh">
-      <Input
-        className={cn('m-4', apiState.valid && 'bg-green-400/50')}
-        loading={apiState.loading}
-        value={apiState.key ?? ''}
-        placeholder="Enter an API Key..."
-        disabled={apiState.valid}
-        onChange={(value) => dispatch(setApiKey(value))}
-      />
+      <TuiInput className="m-4 rounded-full!" placeholder="Search..." disabled />
       <div className={styles.items}>
         <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
         <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />

@@ -24,6 +24,11 @@ const router = createBrowserRouter([
         lazy: () => import('./pages/CategoryPage'),
         hydrateFallbackElement: <Loading loading={true} />,
       },
+      {
+        path: '/settings',
+        lazy: () => import('./pages/SettingsPage'),
+        hydrateFallbackElement: <Loading loading={true} />,
+      },
     ],
   },
 ]);

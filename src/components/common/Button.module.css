@@ -15,11 +15,15 @@
     @apply content-[''] absolute inset-0 pointer-events-none bg-transparent transition-colors;
   }
 
+  &:not([disabled]):hover:before {
+    @apply bg-white/5;
+  }
+
   &[disabled] {
     @apply pointer-events-none;
 
     &:before {
-      @apply bg-white/20;
+      @apply bg-black/40;
     }
   }
 

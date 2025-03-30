@@ -1,0 +1,9 @@
+@reference '@/index.css';
+
+.messages {
+  @apply pt-0 flex flex-col text-xs text-tui-error h-0 opacity-0 transition-all;
+
+  &.open {
+    @apply opacity-100 pt-2;
+  }
+}

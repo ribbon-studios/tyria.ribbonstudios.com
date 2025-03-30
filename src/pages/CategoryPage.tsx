@@ -1,7 +1,7 @@
 import { api, getCategoryAchievements, type CategoryAchievement } from '@/service/api';
-import { useEffect, useRef, type FC } from 'react';
+import { useEffect, useMemo, useRef, type FC } from 'react';
 import { useLoaderData } from '@ribbon-studios/react-utils/react-router';
-import { redirect, type LoaderFunctionArgs } from 'react-router-dom';
+import { Link, redirect, type LoaderFunctionArgs } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAppDispatch } from '@/store';
 import { setHeader } from '@/store/app.slice';
@@ -11,7 +11,7 @@ import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { TimeTill } from '@/components/common/TimeTill';
 import { useSelector } from 'react-redux';
-import { selectRefreshInterval } from '@/store/account.slice';
+import { selectSettings } from '@/store/settings.slice';
 import { TrueMasteryCard } from '@/components/achievements/TrueMasteryCard';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import { useSticky } from '@/hooks/use-sticky';
@@ -29,10 +29,18 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 export const Component: FC = () => {
   const stickyHeader = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const refreshInterval = useSelector(selectRefreshInterval);
+  const settings = useSelector(selectSettings);
   const category = useLoaderData<typeof loader>();
 
   const sticky = useSticky(stickyHeader);
+
+  const refresh_interval = useMemo(() => {
+    if (settings.api.key && settings.api.refresh_interval) {
+      return settings.api.refresh_interval * 1000;
+    }
+
+    return null;
+  }, [settings.api.key, settings.api.refresh_interval]);
 
   useEffect(() => {
     dispatch(
@@ -53,7 +61,7 @@ export const Component: FC = () => {
   } = useQuery({
     queryKey: ['category-achievements', category.id],
     queryFn: () => getCategoryAchievements(category),
-    refetchInterval: refreshInterval,
+    refetchInterval: refresh_interval ?? undefined,
   });
 
   const { incompleteMetas, basics } = achievements.reduce<{
@@ -86,7 +94,17 @@ export const Component: FC = () => {
         ref={stickyHeader}
       >
         <TrueMasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
-          <TimeTill loading={isFetching} timestamp={dataUpdatedAt ?? errorUpdatedAt} stale={refreshInterval} />
+          {settings.api.key ? (
+            <TimeTill loading={isFetching} timestamp={dataUpdatedAt ?? errorUpdatedAt} stale={refresh_interval} />
+          ) : (
+            <div className="flex gap-1 text-sm text-white/50">
+              Provide an
+              <Link className="text-tui-info hover:underline" to="/settings">
+                Api Key
+              </Link>
+              to enable auto refresh...
+            </div>
+          )}
           <Button color="light" loading={isFetching} onClick={() => refetch()}>
             <RefreshCw />
             Refresh
