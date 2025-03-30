@@ -18,7 +18,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
       className={cn(styles.achievementCard, achievement.meta && styles.meta, className)}
       icon={achievement.icon}
       splash={{
-        icon: achievement.icon,
+        image: achievement.icon,
         grayscale: !achievement.done,
       }}
     >

@@ -6,7 +6,6 @@ import type { CategoryAchievement } from '@/service/api';
 import * as styles from './TrueMasteryCard.module.css';
 import { TuiIcon } from '../common/TuiIcon';
 import type { AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
-import { useDispatch } from 'react-redux';
 import { useAppDispatch } from '@/store';
 import { setTrueMastery } from '@/store/true-mastery.slice';
 
@@ -33,7 +32,7 @@ export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achieveme
     <Card
       className={cn(styles.trueMasteryCard, className)}
       splash={{
-        icon: category.icon,
+        image: category.icon,
         grayscale: !isDone,
       }}
     >

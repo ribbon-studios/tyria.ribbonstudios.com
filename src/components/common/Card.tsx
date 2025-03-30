@@ -19,6 +19,6 @@ export namespace Card {
     className?: string;
     children: ReactNode;
     icon?: string;
-    splash?: Pick<TuiSplash.Props, 'icon' | 'grayscale'>;
+    splash?: Pick<TuiSplash.Props, 'image' | 'grayscale'>;
   };
 }

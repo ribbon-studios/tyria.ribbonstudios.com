@@ -3,23 +3,7 @@
 .card {
   @apply relative flex gap-4 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray bg-linear-to-r from-tui-gray via-transparent overflow-hidden;
 
-  .cardSplash {
-    @apply absolute top-1/2 -translate-y-1/2 -translate-x-1/4;
-  }
-
   > *:not(.cardSplash) {
     z-index: 1;
   }
 }
-
-/* .card {
-  @apply relative flex gap-10 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray bg-linear-to-r from-tui-gray via-transparent overflow-hidden;
-
-  .cardSplash {
-    @apply absolute top-0 left-0 -translate-y-1/4 -translate-x-1/2 w-[180%]! max-w-[unset];
-  }
-
-  > *:not(.cardSplash) {
-    z-index: 1;
-  }
-} */
