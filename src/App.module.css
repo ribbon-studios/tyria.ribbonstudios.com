@@ -13,7 +13,7 @@
 }
 
 .background {
-  background-size: auto 100vh;
+  background-size: cover;
   z-index: -1;
 
   @apply flex flex-col absolute inset-0 pointer-events-none;
@@ -21,6 +21,6 @@
   &:before {
     z-index: -1;
 
-    @apply content-[''] bg-linear-to-t from-tui-gray to-tui-gray/50 flex-1;
+    @apply content-[''] bg-linear-to-t from-tui-dark to-tui-dark/50 flex-1;
   }
 }
