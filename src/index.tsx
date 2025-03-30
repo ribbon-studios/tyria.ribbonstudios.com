@@ -20,6 +20,11 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loading loading={true} />,
       },
       {
+        path: '/achievements/:id',
+        lazy: () => import('./pages/AchievementPage'),
+        hydrateFallbackElement: <Loading loading={true} />,
+      },
+      {
         path: '/categories/:id',
         lazy: () => import('./pages/CategoryPage'),
         hydrateFallbackElement: <Loading loading={true} />,

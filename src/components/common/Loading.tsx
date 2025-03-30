@@ -13,7 +13,7 @@ export const Loading: FC<Loading.Props> = ({ loading, children, className, conte
     );
   }
 
-  return <Loader2 className={styles.spinner} size={40} />;
+  return <Loader2 className={cn(styles.spinner, loading && styles.loading, className)} size={40} />;
 };
 
 export namespace Loading {

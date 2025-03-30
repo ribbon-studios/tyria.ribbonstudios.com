@@ -15,7 +15,7 @@ body {
   --color-tui-primary: #8e44ad;
   --color-tui-success: #38c12b;
   --color-tui-error: #c0392b;
-  --color-tui-warning: #d35400;
+  --color-tui-warning: oklch(0.879 0.169 91.605);
   --color-tui-info: #2980b9;
 
   --color-tui-dark: #0d0d0d;

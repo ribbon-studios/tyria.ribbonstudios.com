@@ -1,8 +1,8 @@
-import type { CategoryAchievement } from '@/service/api';
-import { Lock, type LucideIcon } from 'lucide-react';
+import type { EnhancedAchievement } from '@/service/api';
+import { type LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
-export function useAchievementActions(achievement: CategoryAchievement) {
+export function useAchievementActions(achievement: EnhancedAchievement) {
   return useMemo(() => {
     let output: UseAchievementActions.Action[] = [];
 
@@ -31,10 +31,8 @@ export namespace UseAchievementActions {
     href: string;
   };
 
-  export const TypeLinkMap: Record<Type, (achievement: CategoryAchievement, name: string) => string> = {
-    [Type.STORY]: (_, name: string) => `https://wiki.guildwars2.com/wiki/${sanitize(name)}`,
-    [Type.PREREQUISITE]: (achievement, name: string) =>
-      `https://wiki.guildwars2.com/wiki/${achievement.category}_(achievements)#${sanitize(name)}`,
+  export const TypeLinkMap: Record<Exclude<Type, Type.PREREQUISITE>, (name: string) => string> = {
+    [Type.STORY]: (name: string) => `https://wiki.guildwars2.com/wiki/${sanitize(name)}`,
   };
 
   export const TypeIconMap: Record<Type, Action['icon']> = {
@@ -48,7 +46,7 @@ export namespace UseAchievementActions {
     return result.split('—')[0];
   }
 
-  export function getDescriptionActions(achievement: CategoryAchievement): Action[] {
+  export function getDescriptionActions(achievement: EnhancedAchievement): Action[] {
     if (!achievement.description) return [];
 
     const [, ...matches] = achievement.description.match(/([^:]+:)(.*)/) ?? [];
@@ -57,18 +55,18 @@ export namespace UseAchievementActions {
 
     const [type, name] = matches.map((match) => match.trim());
 
-    if (!UseAchievementActions.Type.is(type)) return [];
+    if (!UseAchievementActions.Type.is(type) || type === Type.PREREQUISITE) return [];
 
     return [
       {
         type,
         icon: UseAchievementActions.TypeIconMap[type],
-        href: UseAchievementActions.TypeLinkMap[type](achievement, name),
+        href: UseAchievementActions.TypeLinkMap[type](name),
       },
     ];
   }
 
-  export function getPrerequisiteActions(achievement: CategoryAchievement): Action[] {
+  export function getPrerequisiteActions(achievement: EnhancedAchievement): Action[] {
     if (!achievement.prerequisites) return [];
 
     const type = UseAchievementActions.Type.PREREQUISITE;
@@ -76,7 +74,7 @@ export namespace UseAchievementActions {
     return achievement.prerequisites.map((prerequisite) => ({
       type,
       icon: UseAchievementActions.TypeIconMap[type],
-      href: UseAchievementActions.TypeLinkMap[type](achievement, prerequisite.name),
+      href: `/achievements/${prerequisite.id}`,
     }));
   }
 }

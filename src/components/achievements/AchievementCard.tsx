@@ -1,12 +1,14 @@
 import { cn } from '@/utils/cn';
 import { ProgressBar } from '../common/ProgressBar';
-import type { CategoryAchievement } from '@/service/api';
+import type { EnhancedAchievement } from '@/service/api';
 import { Card } from '../common/Card';
 import * as styles from './AchievementCard.module.css';
 import React from 'react';
 import { AchievementActions } from './AchievementActions';
 import { useSelector } from 'react-redux';
 import { selectSettings } from '@/store/settings.slice';
+import { DebugInfo } from '../DebugInfo';
+import { Link } from 'react-router-dom';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
@@ -17,15 +19,24 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
     <Card
       className={cn(styles.achievementCard, achievement.meta && styles.meta, className)}
       icon={achievement.icon}
-      splash={{
-        image: achievement.icon,
-        grayscale: !achievement.done,
-      }}
+      splash={
+        achievement.icon
+          ? {
+              image: achievement.icon,
+              grayscale: !achievement.done,
+            }
+          : undefined
+      }
     >
       <div className={styles.content}>
         <div className="flex justify-between">
           <div className="font-bold">{achievement.name}</div>
-          <AchievementActions achievement={achievement} />
+          <div className="flex gap-1">
+            <DebugInfo as={Link} to={`/achievements/${achievement.id}`}>
+              {achievement.id}
+            </DebugInfo>
+            <AchievementActions achievement={achievement} />
+          </div>
         </div>
         <div className={styles.info}>
           <div className="text-sm text-white/80">{achievement.description}</div>
@@ -56,7 +67,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
 
 export namespace AchievementCard {
   export type Props = {
-    achievement: CategoryAchievement;
+    achievement: EnhancedAchievement;
     className?: string;
   };
 }

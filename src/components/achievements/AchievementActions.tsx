@@ -1,9 +1,11 @@
-import type { CategoryAchievement } from '@/service/api';
+import type { CategoryAchievement, EnhancedAchievement } from '@/service/api';
 import { TuiIcon } from '../common/TuiIcon';
 import { useAchievementActions } from '@/hooks/use-achievement-actions';
 
 export function AchievementActions({ achievement }: AchievementActions.Props) {
   const actions = useAchievementActions(achievement);
+
+  if (actions.length === 0) return null;
 
   return (
     <div className="flex gap-2">
@@ -18,6 +20,6 @@ export function AchievementActions({ achievement }: AchievementActions.Props) {
 
 export namespace AchievementActions {
   export type Props = {
-    achievement: CategoryAchievement;
+    achievement: EnhancedAchievement;
   };
 }

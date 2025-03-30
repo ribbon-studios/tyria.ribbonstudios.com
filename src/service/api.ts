@@ -1,5 +1,10 @@
 import { GuildWars2 } from '@ribbon-studios/guild-wars-2';
-import { Achievement, type AchievementCategory, type Schema } from '@ribbon-studios/guild-wars-2/v2';
+import {
+  Achievement,
+  type AccountAchievement,
+  type AchievementCategory,
+  type Schema,
+} from '@ribbon-studios/guild-wars-2/v2';
 
 export const api = new GuildWars2();
 
@@ -106,4 +111,66 @@ export async function getCategoryAchievements(
 
       return 1;
     });
+}
+
+export type EnhancedAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'prerequisites'> & {
+  tier: Achievement.Tier;
+  done: boolean;
+  prerequisites?: Achievement<Schema.LATEST>[];
+  progress?: {
+    current: number;
+    max: number;
+  };
+  meta?: boolean;
+};
+
+export async function getAchievement(id: number) {
+  const [achievement, accountAchievements] = await Promise.all([
+    api.v2.achievements.get(id),
+    api.v2.account.achievements(),
+  ]);
+
+  const accountAchievement = accountAchievements.find((achievement) => achievement.id === id);
+
+  const prerequisiteAchievements = achievement.prerequisites
+    ? await api.v2.achievements.list({
+        ids: achievement.prerequisites,
+      })
+    : undefined;
+
+  return Helpers.mapAchievement(achievement, accountAchievement, prerequisiteAchievements);
+}
+
+export namespace Helpers {
+  export function mapAchievement(
+    { tiers, ...achievement }: Achievement<Schema.LATEST>,
+    accountAchievement?: AccountAchievement<Schema.LATEST>,
+    prerequisiteAchievements?: Achievement<Schema.LATEST>[]
+  ): EnhancedAchievement {
+    const tier = tiers.reduce((output, tier) => ({
+      count: tier.count,
+      points: output.points + tier.points,
+    }));
+
+    let progress: EnhancedAchievement['progress'] | undefined;
+    if (
+      accountAchievement !== undefined &&
+      accountAchievement.current !== undefined &&
+      accountAchievement.max !== undefined
+    ) {
+      progress = {
+        current: accountAchievement.current,
+        max: accountAchievement.max,
+      };
+    }
+
+    return {
+      ...achievement,
+      tier,
+      done: accountAchievement?.done ?? false,
+      prerequisites: prerequisiteAchievements,
+      meta: achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY),
+      progress,
+    };
+  }
 }
