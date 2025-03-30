@@ -42,7 +42,7 @@ export const SideBar: FC = () => {
 
   return (
     <Loading loading={isLoading} className={styles.sidebar} contentClassName="max-h-dvh">
-      <TuiInput className="m-4 rounded-full!" placeholder="Search..." disabled />
+      <TuiInput className="mx-4 my-[17px] rounded-full!" placeholder="Search..." disabled />
       <div className={styles.items}>
         <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
         <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />
