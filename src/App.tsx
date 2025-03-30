@@ -41,12 +41,16 @@ export const Component: FC = () => {
               offset={{
                 top: 80,
               }}
+              toastOptions={{
+                classNames: {
+                  toast: 'bg-tui-dark! left-[150px] gap-4!',
+                },
+              }}
               icons={{
                 warning: <TriangleAlert />,
                 error: <Siren />,
                 info: <Info />,
               }}
-              duration={Infinity}
             />
             <Outlet />
           </div>
