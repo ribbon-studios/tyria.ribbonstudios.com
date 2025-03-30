@@ -1,4 +1,4 @@
-import { useMemo, type FC } from 'react';
+import { useMemo, useState, type FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import * as styles from './App.module.css';
@@ -18,6 +18,7 @@ const images = [
 ];
 
 export const Component: FC = () => {
+  const [open, setOpen] = useState(false);
   const background = useMemo(() => {
     return images[Math.floor(Math.random() * images.length)];
   }, []);
@@ -31,9 +32,9 @@ export const Component: FC = () => {
         }}
       />
       <div className={styles.app}>
-        <SideBar />
+        <SideBar open={open} onClose={() => setOpen(false)} />
         <div className={styles.container}>
-          <TopBar />
+          <TopBar onSideBarToggle={() => setOpen(!open)} />
           <div className={styles.content}>
             <Toaster
               theme="dark"

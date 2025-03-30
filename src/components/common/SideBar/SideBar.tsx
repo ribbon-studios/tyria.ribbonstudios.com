@@ -7,8 +7,10 @@ import { Loading } from '../Loading';
 import * as styles from './SideBar.module.css';
 import { Link } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
+import { cn } from '@/utils/cn';
+import { Button } from '../Button';
 
-export const SideBar: FC = () => {
+export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   const [activeGroupId, setActiveGroupId] = useState<string>();
 
   const { data, isLoading } = useQuery({
@@ -41,31 +43,53 @@ export const SideBar: FC = () => {
   });
 
   return (
-    <Loading loading={isLoading} className={styles.sidebar} contentClassName="max-h-dvh">
-      <TuiInput className="mx-4 my-[17px] rounded-full!" placeholder="Search..." disabled />
-      <div className={styles.items}>
-        <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
-        <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />
-        {data?.groups.map((group) => (
-          <SideBarItem
-            key={group.id}
-            label={group.name}
-            className={styles.alternating}
-            isOpen={group.id === activeGroupId}
-            onClick={() => setActiveGroupId(activeGroupId === group.id ? undefined : group.id)}
-          >
-            {data?.categories[group.id].map((category) => (
-              <SideBarItem
-                as={Link}
-                key={category.id}
-                label={category.name}
-                icon={category.icon}
-                to={`/categories/${category.id}`}
-              />
-            ))}
-          </SideBarItem>
-        ))}
-      </div>
-    </Loading>
+    <>
+      <div
+        className={cn(
+          'fixed inset-0 bg-black z-[9999] opacity-0 pointer-events-none transition-opacity',
+          open && 'opacity-25 pointer-events-auto'
+        )}
+        onClick={() => onClose()}
+      />
+      <Loading loading={isLoading} className={cn(styles.sidebar, open && styles.open)} contentClassName="max-h-dvh">
+        <TuiInput className="hidden! md:flex! mx-6 my-[17px] rounded-full!" placeholder="Search..." disabled />
+        <div className="flex md:hidden items-center gap-4 mx-6 my-[17px]">
+          <Button className="min-w-10" onClick={() => onClose()}>
+            <Menu />
+          </Button>
+          <div className="text-2xl font-bold">Tyria UI</div>
+        </div>
+        <div className={styles.items}>
+          <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
+          <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />
+          {data?.groups.map((group) => (
+            <SideBarItem
+              key={group.id}
+              label={group.name}
+              className={styles.alternating}
+              isOpen={group.id === activeGroupId}
+              onClick={() => setActiveGroupId(activeGroupId === group.id ? undefined : group.id)}
+            >
+              {data?.categories[group.id].map((category) => (
+                <SideBarItem
+                  as={Link}
+                  key={category.id}
+                  label={category.name}
+                  icon={category.icon}
+                  to={`/categories/${category.id}`}
+                />
+              ))}
+            </SideBarItem>
+          ))}
+        </div>
+      </Loading>
+    </>
   );
 };
+
+export namespace SideBar {
+  export type Props = {
+    open: boolean;
+    onClose: () => void;
+  };
+}

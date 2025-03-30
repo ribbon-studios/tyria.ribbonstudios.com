@@ -1,19 +1,22 @@
 import { selectHeader } from '@/store/app.slice';
 import { type FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Settings } from 'lucide-react';
+import { Menu, Settings } from 'lucide-react';
 import { Button } from '../Button';
 import { Link } from 'react-router-dom';
 import { TuiIcon } from '../TuiIcon';
 import { TuiLink } from '../TuiLink';
 
-export const TopBar: FC = () => {
+export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
   const header = useSelector(selectHeader);
 
   return (
     <div className="flex px-6 bg-tui-dark min-h-[72px]">
       <div className="flex flex-1 items-center justify-between mx-auto w-full max-w-[1200px]">
         <div className="flex gap-4 items-center text-2xl font-bold">
+          <Button className="inline-flex md:hidden" onClick={() => onSideBarToggle()}>
+            <Menu />
+          </Button>
           {header ? (
             <>
               {header.image && <TuiIcon icon={header.image} size={48} />}
@@ -34,3 +37,9 @@ export const TopBar: FC = () => {
     </div>
   );
 };
+
+export namespace TopBar {
+  export type Props = {
+    onSideBarToggle: () => void;
+  };
+}

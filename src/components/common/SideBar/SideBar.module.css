@@ -1,7 +1,11 @@
 @reference '@/index.css';
 
 .sidebar {
-  @apply hidden md:flex bg-tui-dark max-h-dvh w-full max-w-[300px];
+  @apply transition-all md:transition-[none] -left-full md:left-0 absolute md:relative bg-tui-dark min-h-dvh max-h-dvh w-full max-w-[300px] z-[9999];
+
+  &.open {
+    @apply left-0;
+  }
 }
 
 .items {
