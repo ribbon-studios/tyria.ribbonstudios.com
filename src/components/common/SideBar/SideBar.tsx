@@ -132,7 +132,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
               Team~
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <Button
               color="light"
               as={Link}
