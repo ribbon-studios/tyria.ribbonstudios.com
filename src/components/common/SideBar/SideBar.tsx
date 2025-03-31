@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { selectTrueMasteries } from '@/store/true-mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
+import { TuiLink } from '../TuiLink';
 
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   const { mdAndUp } = useBreakpoints();
@@ -91,7 +92,9 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
           <Button className="min-w-10" onClick={() => onClose()}>
             <Menu />
           </Button>
-          <div className="text-2xl font-bold">Tyria UI</div>
+          <TuiLink className="text-2xl font-bold" to="/" onClick={() => onClose()}>
+            Tyria UI
+          </TuiLink>
         </div>
         <div id="items" className={styles.items}>
           <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
@@ -113,6 +116,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
                   label={category.name}
                   icon={category.icon}
                   to={`/categories/${category.id}`}
+                  onClick={() => onClose()}
                   append={
                     <>
                       {true_masteries.includes(category.id) && (

@@ -98,11 +98,11 @@ export const Component: FC = () => {
           {settings.api.key ? (
             <TimeTill loading={isFetching} timestamp={dataUpdatedAt ?? errorUpdatedAt} stale={refresh_interval} />
           ) : (
-            <div className="flex gap-1 text-sm text-white/50">
-              Provide an
+            <div className="hidden md:inline-block text-sm text-white/50">
+              Provide an{' '}
               <TuiLink color="info" to="/settings">
                 Api Key
-              </TuiLink>
+              </TuiLink>{' '}
               to enable auto refresh...
             </div>
           )}

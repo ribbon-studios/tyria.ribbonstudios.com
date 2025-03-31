@@ -6,20 +6,22 @@ import { Button } from '../Button';
 import { Link } from 'react-router-dom';
 import { TuiIcon } from '../TuiIcon';
 import { TuiLink } from '../TuiLink';
+import { useBreakpoints } from '@/hooks/use-breakpoints';
 
 export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
+  const { mdAndUp } = useBreakpoints();
   const header = useSelector(selectHeader);
 
   return (
     <div className="flex px-6 bg-tui-dark min-h-[72px]">
       <div className="flex flex-1 items-center justify-between mx-auto w-full max-w-[1200px]">
-        <div className="flex gap-4 items-center text-2xl font-bold">
+        <div className="flex gap-4 items-center text-lg md:text-2xl font-bold">
           <Button className="inline-flex md:hidden" onClick={() => onSideBarToggle()}>
             <Menu />
           </Button>
           {header ? (
             <>
-              {header.image && <TuiIcon icon={header.image} size={48} />}
+              {mdAndUp && header.image && <TuiIcon icon={header.image} size={48} />}
               <TuiLink className="hidden lg:inline-block" to="/">
                 Tyria UI
               </TuiLink>

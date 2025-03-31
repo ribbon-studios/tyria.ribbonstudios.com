@@ -36,7 +36,7 @@ export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achieveme
         grayscale: !isDone,
       }}
     >
-      <div className="flex flex-1 items-center justify-between">
+      <div className="flex flex-1 gap-1 items-center justify-between">
         <div className="flex gap-2 items-center text-lg font-bold">
           {isDone && (
             <TuiIcon
