@@ -70,7 +70,11 @@ export const Component: FC = () => {
     basics: CategoryAchievement[];
   }>(
     (output, achievement) => {
-      if (achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY) && !achievement.done) {
+      if (
+        settings.toggles.pin_incomplete_meta_achievements &&
+        achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY) &&
+        !achievement.done
+      ) {
         output.incompleteMetas.push(achievement);
       } else {
         output.basics.push(achievement);

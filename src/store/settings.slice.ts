@@ -10,6 +10,7 @@ export type SettingsSlice = {
     refresh_interval: number | null;
   };
   toggles: {
+    pin_incomplete_meta_achievements: boolean;
     hide_completed_achievements: boolean;
     debug_mode: boolean;
   };
@@ -20,6 +21,7 @@ const cachedState = parseSafe<SettingsSlice>(localStorage.getItem('account'));
 const initialState: SettingsSlice = {
   ...cachedState,
   toggles: {
+    pin_incomplete_meta_achievements: true,
     hide_completed_achievements: false,
     debug_mode: false,
     ...cachedState?.toggles,

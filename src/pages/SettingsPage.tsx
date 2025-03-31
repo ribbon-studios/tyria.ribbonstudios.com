@@ -133,6 +133,12 @@ export const Component: FC = () => {
           }}
         />
         <TuiCheckbox
+          label="Make Incomplete Meta Achievements Sticky"
+          value={settings.toggles.pin_incomplete_meta_achievements}
+          variant="toggle"
+          onChange={(value) => dispatch(setToggle(['pin_incomplete_meta_achievements', value]))}
+        />
+        <TuiCheckbox
           label="Debug Mode"
           value={settings.toggles.debug_mode}
           variant="toggle"
