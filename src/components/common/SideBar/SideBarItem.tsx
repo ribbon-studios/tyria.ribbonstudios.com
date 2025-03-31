@@ -40,7 +40,6 @@ export namespace SideBarItem {
   export type Props<T extends ElementType> = {
     as?: T;
     label: string;
-    className?: string;
     onClick?: () => void;
     append?: ReactNode;
   } & (

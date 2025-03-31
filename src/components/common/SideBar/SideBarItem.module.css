@@ -4,6 +4,10 @@
   @apply flex flex-col;
 }
 
+.item:global(.active) .target:before {
+  @apply opacity-10;
+}
+
 .target {
   @apply relative flex items-center gap-2 px-4 py-2 cursor-pointer;
 
@@ -12,7 +16,7 @@
   }
 
   &:hover:before {
-    @apply opacity-20;
+    @apply opacity-20!;
   }
 
   &.open {

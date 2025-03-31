@@ -5,7 +5,7 @@ import { Bug, Code2, Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
 import { Loading } from '../Loading';
 import * as styles from './SideBar.module.css';
-import { Link, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
 import { cn } from '@/utils/cn';
 import { Button } from '../Button';
@@ -105,7 +105,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
             >
               {data?.categories[group.id].map((category) => (
                 <SideBarItem
-                  as={Link}
+                  as={NavLink}
                   key={category.id}
                   id={`category-${category.id}`}
                   label={category.name}
