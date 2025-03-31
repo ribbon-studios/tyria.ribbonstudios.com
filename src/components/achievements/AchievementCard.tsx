@@ -40,7 +40,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
         </div>
         <div className={styles.info}>
           <div className="text-sm text-white/80">{achievement.requirement}</div>
-          <div className="text-sm font-light italic text-neutral-500">{achievement.description}</div>
+          <div className="text-sm font-light italic text-white/60">{achievement.description}</div>
           {!achievement.done && (
             <>
               {achievement.progress && (
