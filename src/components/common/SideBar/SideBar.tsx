@@ -13,8 +13,10 @@ import { TuiIcon } from '../TuiIcon';
 import { useSelector } from 'react-redux';
 import { selectTrueMasteries } from '@/store/true-mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
+import { useBreakpoints } from '@/hooks/use-breakpoints';
 
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
+  const { mdAndUp } = useBreakpoints();
   const true_masteries = useSelector(selectTrueMasteries);
   const [activeGroupId, setActiveGroupId] = useState<string>();
   const params = useParams();
@@ -49,7 +51,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   });
 
   useEffect(() => {
-    if (!data || !params.id) return;
+    if (!data || !params.id || (!mdAndUp && !open)) return;
 
     const id = Number(params.id);
 
@@ -72,7 +74,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         });
       }, 200);
     });
-  }, [data]);
+  }, [data, open, mdAndUp]);
 
   return (
     <>
