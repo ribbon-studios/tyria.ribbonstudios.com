@@ -5,6 +5,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { Loading } from './components/common/Loading';
+import { ErrorBoundary } from './ErrorBoundary';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     lazy: () => import('./App'),
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/',
