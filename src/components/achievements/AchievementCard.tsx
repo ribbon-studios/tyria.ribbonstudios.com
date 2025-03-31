@@ -31,7 +31,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
       <div className={styles.content}>
         <div className="flex justify-between">
           <div className="font-bold">{achievement.name}</div>
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             <DebugInfo as={Link} to={`/achievements/${achievement.id}`}>
               {achievement.id}
             </DebugInfo>
@@ -39,14 +39,12 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
           </div>
         </div>
         <div className={styles.info}>
-          <div className="text-sm text-white/80">{achievement.description}</div>
+          <div className="text-sm text-white/80">{achievement.requirement}</div>
+          <div className="text-sm font-light italic text-neutral-500">{achievement.description}</div>
           {!achievement.done && (
             <>
               {achievement.progress && (
-                <>
-                  {achievement.progress.current} / {achievement.progress.max}
-                  <ProgressBar current={achievement.progress.current} max={achievement.progress.max} />
-                </>
+                <ProgressBar current={achievement.progress.current} max={achievement.progress.max} />
               )}
 
               {achievement.prerequisites && (

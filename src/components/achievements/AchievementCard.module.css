@@ -4,7 +4,7 @@
   @apply items-center min-h-36;
 
   .content {
-    @apply flex flex-col justify-evenly flex-1 gap-2 h-full;
+    @apply flex flex-col justify-evenly flex-1 gap-1 h-full;
   }
 
   .info {

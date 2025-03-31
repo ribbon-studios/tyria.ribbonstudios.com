@@ -1,10 +1,19 @@
 import type { EnhancedAchievement } from '@/service/api';
-import { type LucideIcon } from 'lucide-react';
+import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
+import { Eye, type LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
 export function useAchievementActions(achievement: EnhancedAchievement) {
   return useMemo(() => {
     let output: UseAchievementActions.Action[] = [];
+
+    if (achievement.flags.includes(Achievement.Flags.HIDDEN)) {
+      output.push({
+        icon: Eye,
+        className: 'text-stone-500',
+        title: 'Hidden',
+      });
+    }
 
     output = output.concat(UseAchievementActions.getDescriptionActions(achievement));
     output = output.concat(UseAchievementActions.getPrerequisiteActions(achievement));
@@ -26,9 +35,10 @@ export namespace UseAchievementActions {
   }
 
   export type Action = {
-    type: string;
     icon: string | LucideIcon;
-    href: string;
+    href?: string;
+    className?: string;
+    title?: string;
   };
 
   export const TypeLinkMap: Record<Exclude<Type, Type.PREREQUISITE>, (name: string) => string> = {
@@ -59,7 +69,6 @@ export namespace UseAchievementActions {
 
     return [
       {
-        type,
         icon: UseAchievementActions.TypeIconMap[type],
         href: UseAchievementActions.TypeLinkMap[type](name),
       },
@@ -69,11 +78,8 @@ export namespace UseAchievementActions {
   export function getPrerequisiteActions(achievement: EnhancedAchievement): Action[] {
     if (!achievement.prerequisites) return [];
 
-    const type = UseAchievementActions.Type.PREREQUISITE;
-
     return achievement.prerequisites.map((prerequisite) => ({
-      type,
-      icon: UseAchievementActions.TypeIconMap[type],
+      icon: UseAchievementActions.TypeIconMap[UseAchievementActions.Type.PREREQUISITE],
       href: `/achievements/${prerequisite.id}`,
     }));
   }

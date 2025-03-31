@@ -1,4 +1,4 @@
-import type { CategoryAchievement, EnhancedAchievement } from '@/service/api';
+import type { EnhancedAchievement } from '@/service/api';
 import { TuiIcon } from '../common/TuiIcon';
 import { useAchievementActions } from '@/hooks/use-achievement-actions';
 
@@ -9,11 +9,17 @@ export function AchievementActions({ achievement }: AchievementActions.Props) {
 
   return (
     <div className="flex gap-2">
-      {actions.map((action, i) => (
-        <a key={i} href={action.href} target="_blank">
-          <TuiIcon icon={action.icon} />
-        </a>
-      ))}
+      {actions.map(({ href, icon, ...props }, i) =>
+        href ? (
+          <a key={i} {...props} href={href} target="_blank">
+            <TuiIcon icon={icon} />
+          </a>
+        ) : (
+          <div key={i} {...props}>
+            <TuiIcon icon={icon} />
+          </div>
+        )
+      )}
     </div>
   );
 }
