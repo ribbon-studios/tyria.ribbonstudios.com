@@ -8,17 +8,8 @@ import {
 
 export const api = new GuildWars2();
 
-export type CategoryAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'prerequisites'> & {
+export type CategoryAchievement = EnhancedAchievement & {
   category: string;
-  tier: Achievement.Tier;
-  icon: string;
-  done: boolean;
-  prerequisites?: Achievement<Schema.LATEST>[];
-  progress?: {
-    current: number;
-    max: number;
-  };
-  meta?: boolean;
 };
 
 export async function getCategoryAchievements(
@@ -43,74 +34,53 @@ export async function getCategoryAchievements(
         })
       : [];
 
-  const categoryAchievements = achievements.map<CategoryAchievement>(({ tiers, ...achievement }) => {
-    const accountAchievement = accountAchievements.find(({ id }) => achievement.id === id);
+  const categoryAchievements = achievements.map<CategoryAchievement>((achievement) => ({
+    ...Helpers.mapAchievement(achievement, accountAchievements, prerequisiteAchievements),
+    icon: achievement.icon ?? category.icon,
+    category: category.name,
+  }));
 
-    const tier = tiers.reduce((output, tier) => ({
-      count: tier.count,
-      points: output.points + tier.points,
-    }));
+  return (
+    categoryAchievements
+      .sort((a, b) => {
+        if (a.description === b.description) return 0;
 
-    let progress: CategoryAchievement['progress'] | undefined;
-    if (
-      accountAchievement !== undefined &&
-      accountAchievement.current !== undefined &&
-      accountAchievement.max !== undefined
-    ) {
-      progress = {
-        current: accountAchievement.current,
-        max: accountAchievement.max,
-      };
-    }
+        if (!b.description) return 1;
+        if (!a.description) return -1;
 
-    const prerequisites: Achievement.V0[] | undefined = achievement.prerequisites
-      ?.filter((id) => {
-        const accountAchievement = accountAchievements.find((accountAchievement) => accountAchievement.id === id);
-
-        return !accountAchievement?.done;
+        return a.description.localeCompare(b.description);
       })
-      ?.map((id) => prerequisiteAchievements.find((prerequisiteAchievement) => prerequisiteAchievement.id === id)!);
+      // Sort completed achievements to the bottom
+      .sort((a, b) => {
+        if (a.done === b.done) return 0;
 
-    return {
-      ...achievement,
-      category: category.name,
-      tier,
-      icon: achievement.icon ?? category.icon,
-      done: accountAchievement?.done ?? false,
-      prerequisites: prerequisites && prerequisites.length > 0 ? prerequisites : undefined,
-      meta: achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY),
-      progress,
-    };
-  });
+        if (a.done) {
+          return 1;
+        }
 
-  return categoryAchievements
-    .sort((a, b) => {
-      if (a.done === b.done) return 0;
-
-      if (a.done) {
-        return 1;
-      }
-
-      return -1;
-    })
-    .sort((a, b) => {
-      if (a.prerequisites === b.prerequisites) return 0;
-
-      if (a.prerequisites) {
-        return 1;
-      }
-
-      return -1;
-    })
-    .sort((a, b) => {
-      if (a.meta === b.meta) return 0;
-
-      if (a.meta) {
         return -1;
-      }
+      })
+      // Sort achievements that are locked to the bottom
+      .sort((a, b) => {
+        if (a.prerequisites === b.prerequisites) return 0;
 
-      return 1;
-    });
+        if (a.prerequisites) {
+          return 1;
+        }
+
+        return -1;
+      })
+      // Sort meta achievements to the top
+      .sort((a, b) => {
+        if (a.meta === b.meta) return 0;
+
+        if (a.meta) {
+          return -1;
+        }
+
+        return 1;
+      })
+  );
 }
 
 export type EnhancedAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'prerequisites'> & {
@@ -130,23 +100,31 @@ export async function getAchievement(id: number) {
     api.v2.account.achievements(),
   ]);
 
-  const accountAchievement = accountAchievements.find((achievement) => achievement.id === id);
-
   const prerequisiteAchievements = achievement.prerequisites
     ? await api.v2.achievements.list({
         ids: achievement.prerequisites,
       })
-    : undefined;
+    : [];
 
-  return Helpers.mapAchievement(achievement, accountAchievement, prerequisiteAchievements);
+  return Helpers.mapAchievement(achievement, accountAchievements, prerequisiteAchievements);
 }
 
 export namespace Helpers {
   export function mapAchievement(
-    { tiers, ...achievement }: Achievement<Schema.LATEST>,
-    accountAchievement?: AccountAchievement<Schema.LATEST>,
-    prerequisiteAchievements?: Achievement<Schema.LATEST>[]
+    { tiers, prerequisites = [], ...achievement }: Achievement<Schema.LATEST>,
+    accountAchievements: AccountAchievement<Schema.LATEST>[],
+    prerequisiteAchievements: Achievement<Schema.LATEST>[]
   ): EnhancedAchievement {
+    const accountAchievement = accountAchievements.find(({ id }) => achievement.id === id);
+
+    const required_achievements: Achievement.V0[] | undefined = prerequisites
+      .filter((id) => {
+        const accountAchievement = accountAchievements.find((accountAchievement) => accountAchievement.id === id);
+
+        return !accountAchievement?.done;
+      })
+      .map((id) => prerequisiteAchievements.find((prerequisiteAchievement) => prerequisiteAchievement.id === id)!);
+
     const tier = tiers.reduce((output, tier) => ({
       count: tier.count,
       points: output.points + tier.points,
@@ -168,7 +146,7 @@ export namespace Helpers {
       ...achievement,
       tier,
       done: accountAchievement?.done ?? false,
-      prerequisites: prerequisiteAchievements,
+      prerequisites: required_achievements.length > 0 ? required_achievements : undefined,
       meta: achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY),
       progress,
     };
