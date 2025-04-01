@@ -140,6 +140,11 @@ export namespace Helpers {
         current: accountAchievement.current,
         max: accountAchievement.max,
       };
+    } else if (achievement.bits) {
+      progress = {
+        current: 0,
+        max: achievement.bits.length,
+      };
     }
 
     return {
