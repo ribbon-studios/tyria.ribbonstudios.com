@@ -30,7 +30,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
       }
     >
       <div className={styles.content}>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-start">
           <div className="font-bold">{achievement.name}</div>
           <div className="flex gap-2">
             <DebugInfo as={Link} to={`/achievements/${achievement.id}`}>

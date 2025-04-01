@@ -10,13 +10,16 @@ export function AchievementDescription({ description }: AchievementDescription.P
       description,
     ];
 
-    if (tag === '@flavor') {
-      return [parsedDescription, 'text-cyan-200'];
-    } else if (tag) {
-      toast.warning(`The description of an achievement contained an unhanded formatting tag. (${tag})`);
+    switch (tag?.toLowerCase()) {
+      case '@flavor':
+        return [parsedDescription, 'text-cyan-200'];
+      case null:
+      case undefined:
+        return [parsedDescription, 'text-white/60'];
+      default:
+        toast.warning(`The description of an achievement contained an unhanded formatting tag. (${tag})`);
+        return [parsedDescription, 'text-white/60'];
     }
-
-    return [parsedDescription, 'text-white/60'];
   }, [description]);
 
   return <div className={cn('text-sm italic', stylingClassName)}>{parsedDescription}</div>;
