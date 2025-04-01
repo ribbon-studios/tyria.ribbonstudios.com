@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectSettings } from '@/store/settings.slice';
 import { DebugInfo } from '../DebugInfo';
 import { Link } from 'react-router-dom';
+import { AchievementDescription } from './AchievementDescription';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
@@ -40,7 +41,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
         </div>
         <div className={styles.info}>
           <div className="text-sm text-white/80">{achievement.requirement}</div>
-          <div className="text-sm font-light italic text-white/60">{achievement.description}</div>
+          <AchievementDescription description={achievement.description} />
           {!achievement.done && (
             <>
               {achievement.progress && (

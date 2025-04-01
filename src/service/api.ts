@@ -83,15 +83,20 @@ export async function getCategoryAchievements(
   );
 }
 
-export type EnhancedAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'prerequisites'> & {
+export type EnhancedAchievement = Omit<Achievement<Schema.LATEST>, 'tiers' | 'prerequisites' | 'bits'> & {
   tier: Achievement.Tier;
   done: boolean;
   prerequisites?: Achievement<Schema.LATEST>[];
   progress?: {
     current: number;
     max: number;
+    bits?: EnhancedBit[];
   };
   meta?: boolean;
+};
+
+export type EnhancedBit = Achievement.Bit & {
+  done: boolean;
 };
 
 export async function getAchievement(id: number) {
@@ -111,7 +116,7 @@ export async function getAchievement(id: number) {
 
 export namespace Helpers {
   export function mapAchievement(
-    { tiers, prerequisites = [], ...achievement }: Achievement<Schema.LATEST>,
+    { tiers, bits, prerequisites = [], ...achievement }: Achievement<Schema.LATEST>,
     accountAchievements: AccountAchievement<Schema.LATEST>[],
     prerequisiteAchievements: Achievement<Schema.LATEST>[]
   ): EnhancedAchievement {
@@ -139,11 +144,19 @@ export namespace Helpers {
       progress = {
         current: accountAchievement.current,
         max: accountAchievement.max,
+        bits: bits?.map((bit, i) => ({
+          ...bit,
+          done: (accountAchievement.done || accountAchievement.bits.includes(i)) ?? false,
+        })),
       };
-    } else if (achievement.bits) {
+    } else if (bits) {
       progress = {
         current: 0,
-        max: achievement.bits.length,
+        max: bits.length,
+        bits: bits?.map((bit, i) => ({
+          ...bit,
+          done: false,
+        })),
       };
     }
 
@@ -157,3 +170,10 @@ export namespace Helpers {
     };
   }
 }
+
+export type ApiError = {
+  status: number;
+  content: {
+    text: string;
+  };
+};

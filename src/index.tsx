@@ -40,7 +40,14 @@ const router = createBrowserRouter([
   },
 ]);
 
-const client = new QueryClient();
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 root.render(
   <React.StrictMode>

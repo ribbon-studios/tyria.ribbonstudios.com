@@ -1,6 +1,6 @@
-import { getAchievement } from '@/service/api';
+import { type EnhancedAchievement, getAchievement, type ApiError } from '@/service/api';
 import { useEffect, useMemo, type FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Loading } from '@/components/common/Loading';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
@@ -13,11 +13,13 @@ import { AchievementRewards } from '@/components/achievements/rewards/Achievemen
 import { DebugInfo } from '@/components/DebugInfo';
 import { useAppDispatch } from '@/store';
 import { setHeader } from '@/store/app.slice';
+import { toast } from 'sonner';
 
 export const Component: FC = () => {
   const params = useParams();
   const settings = useSelector(selectSettings);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const refresh_interval = useMemo(() => {
     if (settings.api.key && settings.api.refresh_interval) {
@@ -27,11 +29,22 @@ export const Component: FC = () => {
     return null;
   }, [settings.api.key, settings.api.refresh_interval]);
 
-  const { data: achievement, isLoading } = useQuery({
+  const {
+    data: achievement,
+    isLoading,
+    error,
+  } = useQuery<EnhancedAchievement, ApiError>({
     queryKey: ['achievements', params.id],
     queryFn: () => getAchievement(Number(params.id)),
     refetchInterval: refresh_interval ?? undefined,
   });
+
+  useEffect(() => {
+    if (!error || error.status !== 404) return;
+
+    toast.error("Oops! Looks like the achievement you're looking for doesn't exist!");
+    navigate('/');
+  }, [error]);
 
   useEffect(() => {
     if (!achievement) return;
@@ -51,6 +64,12 @@ export const Component: FC = () => {
         className="flex flex-col flex-1 items-center m-6"
         contentClassName="gap-4 w-full max-w-[1200px]"
       >
+        {error && (
+          <Card className="flex-col">
+            <div className="text-lg font-light">Error!</div>
+            <div className="whitespace-pre">{JSON.stringify(error, null, 4)}</div>
+          </Card>
+        )}
         {achievement && (
           <>
             <AchievementCard className={styles.pinnedCard} achievement={achievement} />
