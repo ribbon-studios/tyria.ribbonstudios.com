@@ -93,7 +93,7 @@ export const SettingsSlice = createAppSlice({
 export const { setApiKey, setApiSetting, setToggle } = SettingsSlice.actions;
 
 export const selectSettings = (state: AppState) => state.settings;
-export const selectApi = (state: AppState) => state.settings.api;
+export const selectApiSettings = (state: AppState) => state.settings.api;
 export const selectToggles = (state: AppState) => state.settings.toggles;
 export const selectToggle = (key: keyof SettingsSlice['toggles']) => (state: AppState) => selectToggles(state)[key];
 

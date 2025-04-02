@@ -1,10 +1,15 @@
-import { useMemo, useState, type FC } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import * as styles from './App.module.css';
 import { SideBar } from './components/common/SideBar';
 import { TopBar } from './components/common/TopBar';
 import { Info, Siren, TriangleAlert } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { fetchAchievementSections, selectApiState } from './store/api.slice';
+import { Loading } from './components/common/Loading';
+import { TuiImage } from './components/common/TuiImage';
+import { useAppDispatch } from './store';
 
 const images = [
   '/backgrounds/background-1.jpg',
@@ -14,20 +19,32 @@ const images = [
 ];
 
 export const Component: FC = () => {
+  const dispatch = useAppDispatch();
+  const api = useSelector(selectApiState);
   const [open, setOpen] = useState(false);
+  const [isBackgroundLoading, setBackgroundLoading] = useState(true);
   const background = useMemo(() => {
     return images[Math.floor(Math.random() * images.length)];
   }, []);
 
+  useEffect(() => {
+    dispatch(fetchAchievementSections());
+  }, []);
+
   return (
     <>
-      <div
-        className={styles.background}
-        style={{
-          backgroundImage: `url(${background})`,
-        }}
-      />
-      <div className={styles.app}>
+      <div className={styles.overlay}>
+        <TuiImage className={styles.background} src={background} onLoad={() => setBackgroundLoading(false)} />
+      </div>
+      <Loading
+        className="min-h-dvh"
+        contentClassName={styles.app}
+        loading={api.loading || isBackgroundLoading}
+        size={128}
+        delay={500}
+        direction="horizontal"
+        center
+      >
         <SideBar open={open} onClose={() => setOpen(false)} />
         <div className={styles.container}>
           <TopBar onSideBarToggle={() => setOpen(!open)} />
@@ -52,7 +69,7 @@ export const Component: FC = () => {
             <Outlet />
           </div>
         </div>
-      </div>
+      </Loading>
     </>
   );
 };

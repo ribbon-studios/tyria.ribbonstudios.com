@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .sidebar {
-  @apply transition-all md:transition-[none] -left-full md:left-0 absolute md:relative bg-tui-dark min-h-dvh max-h-dvh w-full max-w-[350px] z-[9999];
+  @apply flex flex-col transition-all md:transition-[none] -left-full md:left-0 absolute md:relative bg-tui-dark min-h-dvh max-h-dvh w-full max-w-[350px] z-[9999];
 
   &.open {
     @apply left-0;

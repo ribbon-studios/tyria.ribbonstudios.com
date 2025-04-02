@@ -1,9 +1,6 @@
-import { api } from '@/service/api';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState, type FC } from 'react';
 import { Bug, Code2, Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
-import { Loading } from '../Loading';
 import * as styles from './SideBar.module.css';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
@@ -15,50 +12,24 @@ import { selectTrueMasteries } from '@/store/true-mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
 import { TuiLink } from '../TuiLink';
+import { selectCategoriesByGroup, selectGroups } from '@/store/api.slice';
 
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   const { mdAndUp } = useBreakpoints();
+  const groups = useSelector(selectGroups);
+  const categoriesByGroup = useSelector(selectCategoriesByGroup);
   const true_masteries = useSelector(selectTrueMasteries);
   const [activeGroupId, setActiveGroupId] = useState<string>();
   const params = useParams();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['groups'],
-    queryFn: async () => {
-      const [groups, categories] = await Promise.all([
-        api.v2.achievements.groups.list({
-          ids: 'all',
-        }),
-        api.v2.achievements.categories.list({
-          ids: 'all',
-        }),
-      ]);
-
-      const activeCategories = categories.filter((category) => category.achievements.length > 0);
-
-      const sortedCategories = activeCategories.sort((a, b) => a.order - b.order);
-
-      return {
-        groups: groups.sort((a, b) => a.order - b.order),
-        categories: groups.reduce<Record<string, typeof categories>>(
-          (output, group) => ({
-            ...output,
-            [group.id]: sortedCategories.filter(({ id }) => group.categories.includes(id)),
-          }),
-          {}
-        ),
-      };
-    },
-  });
-
   useEffect(() => {
-    if (!data || !params.id || (!mdAndUp && !open)) return;
+    if (!params.id || (!mdAndUp && !open)) return;
 
     const id = Number(params.id);
 
     if (isNaN(id)) return;
 
-    const group = data.groups.find((group) => group.categories.includes(id));
+    const group = groups.find((group) => group.categories.includes(id));
 
     if (!group) return;
 
@@ -75,7 +46,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         });
       }, 200);
     });
-  }, [data, open, mdAndUp]);
+  }, [groups, categoriesByGroup, open, mdAndUp]);
 
   return (
     <>
@@ -86,7 +57,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         )}
         onClick={() => onClose()}
       />
-      <Loading loading={isLoading} className={cn(styles.sidebar, open && styles.open)} contentClassName="max-h-dvh">
+      <div className={cn(styles.sidebar, open && styles.open)}>
         <TuiInput className="hidden! md:flex! mx-6 my-[17px] rounded-full!" placeholder="Search..." disabled />
         <div className="flex md:hidden items-center gap-4 mx-6 my-[17px]">
           <Button className="min-w-10" onClick={() => onClose()}>
@@ -99,7 +70,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         <div id="items" className={styles.items}>
           <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
           <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />
-          {data?.groups.map((group) => (
+          {groups.map((group) => (
             <SideBarItem
               key={group.id}
               label={group.name}
@@ -108,7 +79,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
               onClick={() => setActiveGroupId(activeGroupId === group.id ? undefined : group.id)}
               append={<DebugInfo className="max-w-16">{group.id}</DebugInfo>}
             >
-              {data?.categories[group.id].map((category) => (
+              {categoriesByGroup[group.id].map((category) => (
                 <SideBarItem
                   as={NavLink}
                   key={category.id}
@@ -164,7 +135,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
             </Button>
           </div>
         </div>
-      </Loading>
+      </div>
     </>
   );
 };

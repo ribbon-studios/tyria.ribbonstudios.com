@@ -30,7 +30,7 @@ export const TrueMasterySlice = createAppSlice({
 
       return updatedState;
     },
-    resetTrueMastery: (state) => {
+    resetTrueMastery: () => {
       const updatedState: TrueMasterySlice = {
         categories: [],
       };

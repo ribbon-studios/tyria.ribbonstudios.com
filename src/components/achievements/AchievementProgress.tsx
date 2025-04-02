@@ -18,18 +18,24 @@ export function AchievementProgress({ progress }: AchievementProgress.Props) {
     queryFn: () => AchievementProgress.getBits(progress),
   });
 
-  return (
-    <TuiTooltip
-      tooltip={<AchievementBits bits={bits} loading={isLoading} />}
-      onMouseOver={() => {
-        if (isLoading || bits) return;
+  if (progress.bits) {
+    return (
+      <TuiTooltip
+        className="max-w-full"
+        tooltip={<AchievementBits bits={bits} loading={isLoading} />}
+        onMouseOver={() => {
+          if (isLoading || bits) return;
 
-        refetch();
-      }}
-    >
-      <ProgressBar className="w-full" current={progress.current} max={progress.max} />
-    </TuiTooltip>
-  );
+          refetch();
+        }}
+        allowLocking
+      >
+        <ProgressBar className="w-full" current={progress.current} max={progress.max} />
+      </TuiTooltip>
+    );
+  }
+
+  return <ProgressBar className="w-full" current={progress.current} max={progress.max} />;
 }
 
 export namespace AchievementProgress {

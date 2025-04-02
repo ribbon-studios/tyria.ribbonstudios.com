@@ -176,6 +176,11 @@ export namespace Helpers {
           done: false,
         })),
       };
+    } else if (tier.count > 1) {
+      progress = {
+        current: 0,
+        max: tier.count,
+      };
     }
 
     return {
