@@ -120,7 +120,7 @@ export namespace EnhancedBit {
 export async function getAchievement(id: number) {
   const [achievement, accountAchievements] = await Promise.all([
     api.v2.achievements.get(id),
-    api.v2.account.achievements(),
+    api.config.access_token ? api.v2.account.achievements() : [],
   ]);
 
   const prerequisiteAchievements = achievement.prerequisites
