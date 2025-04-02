@@ -1,9 +1,5 @@
 @reference '@/index.css';
 
 .splash {
-  @apply absolute inset-0 pointer-events-none;
-
-  .radial {
-    @apply absolute inset-0 bg-linear-to-r from-neutral-900 from-5% to-75% to-tui-dark;
-  }
+  @apply bg-linear-to-r from-neutral-900 from-5% to-75% to-tui-dark;
 }

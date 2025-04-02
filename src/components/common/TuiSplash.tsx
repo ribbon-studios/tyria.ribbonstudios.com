@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useState, type FC, type ReactNode } from 'react';
 import * as styles from './TuiSplash.module.css';
 import { TuiIcon } from './TuiIcon';
 import { cn } from '@/utils/cn';
@@ -57,15 +57,14 @@ export const TuiSplash: FC<TuiSplash.Props> = ({ className, grayscale, image, ..
   }, [image, grayscale]);
 
   return (
-    <div className={cn(styles.splash, className)}>
-      <div
-        className={styles.radial}
-        style={{
-          /* @ts-expect-error - TS Incorrectly marks CSS variables */
-          '--tw-gradient-from': color,
-        }}
-      />
-    </div>
+    <div
+      {...props}
+      className={cn(styles.splash, className)}
+      style={{
+        /* @ts-expect-error - TS Incorrectly marks CSS variables */
+        '--tw-gradient-from': color,
+      }}
+    />
   );
 };
 
@@ -74,6 +73,6 @@ export namespace TuiSplash {
     className?: string;
     image: string;
     grayscale?: boolean;
-    size?: number | TuiIcon.Sizes;
+    children?: ReactNode;
   };
 }

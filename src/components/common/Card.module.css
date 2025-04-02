@@ -1,9 +1,5 @@
 @reference '@/index.css';
 
 .card {
-  @apply relative flex gap-4 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray bg-linear-to-r from-tui-gray via-transparent overflow-hidden;
-
-  > *:not(.cardSplash) {
-    z-index: 1;
-  }
+  @apply relative flex gap-4 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray;
 }

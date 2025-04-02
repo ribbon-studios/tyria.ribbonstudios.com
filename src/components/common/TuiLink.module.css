@@ -1,11 +1,25 @@
 @reference '@/index.css';
 
 .tuiLink {
+  @apply inline-flex;
+
   &:hover {
     @apply underline;
   }
 
   &.color__info {
     @apply text-tui-info;
+  }
+
+  &.overlay {
+    @apply relative;
+
+    &:before {
+      @apply content-[''] z-10 absolute inset-0 rounded-[inherit] bg-white opacity-0 transition-opacity;
+    }
+
+    &:hover:before {
+      @apply opacity-20;
+    }
   }
 }

@@ -1,5 +1,4 @@
 import { cn } from '@/utils/cn';
-import { ProgressBar } from '../common/ProgressBar';
 import type { EnhancedAchievement } from '@/service/api';
 import { Card } from '../common/Card';
 import * as styles from './AchievementCard.module.css';
@@ -10,6 +9,7 @@ import { selectSettings } from '@/store/settings.slice';
 import { DebugInfo } from '../DebugInfo';
 import { Link } from 'react-router-dom';
 import { AchievementDescription } from './AchievementDescription';
+import { AchievementProgress } from './AchievementProgress';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
@@ -44,9 +44,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
           <AchievementDescription description={achievement.description} />
           {!achievement.done && (
             <>
-              {achievement.progress && (
-                <ProgressBar current={achievement.progress.current} max={achievement.progress.max} />
-              )}
+              <AchievementProgress progress={achievement.progress} />
 
               {achievement.prerequisites && (
                 <div className="flex flex-col gap-1 italic text-sm text-white/60">

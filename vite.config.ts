@@ -13,6 +13,9 @@ export default defineConfig(async () => {
       port: 3030,
       hmr: true,
       host: '0.0.0.0',
+      watch: {
+        usePolling: true,
+      },
     },
     resolve: {
       alias: {

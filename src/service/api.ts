@@ -99,6 +99,24 @@ export type EnhancedBit = Achievement.Bit & {
   done: boolean;
 };
 
+export namespace EnhancedBit {
+  export type Item = Achievement.Bit.Item & {
+    done: boolean;
+  };
+
+  export type Skin = Achievement.Bit.Skin & {
+    done: boolean;
+  };
+
+  export type Minipet = Achievement.Bit.Minipet & {
+    done: boolean;
+  };
+
+  export type Text = Achievement.Bit.Text & {
+    done: boolean;
+  };
+}
+
 export async function getAchievement(id: number) {
   const [achievement, accountAchievements] = await Promise.all([
     api.v2.achievements.get(id),

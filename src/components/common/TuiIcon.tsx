@@ -2,6 +2,8 @@ import { useMemo, type FC } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 export const TuiIcon: FC<TuiIcon.Props> = ({ icon: Icon, size = 24, ...props }) => {
+  if (!Icon) return null;
+
   const { img: imgSize, icon: iconSize } = useMemo<TuiIcon.Sizes>(
     () =>
       typeof size === 'object'
@@ -31,7 +33,7 @@ export const TuiIcon: FC<TuiIcon.Props> = ({ icon: Icon, size = 24, ...props }) 
 
 export namespace TuiIcon {
   export type Props = {
-    icon: LucideIcon | string;
+    icon?: LucideIcon | string;
     className?: string;
     size?: number | Sizes;
   };
