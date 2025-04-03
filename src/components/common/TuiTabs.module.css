@@ -1,0 +1,37 @@
+@reference '@/index.css';
+
+.tabs {
+  @apply flex gap-[1px] bg-tui-dark;
+
+  > .tab {
+    @apply relative px-4 py-2 bg-tui-light-gray cursor-pointer transition-colors;
+
+    &:first-child {
+      @apply rounded-l-lg;
+    }
+
+    &:last-child {
+      @apply rounded-r-lg;
+    }
+
+    &.active {
+      @apply bg-tui-primary;
+    }
+
+    &:before {
+      @apply content-[''] absolute inset-0 pointer-events-none bg-transparent transition-colors rounded-[inherit];
+    }
+
+    &:hover:before {
+      @apply bg-black/10;
+    }
+
+    &[disabled] {
+      @apply pointer-events-none;
+
+      &:before {
+        @apply bg-black/40;
+      }
+    }
+  }
+}

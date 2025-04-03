@@ -137,5 +137,23 @@ export const selectSettings = (state: AppState) => state.settings;
 export const selectApiSettings = (state: AppState) => state.settings.api;
 export const selectToggles = (state: AppState) => state.settings.toggles;
 export const selectToggle = (key: keyof SettingsSlice['toggles']) => (state: AppState) => selectToggles(state)[key];
+export const selectRefreshInterval = (state: AppState) => {
+  const settings = selectSettings(state);
+
+  if (settings.api.key && settings.api.refresh_interval) {
+    return settings.api.refresh_interval * 1000;
+  }
+
+  return undefined;
+};
+export const selectBackgroundImage = (state: AppState) => {
+  const settings = selectSettings(state);
+
+  if (settings.background === Background.Random) {
+    return Background.random();
+  }
+
+  return BACKGROUNDS[settings.background];
+};
 
 export default SettingsSlice.reducer;

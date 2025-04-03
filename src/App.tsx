@@ -10,21 +10,14 @@ import { fetchAchievementSections, selectApiState, setApiLoading } from './store
 import { Loading } from './components/common/Loading';
 import { TuiImage } from './components/common/TuiImage';
 import { useAppDispatch } from './store';
-import { Background, BACKGROUNDS, selectSettings } from './store/settings.slice';
+import { selectBackgroundImage } from './store/settings.slice';
 
 export const Component: FC = () => {
   const dispatch = useAppDispatch();
-  const settings = useSelector(selectSettings);
+  const background = useSelector(selectBackgroundImage);
   const api = useSelector(selectApiState);
   const [open, setOpen] = useState(false);
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
-  const background = useMemo(() => {
-    if (settings.background === Background.Random) {
-      return Background.random();
-    }
-
-    return BACKGROUNDS[settings.background];
-  }, [settings.background]);
 
   useEffect(() => {
     if (!api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {

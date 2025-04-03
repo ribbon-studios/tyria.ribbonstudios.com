@@ -12,7 +12,7 @@ body {
 }
 
 @theme {
-  --color-tui-primary: #8e44ad;
+  --color-tui-primary: #65247e;
   --color-tui-success: #38c12b;
   --color-tui-error: #c0392b;
   --color-tui-warning: oklch(0.879 0.169 91.605);

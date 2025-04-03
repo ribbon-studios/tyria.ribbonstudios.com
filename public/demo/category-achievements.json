@@ -1,0 +1,199 @@
+[
+  {
+    "id": 3050,
+    "name": "\"Out of the Shadows\" Mastery",
+    "description": "",
+    "requirement": "Complete all  \"Out of the Shadows\" achievements.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Pvp", "RepairOnLogin", "CategoryDisplay", "Permanent"],
+    "rewards": [
+      {
+        "type": "Item",
+        "id": 79225,
+        "count": 1
+      }
+    ],
+    "tier": {
+      "count": 18,
+      "points": 23
+    },
+    "done": false,
+    "meta": true,
+    "progress": {
+      "current": 14,
+      "max": 18
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  },
+  {
+    "id": 3070,
+    "name": "Lost Souls",
+    "description": "",
+    "requirement": "Find and defeat the four ghostly champions wandering Bloodstone Fen.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Permanent"],
+    "tier": {
+      "count": 4,
+      "points": 3
+    },
+    "done": false,
+    "meta": false,
+    "progress": {
+      "current": 3,
+      "max": 4,
+      "bits": [
+        {
+          "type": "Text",
+          "text": "Savant Ehrin",
+          "done": false
+        },
+        {
+          "type": "Text",
+          "text": "Nyle the Compassionate",
+          "done": true
+        },
+        {
+          "type": "Text",
+          "text": "Ritualist Josa",
+          "done": true
+        },
+        {
+          "type": "Text",
+          "text": "Thief Lloyd",
+          "done": true
+        }
+      ]
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  },
+  {
+    "id": 3073,
+    "name": "This Time, Stay Dead",
+    "description": "",
+    "requirement": "Defeat the Ghostly Justiciar in the Colosseum of the Faithful, located above Bloodstone Fen.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Permanent"],
+    "rewards": [
+      {
+        "type": "Mastery",
+        "region": "Maguuma",
+        "id": 18
+      }
+    ],
+    "tier": {
+      "count": 1,
+      "points": 3
+    },
+    "done": false,
+    "meta": false,
+    "progress": {
+      "current": 0,
+      "max": 1
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  },
+  {
+    "id": 3040,
+    "name": "Reversal of Fortune",
+    "description": "",
+    "requirement": "Hit the ghostly justiciar with aerial attacks when he portals you into the air.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Permanent"],
+    "tier": {
+      "count": 1,
+      "points": 1
+    },
+    "done": false,
+    "meta": false,
+    "progress": {
+      "current": 0,
+      "max": 1
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  },
+  {
+    "id": 3061,
+    "name": "Bloodstone Fen Insight: Temple of Renewal",
+    "description": "",
+    "requirement": "Discover this Maguuma Mastery Insight in Bloodstone Fen.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Permanent"],
+    "rewards": [
+      {
+        "type": "Mastery",
+        "region": "Maguuma",
+        "id": 140
+      }
+    ],
+    "tier": {
+      "count": 1,
+      "points": 1
+    },
+    "done": false,
+    "meta": false,
+    "progress": {
+      "current": 0,
+      "max": 1
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  },
+  {
+    "id": 3088,
+    "name": "Available Guardian",
+    "description": "",
+    "requirement": "Defeat the Unbound Guardian deep within the Cavern of Unseen Lights.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Permanent"],
+    "tier": {
+      "count": 1,
+      "points": 5
+    },
+    "done": true,
+    "meta": false,
+    "progress": {
+      "current": 1,
+      "max": 1
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  },
+  {
+    "id": 3081,
+    "name": "Magic Unbound: The Gathering",
+    "description": "",
+    "requirement": "Collect 10 units of floating unbound magic in 60 seconds.",
+    "locked_text": "",
+    "type": "Default",
+    "flags": ["Permanent"],
+    "rewards": [
+      {
+        "type": "Mastery",
+        "region": "Maguuma",
+        "id": 76
+      }
+    ],
+    "tier": {
+      "count": 1,
+      "points": 1
+    },
+    "done": true,
+    "meta": false,
+    "progress": {
+      "current": 1,
+      "max": 1
+    },
+    "icon": "https://render.guildwars2.com/file/3D0EE32F9FA92149C71DB1C1A30CF9ED0241D82D/1466306.png",
+    "category": "Out of the Shadows"
+  }
+]

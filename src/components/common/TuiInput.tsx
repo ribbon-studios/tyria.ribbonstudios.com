@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 import { useCachedState } from '@ribbon-studios/react-utils';
 
-import { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import { useState, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { SaveIndicator } from './SaveIndicator';
 import { XCircle } from 'lucide-react';
 import * as styles from './TuiInput.module.css';
@@ -22,10 +22,12 @@ export const TuiInput: FC<TuiInput.Props> = ({
   prepend,
   readOnly,
   onClick,
+  type,
   ...props
 }) => {
   const id = useRandomId('input', props.id);
   const { validate, messages } = useValidate(rules);
+  const [isFocused, setIsFocused] = useState(false);
 
   const [internalValue, setInternalValue] = useCachedState<string | number>(() => value ?? '', [value]);
 
@@ -46,10 +48,14 @@ export const TuiInput: FC<TuiInput.Props> = ({
             readOnly={readOnly}
             id={id}
             value={internalValue}
+            type={type === 'password' && isFocused ? 'text' : type}
             onChange={(event) => {
               setInternalValue(event.target.value);
             }}
+            onFocus={() => setIsFocused(true)}
             onBlur={(event) => {
+              setIsFocused(false);
+
               if (!validate(event.target.value) || event.target.value == value) return;
 
               onChange?.(event.target.value);

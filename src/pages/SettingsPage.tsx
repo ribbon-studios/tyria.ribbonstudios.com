@@ -72,10 +72,11 @@ export const Component: FC = () => {
 
   return (
     <div className="flex flex-col flex-1 p-6 m-auto gap-2 w-full max-w-[1200px]">
-      <Card className="flex flex-col">
+      <Card className="flex-col">
         <div className="text-xl font-light">Settings</div>
         <TuiInput
           label="Api Key"
+          type="password"
           description={
             <>
               Your Guild Wars 2&nbsp;
