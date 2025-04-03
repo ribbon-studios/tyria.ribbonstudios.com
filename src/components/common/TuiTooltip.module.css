@@ -8,11 +8,27 @@
   }
 
   > .tooltip {
-    @apply absolute top-full z-[9999] opacity-0 transition-all scale-75 pointer-events-none;
+    @apply absolute  z-[9999] opacity-0 transition-all scale-75 pointer-events-none;
 
     > .contents {
       @apply bg-tui-light-gray p-2 rounded-md shadow-md border-2 border-transparent transition-all;
     }
+  }
+
+  &.top > .tooltip {
+    @apply bottom-full;
+  }
+
+  &.bottom > .tooltip {
+    @apply top-full;
+  }
+
+  &.right > .tooltip {
+    @apply left-full top-1/2 -translate-y-1/2;
+  }
+
+  &.left > .tooltip {
+    @apply right-full top-1/2 -translate-y-1/2;
   }
 
   &.open > .tooltip {

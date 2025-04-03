@@ -14,6 +14,10 @@ export enum Background {
 }
 
 export namespace Background {
+  export function random() {
+    return BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
+  }
+
   export const LabelValues: TuiSelect.LabelValue<Background>[] = Object.entries(Background)
     .filter(([, value]) => typeof value === 'number')
     .map(([label, background]) => ({

@@ -3,7 +3,6 @@ import { useRandomId } from '@/hooks/use-random-id';
 import { useCachedState } from '@ribbon-studios/react-utils';
 import { TuiInput } from './TuiInput';
 import { TuiDropdown } from './TuiDropdown';
-import { Button } from './Button';
 import * as styles from './TuiSelect.module.css';
 import { cn } from '@/utils/cn';
 

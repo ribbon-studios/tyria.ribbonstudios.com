@@ -1,20 +1,34 @@
-import { useEffect, useRef, useState, type ComponentProps, type FC, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ComponentProps, type FC, type ReactNode } from 'react';
 import * as styles from './TuiTooltip.module.css';
 import { cn } from '@/utils/cn';
 
-export const TuiTooltip: FC<TuiLink.Props> = ({
+export const TuiTooltip: FC<TuiTooltip.Props> = ({
   children,
+  className,
   tooltip,
   offset = 4,
   onMouseOver,
   onMouseOut,
   allowLocking,
+  position = 'bottom',
   ...props
 }) => {
   const [open, setOpen] = useState(false);
   const [isLocked, setLocked] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dynamicStyles = useMemo<React.CSSProperties>(() => {
+    switch (position) {
+      case 'top':
+        return { paddingBottom: offset };
+      case 'bottom':
+        return { paddingTop: offset };
+      case 'left':
+        return { paddingRight: offset };
+      case 'right':
+        return { paddingLeft: offset };
+    }
+  }, [offset, position]);
 
   useEffect(() => {
     if (!isLocked) return;
@@ -41,7 +55,7 @@ export const TuiTooltip: FC<TuiLink.Props> = ({
   return (
     <div
       {...props}
-      className={cn(styles.container, open && styles.open, isLocked && styles.locked)}
+      className={cn(styles.container, styles[position], open && styles.open, isLocked && styles.locked, className)}
       onMouseOver={(event) => {
         setOpen(true);
         onMouseOver?.(event);
@@ -67,18 +81,20 @@ export const TuiTooltip: FC<TuiLink.Props> = ({
       ref={containerRef}
     >
       {children}
-      <div className={styles.tooltip} style={{ paddingTop: offset }} ref={tooltipRef}>
+      <div className={styles.tooltip} style={dynamicStyles} ref={tooltipRef}>
         <div className={styles.contents}>{tooltip}</div>
       </div>
     </div>
   );
 };
 
-export namespace TuiLink {
+export namespace TuiTooltip {
   export type Props = {
+    className?: string;
     children: ReactNode;
     tooltip: ReactNode;
     offset?: number;
     allowLocking?: boolean;
+    position?: 'left' | 'right' | 'top' | 'bottom';
   } & ComponentProps<'div'>;
 }

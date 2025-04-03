@@ -20,7 +20,7 @@ export const Component: FC = () => {
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
   const background = useMemo(() => {
     if (settings.background === Background.Random) {
-      return BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
+      return Background.random();
     }
 
     return BACKGROUNDS[settings.background];
