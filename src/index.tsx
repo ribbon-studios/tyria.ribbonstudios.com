@@ -44,7 +44,8 @@ const client = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
-      refetchOnWindowFocus: false,
+      // TODO: This breaks the refetch interval for some reason
+      // refetchOnWindowFocus: false,
     },
   },
 });
