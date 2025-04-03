@@ -6,7 +6,6 @@ import { Loading } from '@/components/common/Loading';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { useSelector } from 'react-redux';
 import { selectSettings } from '@/store/settings.slice';
-import * as styles from './CategoryPage.module.css';
 import { Card } from '@/components/common/Card';
 import { ContentHeader } from '@/components/common/IncompletePage';
 import { AchievementRewards } from '@/components/achievements/rewards/AchievementRewards';
@@ -86,7 +85,7 @@ export const Component: FC = () => {
         )}
         {achievement && (
           <>
-            <AchievementCard className={styles.pinnedCard} achievement={achievement} />
+            <AchievementCard achievement={achievement} />
             <Card className="flex-col">
               <div className="flex flex-col items-start gap-1">
                 <div className="text-sm font-bold">Requirement</div>
