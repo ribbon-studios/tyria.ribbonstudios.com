@@ -2,6 +2,8 @@ import { api } from '@/service/api';
 import { type AppState } from '.';
 import { createAppSlice } from './utils';
 import type { AchievementCategory, AchievementGroup, Schema } from '@ribbon-studios/guild-wars-2/v2';
+import { parseSafe } from '@/utils/json';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type ApiSlice = {
   loading: boolean;
@@ -9,16 +11,20 @@ export type ApiSlice = {
   groups: AchievementGroup<Schema.LATEST>[];
   categories: AchievementCategory<Schema.LATEST>[];
   categoriesByGroup: Record<string, AchievementCategory<Schema.LATEST>[]>;
+  lastUpdated?: number;
+};
+
+const initialState: ApiSlice = {
+  groups: [],
+  categories: [],
+  categoriesByGroup: {},
+  ...parseSafe<Omit<ApiSlice, 'loading'>>(localStorage.getItem('api')),
+  loading: true,
 };
 
 export const appSlice = createAppSlice({
   name: 'app',
-  initialState: {
-    loading: true,
-    groups: [],
-    categories: [],
-    categoriesByGroup: {},
-  } satisfies ApiSlice as ApiSlice,
+  initialState,
   reducers: (create) => ({
     fetchAchievementSections: create.asyncThunk(
       async () => {
@@ -48,20 +54,31 @@ export const appSlice = createAppSlice({
           loading: false,
           error: 'Failed to load achievement groups and categories.',
         }),
-        fulfilled: (state, { payload: [groups, categories, categoriesByGroup] }) => ({
-          ...state,
-          groups,
-          categories,
-          categoriesByGroup,
-          loading: false,
-        }),
+        fulfilled: (state, { payload: [groups, categories, categoriesByGroup] }) => {
+          const updatedState: ApiSlice = {
+            ...state,
+            groups,
+            categories,
+            categoriesByGroup,
+            loading: false,
+            lastUpdated: Date.now(),
+          };
+
+          localStorage.setItem('api', JSON.stringify(updatedState));
+
+          return updatedState;
+        },
       }
     ),
+    setApiLoading: create.reducer((state, action: PayloadAction<boolean>) => ({
+      ...state,
+      loading: action.payload,
+    })),
   }),
 });
 
 // Action creators are generated for each case reducer function
-export const { fetchAchievementSections } = appSlice.actions;
+export const { fetchAchievementSections, setApiLoading } = appSlice.actions;
 
 export const selectApiState = (state: AppState) => state.api;
 

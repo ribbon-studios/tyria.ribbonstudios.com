@@ -1,5 +1,5 @@
 import { selectHeader } from '@/store/app.slice';
-import { type FC } from 'react';
+import { Fragment, type FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Menu, Settings } from 'lucide-react';
 import { Button } from '../Button';
@@ -19,13 +19,18 @@ export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
           <Button className="inline-flex md:hidden" onClick={() => onSideBarToggle()}>
             <Menu />
           </Button>
-          {header ? (
+          {header.breadcrumbs.length > 0 ? (
             <>
               {mdAndUp && header.image && <TuiIcon icon={header.image} size={48} />}
               <TuiLink className="hidden lg:inline-block" to="/">
                 Tyria UI
               </TuiLink>
-              {header.label}
+              {header.breadcrumbs.map(({ label, link }, i) => (
+                <Fragment key={i}>
+                  &gt;
+                  {link ? <TuiLink to={link}>{label}</TuiLink> : <div>{label}</div>}
+                </Fragment>
+              ))}
             </>
           ) : (
             'Tyria UI'

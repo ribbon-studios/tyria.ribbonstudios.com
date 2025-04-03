@@ -16,6 +16,6 @@
   @apply absolute inset-x-0 top-0 pointer-events-none bg-linear-to-t from-10% from-tui-dark to-30% to-transparent;
 
   > .background {
-    @apply relative min-w-full z-[-1];
+    @apply relative min-h-dvh min-w-dvw z-[-1] object-cover;
   }
 }

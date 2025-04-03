@@ -3,15 +3,27 @@ import { createAppSlice } from './utils';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type AppSlice = {
-  header?: {
-    label?: string;
+  header: {
+    breadcrumbs: AppSlice.Breadcrumb[];
     image?: string;
   };
 };
 
+export namespace AppSlice {
+  export type Breadcrumb = {
+    label: string;
+    link?: string;
+  };
+}
+
 export const appSlice = createAppSlice({
   name: 'app',
-  initialState: {} satisfies AppSlice as AppSlice,
+  initialState: {
+    header: {
+      breadcrumbs: [],
+      image: undefined,
+    },
+  } satisfies AppSlice as AppSlice,
   reducers: () => ({
     setHeader: (state, action: PayloadAction<AppSlice['header']>) => {
       state.header = action.payload;

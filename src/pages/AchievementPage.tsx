@@ -14,10 +14,12 @@ import { DebugInfo } from '@/components/DebugInfo';
 import { useAppDispatch } from '@/store';
 import { setHeader } from '@/store/app.slice';
 import { toast } from 'sonner';
+import { selectCategoryByAchievementId } from '@/store/api.slice';
 
 export const Component: FC = () => {
   const params = useParams();
   const settings = useSelector(selectSettings);
+  const category = useSelector(selectCategoryByAchievementId(Number(params.id!)));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -35,7 +37,10 @@ export const Component: FC = () => {
     error,
   } = useQuery<EnhancedAchievement, ApiError>({
     queryKey: ['achievements', params.id],
-    queryFn: () => getAchievement(Number(params.id)),
+    queryFn: async () => ({
+      icon: category?.icon,
+      ...(await getAchievement(Number(params.id))),
+    }),
     refetchInterval: refresh_interval ?? undefined,
   });
 
@@ -47,14 +52,23 @@ export const Component: FC = () => {
   }, [error]);
 
   useEffect(() => {
-    if (!achievement) return;
+    if (!category || !achievement) return;
 
     dispatch(
       setHeader({
-        label: achievement.name,
+        image: achievement.icon,
+        breadcrumbs: [
+          {
+            label: category.name,
+            link: `/categories/${category.id}`,
+          },
+          {
+            label: achievement.name,
+          },
+        ],
       })
     );
-  }, [achievement]);
+  }, [category, achievement]);
 
   return (
     <>
