@@ -3,9 +3,16 @@ import * as styles from './TuiDropdown.module.css';
 import { cn } from '@/utils/cn';
 import { Card } from './Card';
 
-export const TuiDropdown: FC<TuiDropdown.Props> = ({ button, children }) => {
+export const TuiDropdown: FC<TuiDropdown.Props> = ({
+  align = 'left',
+  button,
+  children,
+  className,
+  dropdownClassName,
+  ...props
+}) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!dropdownRef.current) return;
@@ -15,7 +22,7 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({ button, children }) => {
     const listener = (event: Event) => {
       if (event.composedPath().includes(dropdown)) return;
 
-      setIsOpen(false);
+      setOpen(false);
     };
 
     document.body.addEventListener('click', listener);
@@ -26,13 +33,15 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({ button, children }) => {
   }, []);
 
   return (
-    <div className={styles.container} ref={dropdownRef}>
+    <div {...props} className={cn(styles.container, styles[align], open && styles.open, className)} ref={dropdownRef}>
       {Children.map(button, (child) =>
         cloneElement(child, {
-          onClick: () => setIsOpen(!isOpen),
+          onClick: () => setOpen(!open),
         })
       )}
-      <Card className={cn(styles.dropdown, isOpen && styles.open)}>{children}</Card>
+      <Card className={cn(styles.dropdown, dropdownClassName)} onClick={() => setOpen(false)}>
+        {children}
+      </Card>
     </div>
   );
 };
@@ -41,5 +50,8 @@ export namespace TuiDropdown {
   export type Props = {
     button: ReactElement<{ onClick: () => void }>;
     children: ReactNode;
+    align?: 'left' | 'center' | 'right' | 'full';
+    className?: string;
+    dropdownClassName?: string;
   };
 }

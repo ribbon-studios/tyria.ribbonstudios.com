@@ -1,9 +1,8 @@
-import { useEffect, useState, type FC, type ReactNode } from 'react';
+import { useEffect, useState, type ComponentProps, type FC, type ReactNode } from 'react';
 import * as styles from './TuiSplash.module.css';
-import { TuiIcon } from './TuiIcon';
 import { cn } from '@/utils/cn';
 import { type RGBColor } from 'colorthief';
-import { getColor, getPalette } from '@/utils/color';
+import { getPalette } from '@/utils/color';
 
 const averageSaturation = ([r, g, b]: RGBColor) => {
   return (r + g + b) / 3;
@@ -74,5 +73,5 @@ export namespace TuiSplash {
     image: string;
     grayscale?: boolean;
     children?: ReactNode;
-  };
+  } & ComponentProps<'div'>;
 }

@@ -12,6 +12,7 @@ import { TuiMessages } from './TuiMessages';
 export const TuiInput: FC<TuiInput.Props> = ({
   label,
   className,
+  inputClassName,
   value,
   loading,
   description,
@@ -19,6 +20,8 @@ export const TuiInput: FC<TuiInput.Props> = ({
   subtext,
   onChange,
   prepend,
+  readOnly,
+  onClick,
   ...props
 }) => {
   const id = useRandomId('input', props.id);
@@ -36,9 +39,11 @@ export const TuiInput: FC<TuiInput.Props> = ({
       {description && <div className={styles.description}>{description}</div>}
       <div className="flex gap-2">
         {prepend}
-        <div className={styles.input}>
+        <div className={styles.input} onClick={onClick}>
           <input
             {...props}
+            className={inputClassName}
+            readOnly={readOnly}
             id={id}
             value={internalValue}
             onChange={(event) => {
@@ -52,14 +57,16 @@ export const TuiInput: FC<TuiInput.Props> = ({
           />
 
           <SaveIndicator loading={loading} />
-          <XCircle
-            className={cn(styles.clear, (loading || !internalValue) && 'opacity-0 pointer-events-none')}
-            size={28}
-            onClick={() => {
-              setInternalValue('');
-              onChange?.(undefined);
-            }}
-          />
+          {!readOnly && (
+            <XCircle
+              className={cn(styles.clear, (loading || !internalValue) && 'opacity-0 pointer-events-none')}
+              size={28}
+              onClick={() => {
+                setInternalValue('');
+                onChange?.(undefined);
+              }}
+            />
+          )}
         </div>
       </div>
       <TuiMessages messages={messages} />
@@ -70,6 +77,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
 
 export namespace TuiInput {
   export type Props = {
+    inputClassName?: string;
     label?: string;
     value?: string | number;
     description?: ReactNode;

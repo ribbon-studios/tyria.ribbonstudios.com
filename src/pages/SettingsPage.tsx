@@ -2,19 +2,19 @@ import { Card } from '@/components/common/Card';
 import { TuiInput } from '@/components/common/TuiInput';
 import { api } from '@/service/api';
 import { useAppDispatch } from '@/store';
-import { selectSettings, setApiKey, setApiSetting, setToggle } from '@/store/settings.slice';
+import { Background, selectSettings, setApiKey, setApiSetting, setBackground, setToggle } from '@/store/settings.slice';
 import { delay } from '@ribbon-studios/js-utils';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, type FC } from 'react';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { TuiCheckbox } from '@/components/common/TuiCheckbox';
-import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { UseValidate } from '@/hooks/use-validate';
 import { setHeader } from '@/store/app.slice';
 import { TuiLink } from '@/components/common/TuiLink';
 import { resetTrueMastery } from '@/store/true-mastery.slice';
+import { TuiSelect } from '@/components/common/TuiSelect';
 
 export const Component: FC = () => {
   const dispatch = useAppDispatch();
@@ -120,6 +120,14 @@ export const Component: FC = () => {
 
             toast.success('Auto-Refresh interval updated successfully.');
           }}
+        />
+        <TuiSelect
+          align="left"
+          label="Background"
+          description="The background of the page."
+          items={Background.LabelValues}
+          value={settings.background}
+          onChange={(value) => dispatch(setBackground(value))}
         />
         <div className="text-xl font-light">Toggles</div>
         <TuiCheckbox

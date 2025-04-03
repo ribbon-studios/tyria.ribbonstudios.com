@@ -3,11 +3,27 @@
 .container {
   @apply relative;
 
-  .dropdown {
-    @apply absolute flex-col top-full mt-2 -translate-y-2 opacity-0 transition-all right-0 min-w-[400px] z-[9999] shadow-lg shadow-tui-dark;
+  > .dropdown {
+    @apply absolute flex-col top-full mt-2 -translate-y-2 opacity-0 transition-all min-w-[300px] z-[9999] shadow-lg shadow-tui-dark bg-tui-light-gray;
+  }
 
-    &.open {
-      @apply translate-y-0 opacity-100;
-    }
+  &.left > .dropdown {
+    @apply left-0;
+  }
+
+  &.center > .dropdown {
+    @apply left-1/2 -translate-x-1/2;
+  }
+
+  &.right > .dropdown {
+    @apply right-0;
+  }
+
+  &.full > .dropdown {
+    @apply inset-x-0;
+  }
+
+  &.open > .dropdown {
+    @apply translate-y-0 opacity-100;
   }
 }

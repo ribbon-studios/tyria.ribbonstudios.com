@@ -10,22 +10,21 @@ import { fetchAchievementSections, selectApiState, setApiLoading } from './store
 import { Loading } from './components/common/Loading';
 import { TuiImage } from './components/common/TuiImage';
 import { useAppDispatch } from './store';
-
-const images = [
-  '/backgrounds/background-1.jpg',
-  '/backgrounds/background-2.jpg',
-  '/backgrounds/background-3.jpg',
-  '/backgrounds/background-4.jpg',
-];
+import { Background, BACKGROUNDS, selectSettings } from './store/settings.slice';
 
 export const Component: FC = () => {
   const dispatch = useAppDispatch();
+  const settings = useSelector(selectSettings);
   const api = useSelector(selectApiState);
   const [open, setOpen] = useState(false);
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
   const background = useMemo(() => {
-    return images[Math.floor(Math.random() * images.length)];
-  }, []);
+    if (settings.background === Background.Random) {
+      return BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
+    }
+
+    return BACKGROUNDS[settings.background];
+  }, [settings.background]);
 
   useEffect(() => {
     if (!api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {

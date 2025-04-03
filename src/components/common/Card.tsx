@@ -4,10 +4,10 @@ import * as styles from './Card.module.css';
 import { TuiSplash } from './TuiSplash';
 import { TuiIcon } from './TuiIcon';
 
-export function Card({ className, children, icon, splash }: Card.Props) {
+export function Card({ className, children, icon, splash, onClick }: Card.Props) {
   if (splash) {
     return (
-      <TuiSplash className={cn(styles.card, className)} {...splash}>
+      <TuiSplash className={cn(styles.card, className)} {...splash} onClick={onClick}>
         {icon && <TuiIcon icon={icon} size={64} />}
         {children}
       </TuiSplash>
@@ -15,7 +15,7 @@ export function Card({ className, children, icon, splash }: Card.Props) {
   }
 
   return (
-    <div className={cn(styles.card, className)}>
+    <div className={cn(styles.card, className)} onClick={onClick}>
       {icon && <TuiIcon icon={icon} size={64} />}
       {children}
     </div>
@@ -28,5 +28,6 @@ export namespace Card {
     children: ReactNode;
     icon?: string;
     splash?: Pick<TuiSplash.Props, 'image' | 'grayscale'>;
+    onClick?: () => void;
   };
 }
