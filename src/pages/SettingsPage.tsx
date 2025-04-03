@@ -105,7 +105,15 @@ export const Component: FC = () => {
             <TuiCheckbox
               value={!!settings.api.refresh_interval}
               onChange={(value) => {
-                dispatch(setApiSetting(['refresh_interval', value ? 30 : null]));
+                if (value) {
+                  dispatch(setApiSetting(['refresh_interval', 30]));
+
+                  toast.success('Achievement progress will now be refreshed automatically!');
+                } else {
+                  dispatch(setApiSetting(['refresh_interval', 30]));
+
+                  toast.success('Achievement progress will no longer be refreshed automatically.');
+                }
               }}
             />
           }
