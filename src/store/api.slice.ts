@@ -87,12 +87,17 @@ export const selectGroup = (id: string) => (state: AppState) =>
   selectApiState(state).groups?.find((group) => group.id === id);
 
 export const selectCategories = (state: AppState) => selectApiState(state).categories;
-export const selectCategory = (id: number) => (state: AppState) =>
-  selectApiState(state).categories?.find((category) => category.id === id);
+export const selectCategory = (id: number) => (state: AppState) => {
+  if (isNaN(id)) return undefined;
+
+  return selectApiState(state).categories?.find((category) => category.id === id);
+};
 
 export const selectCategoriesByGroup = (state: AppState) => selectApiState(state).categoriesByGroup;
 
 export const selectCategoryByAchievementId = (id: number) => (state: AppState) => {
+  if (isNaN(id)) return undefined;
+
   return selectApiState(state).categories?.find((category) => {
     return category.achievements.some((achievement) => achievement.id === id);
   });

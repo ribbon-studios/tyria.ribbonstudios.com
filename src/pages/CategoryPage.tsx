@@ -1,7 +1,6 @@
-import { api, getCategoryAchievements, type CategoryAchievement } from '@/service/api';
+import { getCategoryAchievements, type CategoryAchievement } from '@/service/api';
 import { useEffect, useMemo, useRef, type FC } from 'react';
-import { useLoaderData } from '@ribbon-studios/react-utils/react-router';
-import { Link, redirect, type LoaderFunctionArgs } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAppDispatch } from '@/store';
 import { setHeader } from '@/store/app.slice';
@@ -18,22 +17,19 @@ import { useSticky } from '@/hooks/use-sticky';
 import { cn } from '@/utils/cn';
 import * as styles from './CategoryPage.module.css';
 import { TuiLink } from '@/components/common/TuiLink';
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const id = Number(params.id);
-
-  if (!id) return redirect('/');
-
-  return await api.v2.achievements.categories.get(id);
-};
+import { selectCategory } from '@/store/api.slice';
 
 export const Component: FC = () => {
+  const params = useParams();
   const stickyHeader = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const settings = useSelector(selectSettings);
-  const category = useLoaderData<typeof loader>();
-
+  const category = useSelector(selectCategory(Number(params.id)));
   const sticky = useSticky(stickyHeader);
+
+  if (!category) {
+    return <Navigate to="/" />;
+  }
 
   const refresh_interval = useMemo(() => {
     if (settings.api.key && settings.api.refresh_interval) {
@@ -97,6 +93,7 @@ export const Component: FC = () => {
       loading={isLoading}
       className="flex flex-col flex-1 items-center m-6"
       contentClassName="gap-2 w-full max-w-[1200px]"
+      size={128}
     >
       <div
         className={cn('sticky top-[-1px] pt-[calc(1em+1px)] flex flex-col gap-2 z-50', sticky && styles.sticky)}
