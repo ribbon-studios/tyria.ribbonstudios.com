@@ -4,7 +4,7 @@
   @apply relative;
 
   > .dropdown {
-    @apply absolute flex-col top-full mt-2 -translate-y-2 opacity-0 transition-all min-w-[300px] z-[9999] shadow-lg shadow-tui-dark bg-tui-light-gray;
+    @apply absolute flex-col top-full mt-2 -translate-y-2 opacity-0 transition-all min-w-[200px] z-[9999] shadow-lg shadow-tui-dark bg-tui-light-gray;
   }
 
   &.left > .dropdown {
