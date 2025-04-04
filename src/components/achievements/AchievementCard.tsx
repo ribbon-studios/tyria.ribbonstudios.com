@@ -10,6 +10,7 @@ import { DebugInfo } from '../DebugInfo';
 import { Link } from 'react-router-dom';
 import { AchievementDescription } from './AchievementDescription';
 import { AchievementProgress } from './AchievementProgress';
+import { AutoLink } from '../AutoLink';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
@@ -40,7 +41,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
           </div>
         </div>
         <div className={styles.info}>
-          <div className="text-sm text-white/80">{achievement.requirement}</div>
+          <AutoLink className="text-sm text-white/80">{achievement.requirement}</AutoLink>
           <AchievementDescription description={achievement.description} />
           {!achievement.done && (
             <>
