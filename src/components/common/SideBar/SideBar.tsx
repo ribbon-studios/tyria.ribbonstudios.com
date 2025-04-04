@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import { Bug, Code2, Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
 import * as styles from './SideBar.module.css';
@@ -12,15 +12,16 @@ import { selectTrueMasteries } from '@/store/true-mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
 import { TuiLink } from '../TuiLink';
-import { selectCategoriesByGroup, selectGroups } from '@/store/api.slice';
+import { selectGroups } from '@/store/api.slice';
+import { formatter, sanitize } from '@/utils/formatter';
 
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   const { mdAndUp } = useBreakpoints();
   const groups = useSelector(selectGroups);
-  const categoriesByGroup = useSelector(selectCategoriesByGroup);
   const true_masteries = useSelector(selectTrueMasteries);
   const [activeGroupId, setActiveGroupId] = useState<string>();
   const params = useParams();
+  const [search, setSearch] = useState<string>();
 
   useEffect(() => {
     if (!params.id || (!mdAndUp && !open)) return;
@@ -29,7 +30,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
 
     if (isNaN(id)) return;
 
-    const group = groups.find((group) => group.categories.includes(id));
+    const group = groups.find((group) => group.categories.some((category) => category.id === id));
 
     if (!group) return;
 
@@ -46,7 +47,21 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         });
       }, 200);
     });
-  }, [groups, categoriesByGroup, open, mdAndUp]);
+  }, [groups, open, mdAndUp]);
+
+  // TODO: This can be severely optimized by putting the categories under the groups
+  const searchResults = useMemo(() => {
+    if (!search) return groups;
+
+    const sanitized_search = formatter(search).sanitize.lower.value();
+
+    return groups
+      .map((group) => ({
+        ...group,
+        categories: group.categories.filter((category) => category.name_sanitized.includes(sanitized_search)),
+      }))
+      .filter((group) => group.categories.length > 0);
+  }, [groups, search]);
 
   return (
     <>
@@ -58,7 +73,13 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         onClick={() => onClose()}
       />
       <div className={cn(styles.sidebar, open && styles.open)}>
-        <TuiInput className="hidden! md:flex! mx-6 my-[17px] rounded-full!" placeholder="Search..." disabled />
+        <TuiInput
+          className="hidden! md:flex! mx-6 my-[17px] rounded-full!"
+          placeholder="Search by Category..."
+          value={search}
+          onChange={(value) => setSearch(value)}
+          mode="input"
+        />
         <div className="flex md:hidden items-center gap-4 mx-6 my-[17px]">
           <Button className="min-w-10" onClick={() => onClose()}>
             <Menu />
@@ -70,7 +91,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
         <div id="items" className={styles.items}>
           <SideBarItem label="Summary" icon={Menu} className={styles.alternating} />
           <SideBarItem label="Watch List" icon={Eye} className={styles.alternating} />
-          {groups.map((group) => (
+          {searchResults.map((group) => (
             <SideBarItem
               key={group.id}
               label={group.name}
@@ -79,7 +100,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
               onClick={() => setActiveGroupId(activeGroupId === group.id ? undefined : group.id)}
               append={<DebugInfo className="max-w-16">{group.id}</DebugInfo>}
             >
-              {categoriesByGroup[group.id].map((category) => (
+              {group.categories.map((category) => (
                 <SideBarItem
                   as={NavLink}
                   key={category.id}

@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 import { useCachedState } from '@ribbon-studios/react-utils';
 
-import { useState, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import { type ComponentProps, useMemo, useState, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { SaveIndicator } from './SaveIndicator';
 import { XCircle } from 'lucide-react';
 import * as styles from './TuiInput.module.css';
@@ -23,6 +23,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
   readOnly,
   onClick,
   type,
+  mode = 'blur',
   ...props
 }) => {
   const id = useRandomId('input', props.id);
@@ -30,6 +31,33 @@ export const TuiInput: FC<TuiInput.Props> = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const [internalValue, setInternalValue] = useCachedState<string | number>(() => value ?? '', [value]);
+
+  const listenerProps = useMemo<ComponentProps<'input'>>(() => {
+    if (mode === 'blur') {
+      return {
+        onBlur: (event) => {
+          setIsFocused(false);
+
+          if (!validate(event.target.value) || event.target.value == value) return;
+
+          onChange?.(event.target.value);
+        },
+      };
+    } else if (mode === 'input') {
+      return {
+        onBlur: () => {
+          setIsFocused(false);
+        },
+        onInput: (event) => {
+          if (!validate(event.currentTarget.value) || event.currentTarget.value == value) return;
+
+          onChange?.(event.currentTarget.value);
+        },
+      };
+    }
+
+    throw new Error(`Unknown mode. (${mode})`);
+  }, [mode]);
 
   return (
     <div className={cn(styles.container, className)}>
@@ -53,13 +81,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
               setInternalValue(event.target.value);
             }}
             onFocus={() => setIsFocused(true)}
-            onBlur={(event) => {
-              setIsFocused(false);
-
-              if (!validate(event.target.value) || event.target.value == value) return;
-
-              onChange?.(event.target.value);
-            }}
+            {...listenerProps}
           />
 
           <SaveIndicator loading={loading} />
@@ -92,5 +114,6 @@ export namespace TuiInput {
     loading?: boolean;
     prepend?: ReactNode;
     rules?: Array<UseValidate.Rule<string> | UseValidate.Coerce<string>>;
+    mode?: 'blur' | 'input';
   } & Omit<ComponentPropsWithoutRef<'input'>, 'onChange' | 'value'>;
 }

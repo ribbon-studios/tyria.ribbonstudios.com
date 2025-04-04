@@ -6,7 +6,7 @@ import { SideBar } from './components/common/SideBar';
 import { TopBar } from './components/common/TopBar';
 import { Info, Siren, TriangleAlert } from 'lucide-react';
 import { useSelector } from 'react-redux';
-import { fetchAchievementSections, selectApiState, setApiLoading } from './store/api.slice';
+import { CURRENT_VERSION, fetchAchievementSections, selectApiState, setApiLoading } from './store/api.slice';
 import { Loading } from './components/common/Loading';
 import { TuiImage } from './components/common/TuiImage';
 import { useAppDispatch } from './store';
@@ -20,7 +20,7 @@ export const Component: FC = () => {
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
 
   useEffect(() => {
-    if (!api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {
+    if (api.version !== CURRENT_VERSION || !api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {
       dispatch(fetchAchievementSections());
     } else {
       dispatch(setApiLoading(false));
