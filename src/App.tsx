@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FC } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import * as styles from './App.module.css';
 import { SideBar } from './components/common/SideBar';
@@ -11,6 +11,7 @@ import { Loading } from './components/common/Loading';
 import { TuiImage } from './components/common/TuiImage';
 import { useAppDispatch } from './store';
 import { selectBackgroundImage } from './store/settings.slice';
+import { Ribbon } from '@ribbon-studios/ribbon';
 
 export const Component: FC = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ export const Component: FC = () => {
   const api = useSelector(selectApiState);
   const [open, setOpen] = useState(false);
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     if (api.version !== CURRENT_VERSION || !api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {
@@ -63,6 +65,18 @@ export const Component: FC = () => {
               }}
             />
             <Outlet />
+            {window.location.hostname === 'localhost' && (
+              <Ribbon
+                as={Link}
+                position="top-right"
+                backgroundColor="rebeccapurple"
+                color="white"
+                to={`https://tyria.ribbonstudios.com${location.pathname}`}
+                target="_blank"
+              >
+                Local
+              </Ribbon>
+            )}
           </div>
         </div>
       </Loading>
