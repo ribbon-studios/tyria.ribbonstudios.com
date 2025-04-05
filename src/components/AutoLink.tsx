@@ -1,4 +1,5 @@
 import { api } from '@/service/api';
+import { cn } from '@/utils/cn';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, type ComponentProps, type ElementType } from 'react';
 
@@ -13,7 +14,7 @@ const static_names = [
   'Chatoyant Elixir',
 ];
 
-export function AutoLink<T extends ElementType = 'div'>({ as, children, ...props }: AutoLink.Props<T>) {
+export function AutoLink<T extends ElementType = 'div'>({ as, children, className, ...props }: AutoLink.Props<T>) {
   const Component = as ?? 'div';
 
   const { data: map_names } = useQuery({
@@ -37,12 +38,19 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, ...props
     return AutoLink.replaceAll(names, children);
   }, [names, children]);
 
-  return <Component {...props} dangerouslySetInnerHTML={{ __html: formattedChildren }} />;
+  return (
+    <Component
+      {...props}
+      className={cn(className, 'text-shadow-xs/100')}
+      dangerouslySetInnerHTML={{ __html: formattedChildren }}
+    />
+  );
 }
 
 export namespace AutoLink {
   export type Props<T extends ElementType> = {
     as?: T;
+    className?: string;
     children: string;
   } & Omit<ComponentProps<T>, 'dangerouslySetInnerHTML'>;
 

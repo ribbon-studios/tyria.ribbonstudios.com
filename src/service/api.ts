@@ -134,7 +134,7 @@ export async function getAchievement(id: number) {
 
 export namespace Helpers {
   export function mapAchievement(
-    { tiers, bits, prerequisites = [], ...achievement }: Achievement<Schema.LATEST>,
+    { tiers, bits, prerequisites = [], requirement, ...achievement }: Achievement<Schema.LATEST>,
     accountAchievements: AccountAchievement<Schema.LATEST>[],
     prerequisiteAchievements: Achievement<Schema.LATEST>[]
   ): EnhancedAchievement {
@@ -185,6 +185,7 @@ export namespace Helpers {
 
     return {
       ...achievement,
+      requirement: progress ? requirement.replace(/\s{2}(times)/gi, ` ${progress.max} $1`) : requirement,
       tier,
       done: accountAchievement?.done ?? false,
       prerequisites: required_achievements.length > 0 ? required_achievements : undefined,
