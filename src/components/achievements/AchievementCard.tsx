@@ -11,11 +11,13 @@ import { Link } from 'react-router-dom';
 import { AchievementDescription } from './AchievementDescription';
 import { AchievementProgress } from './AchievementProgress';
 import { AutoLink } from '../AutoLink';
+import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
 
   if (settings.toggles.hide_completed_achievements && achievement.done) return null;
+  if (settings.toggles.hide_hidden_achievements && achievement.flags.includes(Achievement.Flags.HIDDEN)) return null;
 
   return (
     <Card

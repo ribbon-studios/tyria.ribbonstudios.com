@@ -154,6 +154,20 @@ export const Component: FC = () => {
           }}
         />
         <TuiCheckbox
+          label="Hide Hidden Achievements"
+          value={settings.toggles.hide_hidden_achievements}
+          variant="toggle"
+          onChange={(value) => {
+            dispatch(setToggle(['hide_hidden_achievements', value]));
+
+            if (value) {
+              toast.success('Hidden achievements will no longer be displayed.');
+            } else {
+              toast.success('Hidden achievements will now be visible!');
+            }
+          }}
+        />
+        <TuiCheckbox
           label="Make Incomplete Meta Achievements Sticky"
           value={settings.toggles.pin_incomplete_meta_achievements}
           variant="toggle"
