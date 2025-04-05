@@ -13,11 +13,13 @@ const formatRGB = (
   options?: {
     saturation?: number;
     opacity?: number;
+    lightness?: number;
   }
 ) => {
-  const { saturation, opacity } = {
+  const { saturation, opacity, lightness } = {
     saturation: 1,
     opacity: 1,
+    lightness: 1,
     ...options,
   };
 
@@ -27,11 +29,20 @@ const formatRGB = (
   const dg = i - g;
   const db = i - b;
 
-  return `rgba(${r + dr * desaturation}, ${g + dg * desaturation}, ${b + db * desaturation}, ${opacity})`;
+  const final_r = Math.floor((r + dr * desaturation) * lightness);
+  const final_g = Math.floor((g + dg * desaturation) * lightness);
+  const final_b = Math.floor((b + db * desaturation) * lightness);
+
+  if (opacity === 1) {
+    return `rgb(${final_r}, ${final_g}, ${final_b})`;
+  }
+
+  return `rgba(${final_r}, ${final_g}, ${final_b}, ${opacity})`;
 };
 
 export const TuiSplash: FC<TuiSplash.Props> = ({ className, grayscale, image, ...props }) => {
   const [color, setColor] = useState<string>();
+  const [borderColor, setBorderColor] = useState<string>();
 
   useEffect(() => {
     getPalette(image).then((colors) => {
@@ -46,11 +57,18 @@ export const TuiSplash: FC<TuiSplash.Props> = ({ className, grayscale, image, ..
 
         if (grayscale) {
           setColor(undefined);
+          setBorderColor(undefined);
         } else {
           setColor(formatRGB(color));
+          setBorderColor(
+            formatRGB(color, {
+              lightness: 0.2,
+            })
+          );
         }
       } else {
         setColor(undefined);
+        setBorderColor(undefined);
       }
     });
   }, [image, grayscale]);
@@ -62,6 +80,7 @@ export const TuiSplash: FC<TuiSplash.Props> = ({ className, grayscale, image, ..
       style={{
         /* @ts-expect-error - TS Incorrectly marks CSS variables */
         '--tw-gradient-from': color,
+        borderColor,
       }}
     />
   );
