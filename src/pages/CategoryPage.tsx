@@ -1,4 +1,4 @@
-import { getCategoryAchievements } from '@/service/api';
+import { api } from '@/service/api';
 import { useEffect, type FC } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -6,19 +6,49 @@ import { useAppDispatch } from '@/store';
 import { setHeader } from '@/store/app.slice';
 import { Loading } from '@/components/common/Loading';
 import { useSelector } from 'react-redux';
-import { selectRefreshInterval } from '@/store/settings.slice';
 import { selectCategory } from '@/store/api.slice';
 import { CategoryPageSlice } from './slices/CategoryPageSlice';
+import { useEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
 export const Component: FC = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
   const category = useSelector(selectCategory(Number(params.id)));
-  const refresh_interval = useSelector(selectRefreshInterval);
 
   if (!category) {
     return <Navigate to="/" />;
   }
+
+  const { data: { achievements, prerequisite_achievements } = {}, isLoading } = useQuery({
+    queryKey: ['v2/achievements/category', category.id],
+    queryFn: async () => {
+      const achievements = await api.v2.achievements.list({
+        ids: category.achievements.map(({ id }) => id),
+      });
+
+      const prerequisite_achievement_ids = achievements.reduce<number[]>((ids, achievement) => {
+        return achievement.prerequisites ? ids.concat(achievement.prerequisites) : ids;
+      }, []);
+
+      const prerequisite_achievements =
+        prerequisite_achievement_ids.length > 0
+          ? await api.v2.achievements.list({
+              ids: prerequisite_achievement_ids,
+            })
+          : [];
+
+      return {
+        achievements,
+        prerequisite_achievements,
+      };
+    },
+  });
+
+  const { enhanced_achievements, lastUpdatedAt, isFetching, refetch } = useEnhancedAchievements({
+    category,
+    achievements,
+    prerequisite_achievements,
+  });
 
   useEffect(() => {
     dispatch(
@@ -33,19 +63,6 @@ export const Component: FC = () => {
     );
   }, [category]);
 
-  const {
-    data: achievements = [],
-    isLoading,
-    isFetching,
-    refetch,
-    dataUpdatedAt,
-    errorUpdatedAt,
-  } = useQuery({
-    queryKey: ['category-achievements', category.id],
-    queryFn: () => getCategoryAchievements(category),
-    refetchInterval: refresh_interval,
-  });
-
   return (
     <Loading
       loading={isLoading}
@@ -55,9 +72,9 @@ export const Component: FC = () => {
     >
       <CategoryPageSlice
         category={category}
-        achievements={achievements}
+        achievements={enhanced_achievements}
         loading={isFetching}
-        timestamp={dataUpdatedAt ?? errorUpdatedAt}
+        timestamp={lastUpdatedAt}
         onRefresh={() => refetch()}
       />
     </Loading>

@@ -1,4 +1,3 @@
-import { type CategoryAchievement } from '@/service/api';
 import { useEffect, useMemo, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
@@ -19,6 +18,7 @@ import { Loading } from '@/components/common/Loading';
 import { useAppDispatch } from '@/store';
 import { MasteryTier, selectMasteryCategory, setMasteryTier } from '@/store/mastery.slice';
 import { computeMasteryTier } from '@/utils/achievements';
+import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
 export function CategoryPageSlice({ category, achievements, loading, timestamp, onRefresh }: CategoryPageSlice.Props) {
   const mastery = useSelector(selectMasteryCategory(category.id));
@@ -40,8 +40,8 @@ export function CategoryPageSlice({ category, achievements, loading, timestamp, 
   }, [settings.api.key, settings.api.refresh_interval]);
 
   const { incompleteMetas, basics } = achievements.reduce<{
-    incompleteMetas: CategoryAchievement[];
-    basics: CategoryAchievement[];
+    incompleteMetas: UseEnhancedAchievements.Achievement[];
+    basics: UseEnhancedAchievements.Achievement[];
   }>(
     (output, achievement) => {
       if (
@@ -111,7 +111,7 @@ export function CategoryPageSlice({ category, achievements, loading, timestamp, 
 export namespace CategoryPageSlice {
   export type Props = {
     category: AchievementCategory<Schema.LATEST>;
-    achievements: CategoryAchievement[];
+    achievements: UseEnhancedAchievements.Achievement[];
     loading?: boolean;
     timestamp: number;
     onRefresh: () => void;
@@ -139,7 +139,7 @@ export namespace CategoryPageSlice {
       dataUpdatedAt,
       isLoading,
       isFetching,
-    } = useQuery<CategoryAchievement[]>({
+    } = useQuery<UseEnhancedAchievements.Achievement[]>({
       queryKey: ['category-achievements/demo'],
       queryFn: () => delay(rfetch.get('/demo/category-achievements.json'), 1000),
       refetchInterval: refresh_interval,

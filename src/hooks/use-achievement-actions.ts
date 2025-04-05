@@ -1,9 +1,9 @@
-import type { EnhancedAchievement } from '@/service/api';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import { Eye, type LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
+import type { UseEnhancedAchievements } from './use-enhanced-achievements';
 
-export function useAchievementActions(achievement: EnhancedAchievement) {
+export function useAchievementActions(achievement: UseEnhancedAchievements.Achievement) {
   return useMemo(() => {
     let output: UseAchievementActions.Action[] = [];
 
@@ -56,7 +56,7 @@ export namespace UseAchievementActions {
     return result.split('—')[0];
   }
 
-  export function getDescriptionActions(achievement: EnhancedAchievement): Action[] {
+  export function getDescriptionActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
     if (!achievement.description) return [];
 
     const [, ...matches] = achievement.description.match(/([^:]+:)(.*)/) ?? [];
@@ -75,7 +75,7 @@ export namespace UseAchievementActions {
     ];
   }
 
-  export function getPrerequisiteActions(achievement: EnhancedAchievement): Action[] {
+  export function getPrerequisiteActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
     if (!achievement.prerequisites) return [];
 
     return achievement.prerequisites.map((prerequisite) => ({

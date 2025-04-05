@@ -1,6 +1,6 @@
-import type { EnhancedAchievement } from '@/service/api';
 import { TuiIcon } from '../common/TuiIcon';
 import { useAchievementActions } from '@/hooks/use-achievement-actions';
+import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
 export function AchievementActions({ achievement }: AchievementActions.Props) {
   const actions = useAchievementActions(achievement);
@@ -26,6 +26,6 @@ export function AchievementActions({ achievement }: AchievementActions.Props) {
 
 export namespace AchievementActions {
   export type Props = {
-    achievement: EnhancedAchievement;
+    achievement: UseEnhancedAchievements.Achievement;
   };
 }

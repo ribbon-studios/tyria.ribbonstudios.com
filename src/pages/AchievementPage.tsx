@@ -1,11 +1,10 @@
-import { type EnhancedAchievement, getAchievement, type ApiError } from '@/service/api';
-import { useEffect, useMemo, type FC } from 'react';
+import { api, type ApiError } from '@/service/api';
+import { useEffect, type FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Loading } from '@/components/common/Loading';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { useSelector } from 'react-redux';
-import { selectSettings } from '@/store/settings.slice';
 import { Card } from '@/components/common/Card';
 import { ContentHeader } from '@/components/common/IncompletePage';
 import { AchievementRewards } from '@/components/achievements/rewards/AchievementRewards';
@@ -14,33 +13,45 @@ import { useAppDispatch } from '@/store';
 import { setHeader } from '@/store/app.slice';
 import { toast } from 'sonner';
 import { selectCategoryByAchievementId } from '@/store/api.slice';
+import type { Achievement, Schema } from '@ribbon-studios/guild-wars-2/v2';
+import { useEnhancedAchievement } from '@/hooks/use-enhanced-achievements';
 
 export const Component: FC = () => {
   const params = useParams();
-  const settings = useSelector(selectSettings);
   const category = useSelector(selectCategoryByAchievementId(Number(params.id!)));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const refresh_interval = useMemo(() => {
-    if (settings.api.key && settings.api.refresh_interval) {
-      return settings.api.refresh_interval * 1000;
-    }
-
-    return null;
-  }, [settings.api.key, settings.api.refresh_interval]);
-
   const {
-    data: achievement,
+    data: { achievement, prerequisite_achievements } = {},
     isLoading,
     error,
-  } = useQuery<EnhancedAchievement, ApiError>({
+  } = useQuery<
+    {
+      achievement: Achievement<Schema.LATEST>;
+      prerequisite_achievements: Achievement<Schema.LATEST>[];
+    },
+    ApiError
+  >({
     queryKey: ['achievements', params.id],
-    queryFn: async () => ({
-      icon: category?.icon,
-      ...(await getAchievement(Number(params.id))),
-    }),
-    refetchInterval: refresh_interval ?? undefined,
+    queryFn: async () => {
+      const achievement = await api.v2.achievements.get(Number(params.id));
+
+      return {
+        achievement,
+        prerequisite_achievements: achievement.prerequisites?.length
+          ? await api.v2.achievements.list({
+              ids: achievement.prerequisites,
+            })
+          : [],
+      };
+    },
+  });
+
+  const { enhanced_achievement } = useEnhancedAchievement({
+    category,
+    achievement,
+    prerequisite_achievements,
   });
 
   useEffect(() => {
@@ -51,23 +62,23 @@ export const Component: FC = () => {
   }, [error]);
 
   useEffect(() => {
-    if (!category || !achievement) return;
+    if (!category || !enhanced_achievement) return;
 
     dispatch(
       setHeader({
-        image: achievement.icon,
+        image: enhanced_achievement.icon,
         breadcrumbs: [
           {
             label: category.name,
             link: `/categories/${category.id}`,
           },
           {
-            label: achievement.name,
+            label: enhanced_achievement.name,
           },
         ],
       })
     );
-  }, [category, achievement]);
+  }, [category, enhanced_achievement]);
 
   return (
     <>
@@ -83,19 +94,19 @@ export const Component: FC = () => {
             <div className="whitespace-pre">{JSON.stringify(error, null, 4)}</div>
           </Card>
         )}
-        {achievement && (
+        {enhanced_achievement && (
           <>
-            <AchievementCard achievement={achievement} />
+            <AchievementCard achievement={enhanced_achievement} />
             <Card className="flex-col">
               <div className="flex flex-col items-start gap-1">
                 <div className="text-sm font-bold">Requirement</div>
-                {achievement.requirement}
+                {enhanced_achievement.requirement}
               </div>
-              <AchievementRewards rewards={achievement.rewards}>
+              <AchievementRewards rewards={enhanced_achievement.rewards}>
                 <div className="text-sm font-bold">Rewards</div>
               </AchievementRewards>
               <DebugInfo className="whitespace-pre overflow-x-auto py-2">
-                {JSON.stringify(achievement, null, 2)}
+                {JSON.stringify(enhanced_achievement, null, 2)}
               </DebugInfo>
             </Card>
           </>

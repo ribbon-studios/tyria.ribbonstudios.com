@@ -1,5 +1,4 @@
 import { cn } from '@/utils/cn';
-import type { EnhancedAchievement } from '@/service/api';
 import { Card } from '../common/Card';
 import * as styles from './AchievementCard.module.css';
 import React from 'react';
@@ -12,6 +11,7 @@ import { AchievementDescription } from './AchievementDescription';
 import { AchievementProgress } from './AchievementProgress';
 import { AutoLink } from '../AutoLink';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
+import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
 export function AchievementCard({ achievement, className }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
@@ -51,10 +51,10 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
 
               {achievement.prerequisites && (
                 <div className="flex flex-col gap-1 italic text-sm text-white/60">
-                  <div>Prerequisites:</div>
-                  {achievement.prerequisites.map((prerequisite) => (
-                    <React.Fragment key={prerequisite.id}>{prerequisite.name}</React.Fragment>
-                  ))}
+                  <div>
+                    Prerequisites:{' '}
+                    {`"${achievement.prerequisites.map((prerequisite) => prerequisite.name).join('", "')}"`}
+                  </div>
                 </div>
               )}
             </>
@@ -67,7 +67,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
 
 export namespace AchievementCard {
   export type Props = {
-    achievement: EnhancedAchievement;
+    achievement: UseEnhancedAchievements.Achievement;
     className?: string;
   };
 }

@@ -1,9 +1,10 @@
 import { Achievement, Schema, type Mini } from '@ribbon-studios/guild-wars-2/v2';
 import { ProgressBar } from '../common/ProgressBar';
-import { api, type EnhancedAchievement, type EnhancedBit } from '@/service/api';
+import { api } from '@/service/api';
 import { useQuery } from '@tanstack/react-query';
 import { AchievementBits } from './AchievementBits';
 import { TuiTooltip } from '../common/TuiTooltip';
+import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
 export function AchievementProgress({ progress }: AchievementProgress.Props) {
   if (!progress) return null;
@@ -40,14 +41,14 @@ export function AchievementProgress({ progress }: AchievementProgress.Props) {
 
 export namespace AchievementProgress {
   export type Props = {
-    progress: EnhancedAchievement['progress'];
+    progress: UseEnhancedAchievements.Achievement['progress'];
   };
 
   export type BitsByType = {
-    [Achievement.Bit.Type.ITEM]: EnhancedBit.Item[];
-    [Achievement.Bit.Type.MINIPET]: EnhancedBit.Minipet[];
-    [Achievement.Bit.Type.SKIN]: EnhancedBit.Skin[];
-    [Achievement.Bit.Type.TEXT]: EnhancedBit.Text[];
+    [Achievement.Bit.Type.ITEM]: UseEnhancedAchievements.Bit.Item[];
+    [Achievement.Bit.Type.MINIPET]: UseEnhancedAchievements.Bit.Minipet[];
+    [Achievement.Bit.Type.SKIN]: UseEnhancedAchievements.Bit.Skin[];
+    [Achievement.Bit.Type.TEXT]: UseEnhancedAchievements.Bit.Text[];
   };
 
   export type EnhancedBit = Pick<Achievement.Bit, 'text'> & {
@@ -57,13 +58,13 @@ export namespace AchievementProgress {
   };
 
   export type GetBitsResponse = {
-    items: EnhancedBit.Item[];
-    skins: EnhancedBit.Skin[];
-    minis: (EnhancedBit.Minipet & Mini<Schema.LATEST>)[];
-    text: EnhancedBit.Text[];
+    items: UseEnhancedAchievements.Bit.Item[];
+    skins: UseEnhancedAchievements.Bit.Skin[];
+    minis: (UseEnhancedAchievements.Bit.Minipet & Mini<Schema.LATEST>)[];
+    text: UseEnhancedAchievements.Bit.Text[];
   };
 
-  export async function getBits(progress: EnhancedAchievement['progress']): Promise<GetBitsResponse> {
+  export async function getBits(progress: UseEnhancedAchievements.Achievement['progress']): Promise<GetBitsResponse> {
     if (!progress?.bits) {
       return {
         minis: [],
@@ -102,21 +103,21 @@ export namespace AchievementProgress {
   }
 
   export namespace GetBits {
-    export async function getItems(bits: EnhancedBit.Item[]): Promise<GetBitsResponse['items']> {
+    export async function getItems(bits: UseEnhancedAchievements.Bit.Item[]): Promise<GetBitsResponse['items']> {
       if (bits.length === 0) return [];
 
       // TODO: Implement Support for Items...
       return bits;
     }
 
-    export async function getSkins(bits: EnhancedBit.Skin[]): Promise<GetBitsResponse['skins']> {
+    export async function getSkins(bits: UseEnhancedAchievements.Bit.Skin[]): Promise<GetBitsResponse['skins']> {
       if (bits.length === 0) return [];
 
       // TODO: Implement Support for Skins...
       return bits;
     }
 
-    export async function getMinis(bits: EnhancedBit.Minipet[]): Promise<GetBitsResponse['minis']> {
+    export async function getMinis(bits: UseEnhancedAchievements.Bit.Minipet[]): Promise<GetBitsResponse['minis']> {
       if (bits.length === 0) return [];
 
       const minis = await api.v2.minis.list({
@@ -133,7 +134,7 @@ export namespace AchievementProgress {
       });
     }
 
-    export async function getText(bits: EnhancedBit.Text[]): Promise<EnhancedBit[]> {
+    export async function getText(bits: UseEnhancedAchievements.Bit.Text[]): Promise<GetBitsResponse['text']> {
       if (bits.length === 0) return [];
 
       return bits;

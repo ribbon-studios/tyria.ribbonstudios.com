@@ -2,12 +2,12 @@ import { ProgressBar } from '@/components/common/ProgressBar';
 import { Card } from '@/components/common/Card';
 import { cn } from '@/utils/cn';
 import { useMemo, type ReactNode } from 'react';
-import type { CategoryAchievement } from '@/service/api';
 import * as styles from './MasteryCard.module.css';
 import type { AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
 import { MasteryTier, selectMasteryCategory } from '@/store/mastery.slice';
 import { useSelector } from 'react-redux';
 import { MasteryIcon } from './MasteryIcon';
+import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
 export function MasteryCard({ category, achievements, children, className }: MasteryCard.Props) {
   const masteryTier = useSelector(selectMasteryCategory(category.id));
@@ -40,7 +40,7 @@ export function MasteryCard({ category, achievements, children, className }: Mas
 export namespace MasteryCard {
   export type Props = {
     category: AchievementCategory<Schema.LATEST>;
-    achievements?: CategoryAchievement[];
+    achievements?: UseEnhancedAchievements.Achievement[];
     children?: ReactNode;
     className?: string;
   };

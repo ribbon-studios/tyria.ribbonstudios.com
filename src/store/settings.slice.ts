@@ -148,6 +148,7 @@ export const selectRefreshInterval = (state: AppState) => {
 
   return undefined;
 };
+
 export const selectBackgroundImage = (state: AppState) => {
   const settings = selectSettings(state);
 
