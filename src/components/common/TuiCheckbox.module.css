@@ -29,7 +29,7 @@
     @apply flex-row-reverse mr-auto;
 
     .input {
-      @apply w-15 h-10;
+      @apply min-w-15 min-h-10 w-15 h-10;
     }
 
     .check {
