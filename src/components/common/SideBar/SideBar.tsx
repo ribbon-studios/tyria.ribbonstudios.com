@@ -6,16 +6,16 @@ import { Link, NavLink, useParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
 import { cn } from '@/utils/cn';
 import { Button } from '../Button';
-import { TuiIcon } from '../TuiIcon';
 import { useSelector } from 'react-redux';
-import { MasteryTier, selectMasteryCategories } from '@/store/mastery.slice';
+import { selectMasteryCategories } from '@/store/mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
 import { TuiLink } from '../TuiLink';
 import { selectGroups } from '@/store/api.slice';
 import { formatter, sanitize } from '@/utils/formatter';
+import { MasteryIcon } from '@/components/achievements/MasteryIcon';
 
-export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
+export function SideBar({ open, onClose }: SideBar.Props) {
   const { mdAndUp } = useBreakpoints();
   const groups = useSelector(selectGroups);
   const masteries = useSelector(selectMasteryCategories);
@@ -111,15 +111,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
                   onClick={() => onClose()}
                   append={
                     <>
-                      {masteries[category.id] && (
-                        <TuiIcon
-                          className={cn(masteries[category.id] === MasteryTier.META && 'grayscale')}
-                          icon={
-                            'https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png'
-                          }
-                          size={30}
-                        />
-                      )}
+                      <MasteryIcon masteryTier={masteries[category.id]} size={30} />
                       <DebugInfo>{category.id}</DebugInfo>
                     </>
                   }
@@ -160,7 +152,7 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
       </div>
     </>
   );
-};
+}
 
 export namespace SideBar {
   export type Props = {

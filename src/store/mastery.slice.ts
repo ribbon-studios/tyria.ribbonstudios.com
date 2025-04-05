@@ -92,5 +92,6 @@ export const { setMasteryTier, resetTrueMastery } = TrueMasterySlice.actions;
 
 export const selectMasteryState = (state: AppState) => state.mastery;
 export const selectMasteryCategories = (state: AppState) => selectMasteryState(state).categories;
+export const selectMasteryCategory = (id: number) => (state: AppState) => selectMasteryState(state).categories[id];
 
 export default TrueMasterySlice.reducer;

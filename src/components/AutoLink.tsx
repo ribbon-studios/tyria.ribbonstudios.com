@@ -4,6 +4,8 @@ import { useMemo, type ComponentProps, type ElementType } from 'react';
 
 const static_names = [
   'Professor Smoll',
+  // TODO: Pull Points of Interest from the API
+  'Colosseum of the Faithful',
   // TODO: See if these can be pulled from the v2 item api
   'Spiked Choya Psionic Tonic',
   "Fool's Tall Tonic",
@@ -17,17 +19,9 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, ...props
   const { data: map_names } = useQuery({
     queryKey: ['v1/names'],
     queryFn: async () => {
-      const { maps } = await api.v1.maps();
+      const names = await api.v1.mapNames();
 
-      return Object.keys(maps)
-        .splice(0, 710)
-        .reduce<string[]>((output, id) => {
-          if (!output.includes(maps[id].map_name)) {
-            output.push(maps[id].map_name);
-          }
-
-          return output;
-        }, []);
+      return names.map(({ name }) => name);
     },
   });
 

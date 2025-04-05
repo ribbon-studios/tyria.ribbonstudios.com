@@ -1,5 +1,5 @@
 import { type CategoryAchievement } from '@/service/api';
-import { useMemo, useRef, type FC } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { RefreshCw } from 'lucide-react';
@@ -7,7 +7,7 @@ import { Button } from '@/components/common/Button';
 import { TimeTill } from '@/components/common/TimeTill';
 import { useSelector } from 'react-redux';
 import { selectRefreshInterval, selectSettings } from '@/store/settings.slice';
-import { TrueMasteryCard } from '@/components/achievements/TrueMasteryCard';
+import { MasteryCard } from '@/components/achievements/MasteryCard';
 import { Achievement, AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
 import { useSticky } from '@/hooks/use-sticky';
 import { cn } from '@/utils/cn';
@@ -16,8 +16,13 @@ import { TuiLink } from '@/components/common/TuiLink';
 import { useQuery } from '@tanstack/react-query';
 import { delay, rfetch } from '@ribbon-studios/js-utils';
 import { Loading } from '@/components/common/Loading';
+import { useAppDispatch } from '@/store';
+import { MasteryTier, selectMasteryCategory, setMasteryTier } from '@/store/mastery.slice';
+import { computeMasteryTier } from '@/utils/achievements';
 
 export function CategoryPageSlice({ category, achievements, loading, timestamp, onRefresh }: CategoryPageSlice.Props) {
+  const mastery = useSelector(selectMasteryCategory(category.id));
+  const dispatch = useAppDispatch();
   const stickyHeader = useRef<HTMLDivElement>(null);
   const settings = useSelector(selectSettings);
   const sticky = useSticky(stickyHeader);
@@ -57,13 +62,23 @@ export function CategoryPageSlice({ category, achievements, loading, timestamp, 
     }
   );
 
+  useEffect(() => {
+    if (mastery === MasteryTier.TRUE) return;
+
+    const currentMasteryTier = computeMasteryTier(achievements);
+
+    if (typeof currentMasteryTier === 'undefined' || mastery === currentMasteryTier) return;
+
+    dispatch(setMasteryTier([category.id, currentMasteryTier]));
+  }, [achievements]);
+
   return (
     <>
       <div
         className={cn('sticky top-[-1px] pt-[calc(1em+1px)] flex flex-col gap-2 z-50', sticky && styles.sticky)}
         ref={stickyHeader}
       >
-        <TrueMasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
+        <MasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
           {settings.api.key ? (
             <TimeTill loading={loading} timestamp={timestamp} stale={refresh_interval} />
           ) : (
@@ -79,7 +94,7 @@ export function CategoryPageSlice({ category, achievements, loading, timestamp, 
             <RefreshCw />
             Refresh
           </Button>
-        </TrueMasteryCard>
+        </MasteryCard>
         {incompleteMetas.map((achievement) => (
           <AchievementCard className={styles.pinnedCard} key={achievement.id} achievement={achievement} />
         ))}
