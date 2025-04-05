@@ -8,7 +8,7 @@ import { cn } from '@/utils/cn';
 import { Button } from '../Button';
 import { TuiIcon } from '../TuiIcon';
 import { useSelector } from 'react-redux';
-import { selectTrueMasteries } from '@/store/true-mastery.slice';
+import { MasteryTier, selectMasteryCategories } from '@/store/mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
 import { TuiLink } from '../TuiLink';
@@ -18,7 +18,7 @@ import { formatter, sanitize } from '@/utils/formatter';
 export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
   const { mdAndUp } = useBreakpoints();
   const groups = useSelector(selectGroups);
-  const true_masteries = useSelector(selectTrueMasteries);
+  const masteries = useSelector(selectMasteryCategories);
   const [activeGroupId, setActiveGroupId] = useState<string>();
   const params = useParams();
   const [search, setSearch] = useState<string>();
@@ -111,8 +111,9 @@ export const SideBar: FC<SideBar.Props> = ({ open, onClose }) => {
                   onClick={() => onClose()}
                   append={
                     <>
-                      {true_masteries.includes(category.id) && (
+                      {masteries[category.id] && (
                         <TuiIcon
+                          className={cn(masteries[category.id] === MasteryTier.META && 'grayscale')}
                           icon={
                             'https://render.guildwars2.com/file/5A4E663071250EC72668C09E3C082E595A380BF7/528724.png'
                           }

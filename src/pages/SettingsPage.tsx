@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { UseValidate } from '@/hooks/use-validate';
 import { setHeader } from '@/store/app.slice';
 import { TuiLink } from '@/components/common/TuiLink';
-import { resetTrueMastery } from '@/store/true-mastery.slice';
+import { resetTrueMastery } from '@/store/mastery.slice';
 import { TuiSelect } from '@/components/common/TuiSelect';
 
 export const Component: FC = () => {

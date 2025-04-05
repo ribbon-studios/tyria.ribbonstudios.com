@@ -7,7 +7,7 @@ import * as styles from './TrueMasteryCard.module.css';
 import { TuiIcon } from '../common/TuiIcon';
 import type { AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
 import { useAppDispatch } from '@/store';
-import { setTrueMastery } from '@/store/true-mastery.slice';
+import { MasteryTier, setMasteryTier } from '@/store/mastery.slice';
 
 export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achievements, children, className }) => {
   const dispatch = useAppDispatch();
@@ -25,7 +25,7 @@ export const TrueMasteryCard: FC<TrueMasteryCard.Props> = ({ category, achieveme
   useEffect(() => {
     if (!isDone) return;
 
-    dispatch(setTrueMastery(category.id));
+    dispatch(setMasteryTier([category.id, MasteryTier.TRUE]));
   }, [isDone]);
 
   return (

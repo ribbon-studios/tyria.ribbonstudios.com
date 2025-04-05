@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux';
 import apiReducer from './api.slice';
 import appReducer from './app.slice';
 import settingsReducer from './settings.slice';
-import trueMasteryReducer from './true-mastery.slice';
+import masteryReducer from './mastery.slice';
 
 export const store = configureStore({
   reducer: {
     api: apiReducer,
     app: appReducer,
     settings: settingsReducer,
-    true_mastery: trueMasteryReducer,
+    mastery: masteryReducer,
   },
 });
 
