@@ -1,21 +1,32 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 
 export function useQueryParam(name: string): UseQueryParam.Response<string> {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [value, setValue] = useState<string | undefined>(searchParams.get(name) ?? undefined);
 
   useEffect(() => {
-    const updatedParams = new URLSearchParams(searchParams);
+    const updatedParams = new URLSearchParams(location.search);
 
     if (value) {
       updatedParams.set(name, value);
-    } else {
+    } else if (!value) {
       updatedParams.delete(name);
     }
 
-    setSearchParams(updatedParams);
-  }, [value, name, searchParams]);
+    if (searchParams.toString() === updatedParams.toString()) return;
+
+    navigate(
+      {
+        search: updatedParams.toString(),
+      },
+      {
+        replace: true,
+      }
+    );
+  }, [value, name, location]);
 
   return [value, setValue];
 }
