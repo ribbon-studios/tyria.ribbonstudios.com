@@ -27,6 +27,7 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, classNam
 
       return names.map(({ name }) => name);
     },
+    refetchOnWindowFocus: false,
   });
 
   const names = useMemo(() => {
