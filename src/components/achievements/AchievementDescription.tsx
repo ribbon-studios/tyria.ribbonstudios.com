@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { toast } from 'sonner';
 
 export function AchievementDescription({ description }: AchievementDescription.Props) {
+  if (!description) return null;
+
   const html = useMemo<string>(() => {
     return description.replaceAll(/<c=([^>]+)>(.+)<\/c>/g, (match, tag, text) => {
       switch (tag?.toLowerCase()) {
@@ -19,6 +21,6 @@ export function AchievementDescription({ description }: AchievementDescription.P
 
 export namespace AchievementDescription {
   export type Props = {
-    description: string;
+    description?: string;
   };
 }

@@ -44,7 +44,13 @@ export const Component: FC = () => {
     },
   });
 
-  const { enhanced_achievements, lastUpdatedAt, isFetching, refetch } = useEnhancedAchievements({
+  const {
+    enhanced_achievements,
+    lastUpdatedAt,
+    isLoading: isAccountAchievementsLoading,
+    isFetching,
+    refetch,
+  } = useEnhancedAchievements({
     category,
     achievements,
     prerequisite_achievements,
@@ -65,7 +71,7 @@ export const Component: FC = () => {
 
   return (
     <Loading
-      loading={isLoading}
+      loading={isLoading || isAccountAchievementsLoading}
       className="flex flex-col flex-1 items-center m-6"
       contentClassName="gap-2 w-full max-w-[1200px]"
       size={128}
