@@ -100,7 +100,7 @@ export const Component: FC = () => {
           className="flex-1"
           label="Auto-Refresh Interval"
           description="The time (in seconds) between auto refreshes."
-          value={settings.api.refresh_interval ?? ''}
+          value={settings.api.refresh_interval ?? undefined}
           prepend={
             <TuiCheckbox
               value={!!settings.api.refresh_interval}

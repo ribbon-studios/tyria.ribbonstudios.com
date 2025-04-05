@@ -71,7 +71,7 @@ export const Component: FC = () => {
                 position="top-right"
                 backgroundColor="rebeccapurple"
                 color="white"
-                to={`https://tyria.ribbonstudios.com${location.pathname}`}
+                to={`https://tyria.ribbonstudios.com${location.pathname}${location.search}`}
                 target="_blank"
               >
                 Local

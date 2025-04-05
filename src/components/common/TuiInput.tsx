@@ -29,35 +29,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
   const id = useRandomId('input', props.id);
   const { validate, messages } = useValidate(rules);
   const [isFocused, setIsFocused] = useState(false);
-
   const [internalValue, setInternalValue] = useCachedState<string | number>(() => value ?? '', [value]);
-
-  const listenerProps = useMemo<ComponentProps<'input'>>(() => {
-    if (mode === 'blur') {
-      return {
-        onBlur: (event) => {
-          setIsFocused(false);
-
-          if (!validate(event.target.value) || event.target.value == value) return;
-
-          onChange?.(event.target.value);
-        },
-      };
-    } else if (mode === 'input') {
-      return {
-        onBlur: () => {
-          setIsFocused(false);
-        },
-        onInput: (event) => {
-          if (!validate(event.currentTarget.value) || event.currentTarget.value == value) return;
-
-          onChange?.(event.currentTarget.value);
-        },
-      };
-    }
-
-    throw new Error(`Unknown mode. (${mode})`);
-  }, [mode]);
 
   return (
     <div className={cn(styles.container, className)}>
@@ -77,11 +49,27 @@ export const TuiInput: FC<TuiInput.Props> = ({
             id={id}
             value={internalValue}
             type={type === 'password' && isFocused ? 'text' : type}
-            onChange={(event) => {
-              setInternalValue(event.target.value);
-            }}
             onFocus={() => setIsFocused(true)}
-            {...listenerProps}
+            onInput={(event) => {
+              setInternalValue(event.currentTarget.value);
+
+              if (
+                mode !== 'input' ||
+                !validate(event.currentTarget.value) ||
+                event.currentTarget.value === value?.toString()
+              )
+                return;
+
+              onChange?.(event.currentTarget.value);
+            }}
+            onBlur={(event) => {
+              setIsFocused(false);
+
+              if (mode !== 'blur' || !validate(event.target.value) || event.currentTarget.value === value?.toString())
+                return;
+
+              onChange?.(event.target.value);
+            }}
           />
 
           <SaveIndicator loading={loading} />

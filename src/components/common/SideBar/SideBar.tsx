@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type FC } from 'react';
 import { Bug, Code2, Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
 import * as styles from './SideBar.module.css';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
 import { cn } from '@/utils/cn';
 import { Button } from '../Button';
@@ -12,8 +12,9 @@ import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
 import { TuiLink } from '../TuiLink';
 import { selectGroups } from '@/store/api.slice';
-import { formatter, sanitize } from '@/utils/formatter';
+import { formatter } from '@/utils/formatter';
 import { MasteryIcon } from '@/components/achievements/MasteryIcon';
+import { useQueryParam } from '@/hooks/use-query-param';
 
 export function SideBar({ open, onClose }: SideBar.Props) {
   const { mdAndUp } = useBreakpoints();
@@ -21,7 +22,7 @@ export function SideBar({ open, onClose }: SideBar.Props) {
   const masteries = useSelector(selectMasteryCategories);
   const [activeGroupId, setActiveGroupId] = useState<string>();
   const params = useParams();
-  const [search, setSearch] = useState<string>();
+  const [search, setSearch] = useQueryParam('search');
 
   useEffect(() => {
     if (!params.id || (!mdAndUp && !open)) return;
@@ -77,7 +78,10 @@ export function SideBar({ open, onClose }: SideBar.Props) {
           className="hidden! md:flex! mx-6 my-[17px] rounded-full!"
           placeholder="Search by Category..."
           value={search}
-          onChange={(value) => setSearch(value)}
+          onChange={(value) => {
+            console.log(value);
+            setSearch(value);
+          }}
           mode="input"
         />
         <div className="flex md:hidden items-center gap-4 mx-6 my-[17px]">
