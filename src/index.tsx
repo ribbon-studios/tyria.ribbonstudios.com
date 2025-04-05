@@ -6,34 +6,40 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { Loading } from './components/common/Loading';
 import { ErrorBoundary } from './ErrorBoundary';
+import { Component as App } from './App';
+import { Component as HomePage } from './pages/HomePage';
+import { Component as AchievementPage } from './pages/AchievementPage';
+import { Component as CategoryPage } from './pages/CategoryPage';
+import { Component as SettingsPage } from './pages/SettingsPage';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 
+// Not using lazy loading here as it breaks constantly when using the GitHub Pages SPA workaround.
 const router = createBrowserRouter([
   {
     path: '/',
-    lazy: () => import('./App'),
+    Component: App,
     errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/',
-        lazy: () => import('./pages/HomePage'),
+        Component: HomePage,
         hydrateFallbackElement: <Loading loading={true} />,
       },
       {
         path: '/achievements/:id',
-        lazy: () => import('./pages/AchievementPage'),
+        Component: AchievementPage,
         hydrateFallbackElement: <Loading loading={true} />,
       },
       {
         path: '/categories/:id',
-        lazy: () => import('./pages/CategoryPage'),
+        Component: CategoryPage,
         hydrateFallbackElement: <Loading loading={true} />,
       },
       {
         path: '/settings',
-        lazy: () => import('./pages/SettingsPage'),
+        Component: SettingsPage,
         hydrateFallbackElement: <Loading loading={true} />,
       },
     ],
