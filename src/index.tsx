@@ -46,6 +46,8 @@ const router = createBrowserRouter([
   },
 ]);
 
+console.log(`App Version: ${import.meta.env.APP_VERSION}`);
+
 const client = new QueryClient({
   defaultOptions: {
     queries: {
