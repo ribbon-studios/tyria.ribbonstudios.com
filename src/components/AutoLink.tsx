@@ -7,6 +7,9 @@ const static_names = [
   'Professor Smoll',
   // TODO: Pull Points of Interest from the API
   'Colosseum of the Faithful',
+  'Lava Flats',
+  'Osprey Pillars',
+  'Burning Grotto',
   // TODO: See if these can be pulled from the v2 item api
   'Spiked Choya Psionic Tonic',
   "Fool's Tall Tonic",

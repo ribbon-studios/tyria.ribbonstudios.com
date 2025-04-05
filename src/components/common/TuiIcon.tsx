@@ -1,5 +1,5 @@
 import { useMemo, type FC } from 'react';
-import type { LucideIcon } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 
 export const TuiIcon: FC<TuiIcon.Props> = ({ icon: Icon, size = 24, ...props }) => {
   if (!Icon) return null;
@@ -21,6 +21,8 @@ export const TuiIcon: FC<TuiIcon.Props> = ({ icon: Icon, size = 24, ...props }) 
         {...props}
         src={Icon}
         style={{
+          minHeight: imgSize,
+          minWidth: imgSize,
           height: imgSize,
           width: imgSize,
         }}
@@ -28,7 +30,17 @@ export const TuiIcon: FC<TuiIcon.Props> = ({ icon: Icon, size = 24, ...props }) 
     );
   }
 
-  return <Icon {...props} size={iconSize} />;
+  return (
+    <Icon
+      {...props}
+      style={{
+        minHeight: imgSize,
+        minWidth: imgSize,
+        height: imgSize,
+        width: imgSize,
+      }}
+    />
+  );
 };
 
 export namespace TuiIcon {
