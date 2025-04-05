@@ -6,8 +6,6 @@ import { TuiDropdown } from './TuiDropdown';
 import * as styles from './TuiSelect.module.css';
 import { cn } from '@/utils/cn';
 
-console.log(styles);
-
 export function TuiSelect<T extends string | number>({
   label,
   description,

@@ -78,10 +78,7 @@ export function SideBar({ open, onClose }: SideBar.Props) {
           className="hidden! md:flex! mx-6 my-[17px] rounded-full!"
           placeholder="Search by Category..."
           value={search}
-          onChange={(value) => {
-            console.log(value);
-            setSearch(value);
-          }}
+          onChange={(value) => setSearch(value)}
           mode="input"
         />
         <div className="flex md:hidden items-center gap-4 mx-6 my-[17px]">
