@@ -17,6 +17,8 @@ const static_names = [
   'Chatoyant Elixir',
 ];
 
+const excluded_names = ['Sabotage'];
+
 export function AutoLink<T extends ElementType = 'div'>({ as, children, className, ...props }: AutoLink.Props<T>) {
   const Component = as ?? 'div';
 
@@ -25,7 +27,7 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, classNam
     queryFn: async () => {
       const names = await api.v1.mapNames();
 
-      return names.map(({ name }) => name);
+      return names.map(({ name }) => name).filter((name) => !excluded_names.includes(name));
     },
     refetchOnWindowFocus: false,
   });
