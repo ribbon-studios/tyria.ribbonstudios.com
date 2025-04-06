@@ -1,6 +1,6 @@
-import { TuiIcon } from '../common/TuiIcon';
 import { useAchievementActions } from '@/hooks/use-achievement-actions';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
+import { AchievementAction } from './AchievementAction';
 
 export function AchievementActions({ achievement }: AchievementActions.Props) {
   const actions = useAchievementActions(achievement);
@@ -9,17 +9,9 @@ export function AchievementActions({ achievement }: AchievementActions.Props) {
 
   return (
     <div className="flex gap-2">
-      {actions.map(({ href, icon, ...props }, i) =>
-        href ? (
-          <a key={i} {...props} href={href} target="_blank">
-            <TuiIcon icon={icon} />
-          </a>
-        ) : (
-          <div key={i} {...props}>
-            <TuiIcon icon={icon} />
-          </div>
-        )
-      )}
+      {actions.map((action, i) => (
+        <AchievementAction key={i} action={action} />
+      ))}
     </div>
   );
 }

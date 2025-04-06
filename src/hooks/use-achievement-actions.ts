@@ -11,7 +11,7 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
       output.push({
         icon: Eye,
         className: 'text-stone-500',
-        title: 'Hidden',
+        tooltip: 'Hidden Achievement',
       });
     }
 
@@ -38,16 +38,24 @@ export namespace UseAchievementActions {
     icon: string | LucideIcon;
     href?: string;
     className?: string;
-    title?: string;
+    tooltip?: string;
   };
 
   export const TypeLinkMap: Record<Exclude<Type, Type.PREREQUISITE>, (name: string) => string> = {
     [Type.STORY]: (name: string) => `https://wiki.guildwars2.com/wiki/${sanitize(name)}`,
   };
 
-  export const TypeIconMap: Record<Type, Action['icon']> = {
-    [Type.STORY]: 'https://render.guildwars2.com/file/540BA9BB6662A5154BD13306A1AEAD6219F95361/102369.png',
-    [Type.PREREQUISITE]: '/lock.png',
+  export const TypeMap: Record<Type, (value: string) => Action> = {
+    [Type.STORY]: (value) => ({
+      icon: 'https://render.guildwars2.com/file/540BA9BB6662A5154BD13306A1AEAD6219F95361/102369.png',
+      href: `https://wiki.guildwars2.com/wiki/${sanitize(value)}`,
+      tooltip: 'Story Mission',
+    }),
+    [Type.PREREQUISITE]: (value) => ({
+      icon: '/lock.png',
+      href: `/achievements/${value}`,
+      tooltip: 'Locked Achievement',
+    }),
   };
 
   function sanitize(name: string) {
@@ -59,7 +67,7 @@ export namespace UseAchievementActions {
   export function getDescriptionActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
     if (!achievement.description) return [];
 
-    const [, ...matches] = achievement.description.match(/([^:]+:)(.*)/) ?? [];
+    const [, ...matches] = achievement.description.match(/([^:]+:)([^<]+)/) ?? [];
 
     if (matches.length !== 2) return [];
 
@@ -67,20 +75,14 @@ export namespace UseAchievementActions {
 
     if (!UseAchievementActions.Type.is(type) || type === Type.PREREQUISITE) return [];
 
-    return [
-      {
-        icon: UseAchievementActions.TypeIconMap[type],
-        href: UseAchievementActions.TypeLinkMap[type](name),
-      },
-    ];
+    return [UseAchievementActions.TypeMap[type](name)];
   }
 
   export function getPrerequisiteActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
     if (!achievement.prerequisites) return [];
 
-    return achievement.prerequisites.map((prerequisite) => ({
-      icon: UseAchievementActions.TypeIconMap[UseAchievementActions.Type.PREREQUISITE],
-      href: `/achievements/${prerequisite.id}`,
-    }));
+    return achievement.prerequisites.map((prerequisite) =>
+      UseAchievementActions.TypeMap[UseAchievementActions.Type.PREREQUISITE](prerequisite.id.toString())
+    );
   }
 }
