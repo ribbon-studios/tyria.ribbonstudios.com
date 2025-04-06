@@ -1,11 +1,16 @@
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
-import { Eye, type LucideIcon } from 'lucide-react';
+import { Eye, Link, type LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import type { UseEnhancedAchievements } from './use-enhanced-achievements';
 
 export function useAchievementActions(achievement: UseEnhancedAchievements.Achievement) {
   return useMemo(() => {
     let output: UseAchievementActions.Action[] = [];
+
+    const url = new URL('https://wiki.guildwars2.com/index.php');
+    url.searchParams.set('title', 'Special:Search');
+    url.searchParams.set('go', 'Go');
+    url.searchParams.set('search', achievement.name);
 
     if (achievement.flags.includes(Achievement.Flags.HIDDEN)) {
       output.push({
@@ -17,6 +22,12 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
 
     output = output.concat(UseAchievementActions.getDescriptionActions(achievement));
     output = output.concat(UseAchievementActions.getPrerequisiteActions(achievement));
+
+    output.push({
+      icon: '/guild-wars-2-logo.png',
+      href: url.toString(),
+      tooltip: 'Wiki Page',
+    });
 
     return output;
   }, [achievement]);

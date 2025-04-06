@@ -14,7 +14,7 @@ export function AchievementAction({ action: { icon, tooltip, ...action } }: Achi
 
   if (tooltip) {
     return (
-      <TuiTooltip tooltip={tooltip} tooltipClassName="whitespace-nowrap" position="left" align="center" offset={6}>
+      <TuiTooltip tooltip={tooltip} tooltipClassName="whitespace-nowrap" position="bottom" align="end" offset={6}>
         <Component {...action} target={target}>
           <TuiIcon icon={icon} />
         </Component>
