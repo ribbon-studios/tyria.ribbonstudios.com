@@ -8,7 +8,7 @@
   }
 
   > .markerTooltip {
-    @apply absolute -inset-y-0.5 px-1;
+    @apply absolute -inset-y-0.5 px-1 -translate-x-1/2;
 
     > .marker {
       @apply h-full w-1 bg-white/75 rounded-sm;
