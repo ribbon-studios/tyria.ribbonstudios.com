@@ -21,6 +21,7 @@ export function useAccountAchievements() {
       return api.v2.account.achievements();
     },
     refetchInterval: refresh_interval,
+    refetchOnWindowFocus: true,
   });
 
   return {
