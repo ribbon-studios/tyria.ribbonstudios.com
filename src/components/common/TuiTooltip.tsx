@@ -65,6 +65,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
         className
       )}
       onMouseOver={(event) => {
+        event.stopPropagation();
         setOpen(true);
         onMouseOver?.(event);
       }}
