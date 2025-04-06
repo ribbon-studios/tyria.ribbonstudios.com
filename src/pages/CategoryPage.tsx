@@ -46,7 +46,7 @@ export const Component: FC = () => {
 
   const {
     enhanced_achievements,
-    lastUpdatedAt,
+    nextUpdateTimestamp,
     isLoading: isAccountAchievementsLoading,
     isFetching,
     refetch,
@@ -80,7 +80,7 @@ export const Component: FC = () => {
         category={category}
         achievements={enhanced_achievements}
         loading={isFetching}
-        timestamp={lastUpdatedAt}
+        nextUpdateAt={nextUpdateTimestamp}
         onRefresh={() => refetch()}
       />
     </Loading>

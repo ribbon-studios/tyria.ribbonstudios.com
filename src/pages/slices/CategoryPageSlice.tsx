@@ -20,7 +20,13 @@ import { MasteryTier, selectMasteryCategory, setMasteryTier } from '@/store/mast
 import { computeMasteryTier } from '@/utils/achievements';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
-export function CategoryPageSlice({ category, achievements, loading, timestamp, onRefresh }: CategoryPageSlice.Props) {
+export function CategoryPageSlice({
+  category,
+  achievements,
+  loading,
+  nextUpdateAt,
+  onRefresh,
+}: CategoryPageSlice.Props) {
   const mastery = useSelector(selectMasteryCategory(category.id));
   const dispatch = useAppDispatch();
   const stickyHeader = useRef<HTMLDivElement>(null);
@@ -30,14 +36,6 @@ export function CategoryPageSlice({ category, achievements, loading, timestamp, 
   if (!category) {
     return <Navigate to="/" />;
   }
-
-  const refresh_interval = useMemo(() => {
-    if (settings.api.key && settings.api.refresh_interval) {
-      return settings.api.refresh_interval * 1000;
-    }
-
-    return null;
-  }, [settings.api.key, settings.api.refresh_interval]);
 
   const { incompleteMetas, basics } = achievements.reduce<{
     incompleteMetas: UseEnhancedAchievements.Achievement[];
@@ -80,7 +78,7 @@ export function CategoryPageSlice({ category, achievements, loading, timestamp, 
       >
         <MasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
           {settings.api.key ? (
-            <TimeTill loading={loading} timestamp={timestamp} stale={refresh_interval} />
+            <TimeTill loading={loading} timestamp={nextUpdateAt} />
           ) : (
             <div className="hidden md:inline-block text-sm text-white/50">
               Provide an{' '}
@@ -113,7 +111,7 @@ export namespace CategoryPageSlice {
     category: AchievementCategory<Schema.LATEST>;
     achievements: UseEnhancedAchievements.Achievement[];
     loading?: boolean;
-    timestamp: number;
+    nextUpdateAt?: number;
     onRefresh: () => void;
   };
 
@@ -155,7 +153,7 @@ export namespace CategoryPageSlice {
         <CategoryPageSlice
           category={category}
           achievements={achievements}
-          timestamp={dataUpdatedAt}
+          nextUpdateAt={dataUpdatedAt}
           loading={isFetching}
           onRefresh={() => refetch()}
         />

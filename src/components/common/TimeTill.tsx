@@ -3,17 +3,15 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import * as styles from './TimeTill.module.css';
 import { cn } from '@/utils/cn';
 
-export const TimeTill: FC<TimeTill.Props> = ({ className, timestamp, stale, interval = 100, loading }) => {
+export const TimeTill: FC<TimeTill.Props> = ({ className, timestamp, interval = 100, loading }) => {
   const [message, setMessage] = useState<string>();
 
   useEffect(() => {
-    if (!stale) return undefined;
-
-    const staleTimestamp = timestamp + stale;
+    if (!timestamp) return;
 
     const timer = setInterval(() => {
       setMessage(
-        formatDistanceToNowStrict(staleTimestamp, {
+        formatDistanceToNowStrict(timestamp, {
           unit: 'second',
         })
       );
@@ -22,12 +20,12 @@ export const TimeTill: FC<TimeTill.Props> = ({ className, timestamp, stale, inte
     return () => {
       clearInterval(timer);
     };
-  }, [timestamp, stale, interval]);
+  }, [timestamp, interval]);
 
   if (!message) return null;
 
   return (
-    <div className={cn(styles.timeTill, (!stale || loading) && styles.loading, className)}>
+    <div className={cn(styles.timeTill, (!timestamp || loading) && styles.loading, className)}>
       auto refresh in {message}...
     </div>
   );
@@ -36,8 +34,7 @@ export const TimeTill: FC<TimeTill.Props> = ({ className, timestamp, stale, inte
 export namespace TimeTill {
   export type Props = {
     className?: string;
-    timestamp: number;
-    stale: number | null;
+    timestamp?: number;
     interval?: number;
     loading?: boolean;
   };
