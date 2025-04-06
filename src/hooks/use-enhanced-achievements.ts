@@ -183,7 +183,7 @@ export namespace UseEnhancedAchievements {
     return {
       ...achievement,
       icon: achievement.icon ?? category?.icon,
-      requirement: progress ? requirement.replace(/\s{2}(times)/gi, ` ${progress.max} $1`) : requirement,
+      requirement: requirement.replace(/\s{2}/gi, ` ${tier.count} `),
       tier,
       done: account_achievement?.done ?? false,
       prerequisites: required_achievements.length > 0 ? required_achievements : undefined,
