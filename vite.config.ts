@@ -10,7 +10,7 @@ export default defineConfig(async () => {
       target: 'esnext',
     },
     define: {
-      'import.meta.env.APP_VERSION': `"${process.env.GITHUB_SHA ?? 'local'}"`,
+      'import.meta.env.APP_VERSION': `"${process.env.GITHUB_SHA?.substring(0, 7) ?? 'local'}"`,
     },
     server: {
       port: 3030,
