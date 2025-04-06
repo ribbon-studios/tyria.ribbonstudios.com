@@ -45,7 +45,8 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, classNam
   return (
     <Component
       {...props}
-      className={cn(className, 'text-shadow-xs/100')}
+      // TODO: Tailwind Merge handles this scenario incorrectly
+      className={cn('text-shadow-xs/80!', className)}
       dangerouslySetInnerHTML={{ __html: formattedChildren }}
     />
   );
