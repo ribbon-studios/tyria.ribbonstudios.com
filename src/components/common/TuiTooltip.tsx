@@ -11,6 +11,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
   onMouseOut,
   allowLocking,
   position = 'bottom',
+  align = 'start',
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -55,7 +56,14 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
   return (
     <div
       {...props}
-      className={cn(styles.container, styles[position], open && styles.open, isLocked && styles.locked, className)}
+      className={cn(
+        styles.container,
+        styles[position],
+        styles[align],
+        open && styles.open,
+        isLocked && styles.locked,
+        className
+      )}
       onMouseOver={(event) => {
         setOpen(true);
         onMouseOver?.(event);
@@ -91,10 +99,11 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
 export namespace TuiTooltip {
   export type Props = {
     className?: string;
-    children: ReactNode;
+    children?: ReactNode;
     tooltip: ReactNode;
     offset?: number;
     allowLocking?: boolean;
     position?: 'left' | 'right' | 'top' | 'bottom';
+    align?: 'start' | 'center' | 'end';
   } & ComponentProps<'div'>;
 }

@@ -94,7 +94,7 @@ export function useEnhancedAchievement({
 }
 
 export namespace UseEnhancedAchievements {
-  export type Achievement = Omit<RawAchievement<Schema.LATEST>, 'tiers' | 'prerequisites' | 'bits'> & {
+  export type Achievement = Omit<RawAchievement<Schema.LATEST>, 'prerequisites' | 'bits'> & {
     tier: RawAchievement.Tier;
     done: boolean;
     prerequisites?: RawAchievement<Schema.LATEST>[];
@@ -185,6 +185,7 @@ export namespace UseEnhancedAchievements {
       icon: achievement.icon ?? category?.icon,
       requirement: requirement.replace(/\s{2}/gi, ` ${tier.count} `),
       tier,
+      tiers,
       done: account_achievement?.done ?? false,
       prerequisites: required_achievements.length > 0 ? required_achievements : undefined,
       meta: achievement.flags.includes(RawAchievement.Flags.CATEGORY_DISPLAY),

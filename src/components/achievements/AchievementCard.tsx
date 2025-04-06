@@ -47,7 +47,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
           <AchievementDescription description={achievement.description} />
           {!achievement.done && (
             <>
-              <AchievementProgress progress={achievement.progress} />
+              <AchievementProgress progress={achievement.progress} tiers={achievement.tiers} />
 
               {achievement.prerequisites && (
                 <div className="flex flex-col gap-1 italic text-sm text-white/60">

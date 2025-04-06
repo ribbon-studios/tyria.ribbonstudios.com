@@ -5,8 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import { AchievementBits } from './AchievementBits';
 import { TuiTooltip } from '../common/TuiTooltip';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
+import { useMemo } from 'react';
 
-export function AchievementProgress({ progress }: AchievementProgress.Props) {
+export function AchievementProgress({ progress, tiers }: AchievementProgress.Props) {
   if (!progress) return null;
 
   const {
@@ -18,6 +19,8 @@ export function AchievementProgress({ progress }: AchievementProgress.Props) {
     queryKey: ['bits', progress.bits],
     queryFn: () => AchievementProgress.getBits(progress),
   });
+
+  const markers = useMemo(() => tiers.map(({ count }) => count), [tiers]);
 
   if (progress.bits) {
     return (
@@ -31,16 +34,17 @@ export function AchievementProgress({ progress }: AchievementProgress.Props) {
         }}
         allowLocking
       >
-        <ProgressBar className="w-full" current={progress.current} max={progress.max} />
+        <ProgressBar className="w-full" current={progress.current} max={progress.max} markers={markers} />
       </TuiTooltip>
     );
   }
 
-  return <ProgressBar className="w-full" current={progress.current} max={progress.max} />;
+  return <ProgressBar className="w-full" current={progress.current} max={progress.max} markers={markers} />;
 }
 
 export namespace AchievementProgress {
   export type Props = {
+    tiers: UseEnhancedAchievements.Achievement['tiers'];
     progress: UseEnhancedAchievements.Achievement['progress'];
   };
 

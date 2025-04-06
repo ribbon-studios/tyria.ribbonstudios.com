@@ -1,22 +1,33 @@
 import { useMemo, type ComponentProps, type FC } from 'react';
 import * as styles from './ProgressBar.module.css';
 import { cn } from '@/utils/cn';
+import { TuiTooltip } from './TuiTooltip';
 
 export const ProgressBar: FC<ProgressBar.Props> = ({
-  percentage,
   current,
   max,
+  markers,
   size = 12,
   buffer = 2,
   className,
   ...props
 }) => {
   const internalPercentage = useMemo(() => {
-    if (percentage) return percentage;
     if (current && max) return (current / max) * 100;
 
     return 0;
-  }, [percentage, current, max]);
+  }, [current, max]);
+
+  const internalMarkers = useMemo(() => {
+    if (!markers || !max) return [];
+
+    return markers
+      .filter((marker) => marker > 0 && marker < max)
+      .map((marker) => ({
+        value: marker,
+        percentage: (marker / max) * 100,
+      }));
+  }, [markers, max]);
 
   return (
     <div {...props} className={cn(styles.progressBar, className)} style={{ minHeight: size }}>
@@ -28,6 +39,19 @@ export const ProgressBar: FC<ProgressBar.Props> = ({
           inset: buffer,
         }}
       />
+      {internalMarkers.map((marker, i) => (
+        <TuiTooltip
+          key={i}
+          className={styles.markerTooltip}
+          style={{
+            left: `${marker.percentage}%`,
+          }}
+          tooltip={<div>{marker.value}</div>}
+          align="center"
+        >
+          <div className={styles.marker} />
+        </TuiTooltip>
+      ))}
     </div>
   );
 };
@@ -36,17 +60,8 @@ export namespace ProgressBar {
   export type Props = {
     size?: number;
     buffer?: number;
-  } & (
-    | {
-        current?: number;
-        max?: number;
-        percentage?: never;
-      }
-    | {
-        current?: never;
-        max?: never;
-        percentage?: number;
-      }
-  ) &
-    ComponentProps<'div'>;
+    markers?: number[];
+    current?: number;
+    max?: number;
+  } & ComponentProps<'div'>;
 }

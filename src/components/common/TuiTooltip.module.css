@@ -31,6 +31,26 @@
     @apply right-full top-1/2 -translate-y-1/2;
   }
 
+  &.top.center > .tooltip,
+  &.bottom.center > .tooltip {
+    @apply left-1/2 -translate-x-1/2;
+  }
+
+  &.top.end > .tooltip,
+  &.bottom.end > .tooltip {
+    @apply right-0;
+  }
+
+  &.left.center > .tooltip,
+  &.right.center > .tooltip {
+    @apply top-1/2 -translate-y-1/2;
+  }
+
+  &.left.end > .tooltip,
+  &.right.end > .tooltip {
+    @apply bottom-0;
+  }
+
   &.open > .tooltip {
     @apply opacity-100 scale-100 pointer-events-auto;
   }
