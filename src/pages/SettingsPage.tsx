@@ -23,12 +23,7 @@ export const Component: FC = () => {
   useEffect(() => {
     dispatch(
       setHeader({
-        breadcrumbs: [
-          {
-            label: 'Settings',
-          },
-        ],
-        image: '',
+        breadcrumbs: [],
       })
     );
   }, []);

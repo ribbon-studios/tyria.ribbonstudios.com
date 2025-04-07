@@ -3,13 +3,11 @@ import { Fragment, type FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Menu, Settings } from 'lucide-react';
 import { Button } from '../Button';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { TuiIcon } from '../TuiIcon';
 import { TuiLink } from '../TuiLink';
-import { useBreakpoints } from '@/hooks/use-breakpoints';
 
 export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
-  const { mdAndUp } = useBreakpoints();
   const header = useSelector(selectHeader);
 
   return (
@@ -19,9 +17,9 @@ export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
           <Button className="inline-flex md:hidden" onClick={() => onSideBarToggle()}>
             <Menu />
           </Button>
+          <TuiIcon icon={header.image ?? '/favicon.png'} size={48} />
           {header.breadcrumbs.length > 0 ? (
             <>
-              {mdAndUp && header.image && <TuiIcon icon={header.image} size={48} />}
               <TuiLink className="hidden lg:inline-block" to="/">
                 Tyria UI
               </TuiLink>
@@ -37,7 +35,7 @@ export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
           )}
         </div>
         <div className="flex gap-2">
-          <Button as={Link} color="light" to="/settings">
+          <Button as={NavLink} color="light" to="/settings">
             <Settings />
             <span className="hidden lg:inline-flex">Settings</span>
           </Button>

@@ -34,7 +34,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
     >
       <div className={styles.content}>
         <div className="flex justify-between items-start">
-          <div className="font-bold">{achievement.name}</div>
+          <div className="font-bold text-shadow-ally">{achievement.name}</div>
           <div className="flex gap-2">
             <DebugInfo as={Link} to={`/achievements/${achievement.id}`}>
               {achievement.id}
@@ -43,7 +43,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
           </div>
         </div>
         <div className={styles.info}>
-          <AutoLink className="text-sm text-white/80">{achievement.requirement}</AutoLink>
+          <AutoLink className="text-sm text-shadow-ally">{achievement.requirement}</AutoLink>
           <AchievementDescription description={achievement.description} />
           {!achievement.done && (
             <>

@@ -16,7 +16,7 @@ export function AchievementDescription({ description }: AchievementDescription.P
     });
   }, [description]);
 
-  return <div className="text-sm italic text-white/60" dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className="text-shadow-ally text-sm italic text-tui-muted" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 export namespace AchievementDescription {

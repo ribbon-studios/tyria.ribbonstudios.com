@@ -19,7 +19,7 @@ const static_names = [
 
 const excluded_names = ['Sabotage'];
 
-export function AutoLink<T extends ElementType = 'div'>({ as, children, className, ...props }: AutoLink.Props<T>) {
+export function AutoLink<T extends ElementType = 'div'>({ as, children, ...props }: AutoLink.Props<T>) {
   const Component = as ?? 'div';
 
   const { data: map_names } = useQuery({
@@ -48,7 +48,6 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, classNam
     <Component
       {...props}
       // TODO: Tailwind Merge handles this scenario incorrectly
-      className={cn('text-shadow-xs/80!', className)}
       dangerouslySetInnerHTML={{ __html: formattedChildren }}
     />
   );

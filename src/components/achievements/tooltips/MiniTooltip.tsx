@@ -4,7 +4,7 @@ export function MiniTooltip({ mini }: MiniTooltip.Props) {
   return (
     <div className="flex flex-col">
       <div className="text-nowrap font-bold">{mini.name}</div>
-      {mini.unlock && <div className="italic text-sm text-white/80">{mini.unlock}</div>}
+      {mini.unlock && <div className="italic text-sm">{mini.unlock}</div>}
     </div>
   );
 }

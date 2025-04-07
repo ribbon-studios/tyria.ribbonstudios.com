@@ -5,10 +5,18 @@
 
   &.dark {
     @apply bg-tui-dark border-tui-gray;
+
+    &:global(.active) {
+      @apply bg-tui-primary;
+    }
   }
 
   &.light {
     @apply bg-tui-light-gray border-tui-gray;
+
+    &:global(.active) {
+      @apply bg-tui-primary;
+    }
   }
 
   &:before {

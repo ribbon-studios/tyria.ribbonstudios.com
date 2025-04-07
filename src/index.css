@@ -21,4 +21,9 @@ body {
   --color-tui-dark: #0d0d0d;
   --color-tui-gray: #141414;
   --color-tui-light-gray: #212121;
+  --color-tui-muted: #bbbbbb;
+}
+
+@utility text-shadow-ally {
+  text-shadow: black 0px 0px 5px;
 }
