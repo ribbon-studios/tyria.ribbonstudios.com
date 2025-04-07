@@ -72,8 +72,8 @@ export const Component: FC = () => {
   return (
     <Loading
       loading={isLoading || isAccountAchievementsLoading}
-      className="flex flex-col flex-1 items-center m-6"
-      contentClassName="gap-2 w-full max-w-[1200px]"
+      className="flex flex-col flex-1 items-center"
+      contentClassName="gap-2"
       size={128}
     >
       <CategoryPageSlice

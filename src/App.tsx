@@ -34,6 +34,23 @@ export const Component: FC = () => {
       <div className={styles.overlay}>
         <TuiImage className={styles.background} src={background} onLoad={() => setBackgroundLoading(false)} />
       </div>
+      <Toaster
+        theme="dark"
+        position="top-center"
+        offset={{
+          top: 80,
+        }}
+        toastOptions={{
+          classNames: {
+            toast: 'bg-tui-dark! md:left-[150px] gap-4!',
+          },
+        }}
+        icons={{
+          warning: <TriangleAlert />,
+          error: <Siren />,
+          info: <Info />,
+        }}
+      />
       <Loading
         className="min-h-dvh"
         contentClassName={styles.app}
@@ -46,39 +63,24 @@ export const Component: FC = () => {
         <SideBar open={open} onClose={() => setOpen(false)} />
         <div className={styles.container}>
           <TopBar onSideBarToggle={() => setOpen(!open)} />
-          <div className={styles.content}>
-            <Toaster
-              theme="dark"
-              position="top-center"
-              offset={{
-                top: 80,
-              }}
-              toastOptions={{
-                classNames: {
-                  toast: 'bg-tui-dark! md:left-[150px] gap-4!',
-                },
-              }}
-              icons={{
-                warning: <TriangleAlert />,
-                error: <Siren />,
-                info: <Info />,
-              }}
-            />
-            <Outlet />
-            {window.location.hostname === 'localhost' && (
-              <Ribbon
-                as={Link}
-                position="top-right"
-                backgroundColor="rebeccapurple"
-                color="white"
-                to={`https://tyria.ribbonstudios.com${location.pathname}${location.search}`}
-                target="_blank"
-              >
-                Local
-              </Ribbon>
-            )}
+          <div className={styles.window}>
+            <div className={styles.content}>
+              <Outlet />
+            </div>
           </div>
         </div>
+        {window.location.hostname === 'localhost' && (
+          <Ribbon
+            as={Link}
+            position="top-right"
+            backgroundColor="rebeccapurple"
+            color="white"
+            to={`https://tyria.ribbonstudios.com${location.pathname}${location.search}`}
+            target="_blank"
+          >
+            Local
+          </Ribbon>
+        )}
       </Loading>
     </>
   );

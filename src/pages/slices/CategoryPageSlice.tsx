@@ -19,6 +19,8 @@ import { useAppDispatch } from '@/store';
 import { MasteryTier, selectMasteryCategory, setMasteryTier } from '@/store/mastery.slice';
 import { computeMasteryTier } from '@/utils/achievements';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
+import { TuiIcon } from '@/components/common/TuiIcon';
+import { TuiBadge } from '@/components/common/TuiBadge';
 
 export function CategoryPageSlice({
   category,
@@ -77,9 +79,7 @@ export function CategoryPageSlice({
         ref={stickyHeader}
       >
         <MasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
-          {settings.api.key ? (
-            <TimeTill loading={loading} timestamp={nextUpdateAt} />
-          ) : (
+          {!settings.api.key && (
             <div className="hidden md:inline-block text-sm text-white/50">
               Provide an{' '}
               <TuiLink color="info" to="/settings">
@@ -89,8 +89,13 @@ export function CategoryPageSlice({
             </div>
           )}
           <Button color="light" loading={loading} onClick={onRefresh}>
-            <RefreshCw />
+            <TuiIcon icon={RefreshCw} />
             Refresh
+            {settings.api.key && (
+              <TuiBadge className="text-sm rounded-md min-w-10.5">
+                <TimeTill timestamp={nextUpdateAt} suffix="s" />
+              </TuiBadge>
+            )}
           </Button>
         </MasteryCard>
         {incompleteMetas.map((achievement) => (

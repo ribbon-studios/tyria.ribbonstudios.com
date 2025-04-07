@@ -1,9 +1,0 @@
-@reference '@/index.css';
-
-.timeTill {
-  @apply italic text-sm text-gray-400 transition-opacity opacity-100;
-
-  &.loading {
-    @apply opacity-0;
-  }
-}

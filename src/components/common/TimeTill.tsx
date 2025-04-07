@@ -1,20 +1,17 @@
 import { useEffect, useState, type FC } from 'react';
-import { formatDistanceToNowStrict } from 'date-fns';
-import * as styles from './TimeTill.module.css';
-import { cn } from '@/utils/cn';
 
-export const TimeTill: FC<TimeTill.Props> = ({ className, timestamp, interval = 100, loading }) => {
-  const [message, setMessage] = useState<string>();
+export const TimeTill: FC<TimeTill.Props> = ({ timestamp, interval = 100, suffix }) => {
+  const [seconds, setSeconds] = useState<number>();
 
   useEffect(() => {
     if (!timestamp) return;
 
     const timer = setInterval(() => {
-      setMessage(
-        formatDistanceToNowStrict(timestamp, {
-          unit: 'second',
-        })
-      );
+      const seconds = Math.round((timestamp - Date.now()) / 1000);
+
+      setSeconds(seconds);
+
+      if (seconds === 0) clearInterval(timer);
     }, interval);
 
     return () => {
@@ -22,20 +19,20 @@ export const TimeTill: FC<TimeTill.Props> = ({ className, timestamp, interval = 
     };
   }, [timestamp, interval]);
 
-  if (!message) return null;
+  if (seconds === undefined) return null;
 
   return (
-    <div className={cn(styles.timeTill, (!timestamp || loading) && styles.loading, className)}>
-      auto refresh in {message}...
-    </div>
+    <>
+      {seconds}
+      {suffix}
+    </>
   );
 };
 
 export namespace TimeTill {
   export type Props = {
-    className?: string;
     timestamp?: number;
     interval?: number;
-    loading?: boolean;
+    suffix?: string;
   };
 }

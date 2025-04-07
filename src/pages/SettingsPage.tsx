@@ -66,7 +66,7 @@ export const Component: FC = () => {
   });
 
   return (
-    <div className="flex flex-col flex-1 p-6 m-auto gap-2 w-full max-w-[1200px]">
+    <>
       <Card className="flex-col">
         <div className="text-xl font-light">Settings</div>
         <TuiInput
@@ -105,7 +105,7 @@ export const Component: FC = () => {
 
                   toast.success('Achievement progress will now be refreshed automatically!');
                 } else {
-                  dispatch(setApiSetting(['refresh_interval', 30]));
+                  dispatch(setApiSetting(['refresh_interval', null]));
 
                   toast.success('Achievement progress will no longer be refreshed automatically.');
                 }
@@ -115,10 +115,11 @@ export const Component: FC = () => {
           rules={[
             UseValidate.rules.number(),
             UseValidate.coerce.number(
-              UseValidate.rules.min(10, 'Please avoid intervals less than 10s to avoid spamming the Guild Wars 2 API.')
+              UseValidate.rules.min(10, 'Please avoid intervals less than 10s to avoid spamming the Guild Wars 2 API.'),
+              UseValidate.rules.max(60, 'Please avoid intervals greater than a minute.')
             ),
           ]}
-          disabled={!settings.api.refresh_interval}
+          disabled={settings.api.refresh_interval === null}
           onChange={async (value) => {
             dispatch(setApiSetting(['refresh_interval', value ? Number(value) : null]));
 
@@ -175,6 +176,6 @@ export const Component: FC = () => {
           onChange={(value) => dispatch(setToggle(['debug_mode', value]))}
         />
       </Card>
-    </div>
+    </>
   );
 };
