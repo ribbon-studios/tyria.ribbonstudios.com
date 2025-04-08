@@ -85,7 +85,7 @@ export const Component: FC = () => {
       <ContentHeader.Incomplete />
       <Loading
         loading={isLoading || isAccountAchievementLoading}
-        className="flex flex-col flex-1 items-center m-6"
+        className="flex flex-col flex-1 items-center pt-12"
         contentClassName="gap-4 w-full max-w-[1200px]"
       >
         {error && (

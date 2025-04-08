@@ -75,7 +75,7 @@ export function CategoryPageSlice({
   return (
     <>
       <div
-        className={cn('sticky top-[-1px] pt-[calc(1em+1px)] flex flex-col gap-2 z-50', sticky && styles.sticky)}
+        className={cn('sticky top-[-1px] pt-[calc(1.5em+1px)] flex flex-col gap-2 z-50', sticky && styles.sticky)}
         ref={stickyHeader}
       >
         <MasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
