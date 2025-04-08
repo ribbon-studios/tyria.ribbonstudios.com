@@ -89,7 +89,7 @@ export const Component: FC = () => {
         contentClassName="gap-4 w-full max-w-[1200px]"
       >
         {error && (
-          <Card className="flex-col">
+          <Card>
             <div className="text-lg font-light">Error!</div>
             <div className="whitespace-pre">{JSON.stringify(error, null, 4)}</div>
           </Card>
@@ -97,7 +97,7 @@ export const Component: FC = () => {
         {enhanced_achievement && (
           <>
             <AchievementCard achievement={enhanced_achievement} />
-            <Card className="flex-col">
+            <Card>
               <div className="flex flex-col items-start gap-1">
                 <div className="text-sm font-bold">Requirement</div>
                 {enhanced_achievement.requirement}

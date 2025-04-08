@@ -22,10 +22,18 @@ export const ProgressBar: FC<ProgressBar.Props> = ({
     if (!markers || !max) return [];
 
     return markers
-      .filter((marker) => marker > 0 && marker < max)
+      .map((marker) =>
+        typeof marker === 'number'
+          ? {
+              value: marker,
+              label: marker,
+            }
+          : marker
+      )
+      .filter((marker) => marker.value > 0 && marker.value < max)
       .map((marker) => ({
-        value: marker,
-        percentage: (marker / max) * 100,
+        ...marker,
+        percentage: (marker.value / max) * 100,
       }));
   }, [markers, max]);
 
@@ -46,7 +54,7 @@ export const ProgressBar: FC<ProgressBar.Props> = ({
           style={{
             left: `${marker.percentage}%`,
           }}
-          tooltip={<div>{marker.value}</div>}
+          tooltip={marker.label}
           align="center"
         >
           <div className={styles.marker} />
@@ -60,8 +68,13 @@ export namespace ProgressBar {
   export type Props = {
     size?: number;
     buffer?: number;
-    markers?: number[];
+    markers?: (number | Marker)[];
     current?: number;
     max?: number;
   } & ComponentProps<'div'>;
+
+  export type Marker = {
+    value: number;
+    label: string | number;
+  };
 }

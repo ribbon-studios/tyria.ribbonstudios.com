@@ -1,11 +1,7 @@
 @reference '@/index.css';
 
 .achievementCard {
-  @apply items-center min-h-36;
-
-  .content {
-    @apply flex flex-col justify-evenly flex-1 gap-1 h-full;
-  }
+  @apply min-h-36;
 
   .info {
     @apply flex flex-col gap-1;
@@ -14,4 +10,8 @@
   &.meta {
     @apply col-span-full;
   }
+}
+
+.achievementCardContent {
+  @apply justify-center;
 }

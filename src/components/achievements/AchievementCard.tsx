@@ -22,6 +22,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
   return (
     <Card
       className={cn(styles.achievementCard, achievement.meta && styles.meta, className)}
+      contentClassName={styles.achievementCardContent}
       icon={achievement.icon}
       splash={
         achievement.icon
@@ -32,34 +33,28 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
           : undefined
       }
     >
-      <div className={styles.content}>
-        <div className="flex justify-between items-start">
-          <div className="font-bold text-shadow-ally">{achievement.name}</div>
-          <div className="flex gap-2">
-            <DebugInfo as={Link} to={`/achievements/${achievement.id}`}>
-              {achievement.id}
-            </DebugInfo>
-            <AchievementActions achievement={achievement} />
-          </div>
+      <div className="flex justify-between items-center">
+        <div className="font-bold text-shadow-ally">{achievement.name}</div>
+        <div className="flex gap-2">
+          <DebugInfo as={Link} to={`/achievements/${achievement.id}`}>
+            {achievement.id}
+          </DebugInfo>
+          <AchievementActions achievement={achievement} />
         </div>
-        <div className={styles.info}>
-          <AutoLink className="text-sm text-shadow-ally">{achievement.requirement}</AutoLink>
-          <AchievementDescription description={achievement.description} />
-          {!achievement.done && (
-            <>
-              <AchievementProgress progress={achievement.progress} tiers={achievement.tiers} />
+      </div>
+      <div className="flex flex-col justify-between gap-2">
+        {achievement.requirement && <AutoLink className="text-sm text-shadow-ally">{achievement.requirement}</AutoLink>}
+        <AchievementDescription description={achievement.description} />
 
-              {achievement.prerequisites && (
-                <div className="flex flex-col gap-1 italic text-sm text-white/60">
-                  <div>
-                    Prerequisites:{' '}
-                    {`"${achievement.prerequisites.map((prerequisite) => prerequisite.name).join('", "')}"`}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+        {achievement.prerequisites && (
+          <div className="flex flex-col gap-1 italic text-sm text-white/60">
+            <div>
+              Prerequisites: {`"${achievement.prerequisites.map((prerequisite) => prerequisite.name).join('", "')}"`}
+            </div>
+          </div>
+        )}
+
+        {!achievement.done && <AchievementProgress progress={achievement.progress} tiers={achievement.tiers} />}
       </div>
     </Card>
   );

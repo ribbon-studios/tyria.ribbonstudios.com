@@ -6,8 +6,9 @@ import { AchievementBits } from './AchievementBits';
 import { TuiTooltip } from '../common/TuiTooltip';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { useMemo } from 'react';
+import { cn } from '@/utils/cn';
 
-export function AchievementProgress({ progress, tiers }: AchievementProgress.Props) {
+export function AchievementProgress({ progress, tiers, className }: AchievementProgress.Props) {
   if (!progress) return null;
 
   const {
@@ -25,7 +26,7 @@ export function AchievementProgress({ progress, tiers }: AchievementProgress.Pro
   if (progress.bits) {
     return (
       <TuiTooltip
-        className="max-w-full"
+        className={cn('max-w-full', className)}
         tooltip={<AchievementBits bits={bits} loading={isLoading} />}
         onMouseOver={() => {
           if (isLoading || bits) return;
@@ -39,13 +40,16 @@ export function AchievementProgress({ progress, tiers }: AchievementProgress.Pro
     );
   }
 
-  return <ProgressBar className="w-full" current={progress.current} max={progress.max} markers={markers} />;
+  return (
+    <ProgressBar className={cn('w-full', className)} current={progress.current} max={progress.max} markers={markers} />
+  );
 }
 
 export namespace AchievementProgress {
   export type Props = {
     tiers: UseEnhancedAchievements.Achievement['tiers'];
     progress: UseEnhancedAchievements.Achievement['progress'];
+    className?: string;
   };
 
   export type BitsByType = {

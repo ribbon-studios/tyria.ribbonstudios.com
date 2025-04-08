@@ -1,5 +1,1 @@
 @reference '@/index.css';
-
-.nasteryCard {
-  @apply gap-2! flex-col justify-between;
-}

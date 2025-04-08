@@ -3,7 +3,7 @@ import { Card } from '@/components/common/Card';
 import { cn } from '@/utils/cn';
 import { useMemo, type ReactNode } from 'react';
 import * as styles from './MasteryCard.module.css';
-import type { AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
+import { Achievement, type AchievementCategory, type Schema } from '@ribbon-studios/guild-wars-2/v2';
 import { MasteryTier, selectMasteryCategory } from '@/store/mastery.slice';
 import { useSelector } from 'react-redux';
 import { MasteryIcon } from './MasteryIcon';
@@ -17,22 +17,29 @@ export function MasteryCard({ category, achievements, children, className }: Mas
     [achievements]
   );
 
+  const markers = useMemo<ProgressBar.Marker[]>(() => {
+    const metas = achievements?.filter(({ flags }) => flags.includes(Achievement.Flags.CATEGORY_DISPLAY)) ?? [];
+
+    return metas.map((achievement) => ({
+      value: achievement.tier.count,
+      label: achievement.name,
+    }));
+  }, [achievements]);
+
   return (
     <Card
-      className={cn(styles.nasteryCard, className)}
+      className={cn(styles.masteryCard, className)}
+      icon={<MasteryIcon masteryTier={masteryTier} size={64} />}
       splash={{
         image: category.icon,
         grayscale: masteryTier !== MasteryTier.TRUE,
       }}
     >
       <div className="flex flex-1 gap-1 items-center justify-between">
-        <div className="flex gap-2 items-center text-lg font-bold">
-          <MasteryIcon masteryTier={masteryTier} />
-          True Mastery
-        </div>
+        <div className="flex gap-2 items-center text-lg font-bold">True Mastery</div>
         {children && <div className="flex gap-4 items-center">{children}</div>}
       </div>
-      <ProgressBar current={current} max={achievements?.length} />
+      <ProgressBar current={current} max={achievements?.length} markers={markers} />
     </Card>
   );
 }

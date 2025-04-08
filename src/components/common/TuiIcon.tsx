@@ -34,10 +34,10 @@ export const TuiIcon: FC<TuiIcon.Props> = ({ icon: Icon, size = 24, ...props }) 
     <Icon
       {...props}
       style={{
-        minHeight: imgSize,
-        minWidth: imgSize,
-        height: imgSize,
-        width: imgSize,
+        minHeight: iconSize,
+        minWidth: iconSize,
+        height: iconSize,
+        width: iconSize,
       }}
     />
   );
@@ -48,6 +48,7 @@ export namespace TuiIcon {
     icon?: LucideIcon | string;
     className?: string;
     size?: number | Sizes;
+    title?: string;
   };
 
   export type Sizes = {

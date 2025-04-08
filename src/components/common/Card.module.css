@@ -1,5 +1,9 @@
 @reference '@/index.css';
 
 .card {
-  @apply relative flex gap-4 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray;
+  @apply relative flex items-center gap-4 bg-tui-dark p-5 border-1 rounded-xl border-tui-gray;
+
+  > .content {
+    @apply h-full flex flex-col flex-1 gap-2;
+  }
 }
