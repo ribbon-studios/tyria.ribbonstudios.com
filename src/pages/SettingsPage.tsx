@@ -67,7 +67,7 @@ export const Component: FC = () => {
 
   return (
     <>
-      <Card className="flex-col">
+      <Card className="mt-6">
         <div className="text-xl font-light">Settings</div>
         <TuiInput
           label="Api Key"
