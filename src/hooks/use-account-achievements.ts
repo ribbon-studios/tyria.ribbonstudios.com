@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useIsTabFocused } from './use-is-focused';
+import type { Achievement, Schema } from '@ribbon-studios/guild-wars-2/v2';
 
-export function useAccountAchievements() {
+export function useAccountAchievements(options?: UseAccountAchievements.Options) {
   const isFocused = useIsTabFocused();
   const [nextUpdateTimestamp, setNextUpdateTimestamp] = useState<number>();
   const refresh_interval = useSelector(selectRefreshInterval);
@@ -27,13 +28,22 @@ export function useAccountAchievements() {
   });
 
   useEffect(() => {
-    if (refresh_interval) {
+    // Keep pinging if there are still incomplete achievements
+    const enabled =
+      !options?.achievements ||
+      options?.achievements.some(({ id }) => {
+        const account_achievement = account_achievements?.find((account_achievement) => account_achievement.id === id);
+
+        return !account_achievement?.done;
+      });
+
+    if (!enabled || !refresh_interval) {
+      setNextUpdateTimestamp(undefined);
+    } else {
       const lastUpdatedAt = Math.max(dataUpdatedAt, errorUpdatedAt);
       setNextUpdateTimestamp(lastUpdatedAt + refresh_interval);
-    } else {
-      setNextUpdateTimestamp(undefined);
     }
-  }, [dataUpdatedAt, errorUpdatedAt]);
+  }, [dataUpdatedAt, errorUpdatedAt, options?.achievements]);
 
   useEffect(() => {
     if (!nextUpdateTimestamp) return;
@@ -56,5 +66,11 @@ export function useAccountAchievements() {
     isFetching,
     nextUpdateTimestamp,
     account_achievements,
+  };
+}
+
+export namespace UseAccountAchievements {
+  export type Options = {
+    achievements?: Achievement<Schema.LATEST>[];
   };
 }

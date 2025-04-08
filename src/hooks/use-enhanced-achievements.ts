@@ -16,7 +16,9 @@ export function useEnhancedAchievements({
   achievements?: RawAchievement<Schema.LATEST>[];
   prerequisite_achievements?: RawAchievement<Schema.LATEST>[];
 }) {
-  const { account_achievements, ...query } = useAccountAchievements();
+  const { account_achievements, ...query } = useAccountAchievements({
+    achievements,
+  });
 
   return {
     ...query,
@@ -81,7 +83,9 @@ export function useEnhancedAchievement({
   achievement?: RawAchievement<Schema.LATEST>;
   prerequisite_achievements?: RawAchievement<Schema.LATEST>[];
 }) {
-  const { account_achievements, ...query } = useAccountAchievements();
+  const { account_achievements, ...query } = useAccountAchievements({
+    achievements: achievement ? [achievement] : undefined,
+  });
 
   return {
     ...query,

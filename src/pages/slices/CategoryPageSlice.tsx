@@ -91,7 +91,7 @@ export function CategoryPageSlice({
           <Button color="light" loading={loading} onClick={onRefresh}>
             <TuiIcon icon={RefreshCw} />
             Refresh
-            {settings.api.key && (
+            {settings.api.key && nextUpdateAt && (
               <TuiBadge className="text-sm rounded-md min-w-10.5">
                 <TimeTill timestamp={nextUpdateAt} suffix="s" />
               </TuiBadge>
