@@ -184,6 +184,32 @@ export namespace UseEnhancedAchievements {
       };
     }
 
+    if (progress?.bits) {
+      progress.bits
+        // Sort text bits alphabetically
+        .sort((a, b) => {
+          if (a.type === RawAchievement.Bit.Type.TEXT && b.type === RawAchievement.Bit.Type.TEXT) {
+            return a.text.localeCompare(b.text);
+          } else if (a.type === RawAchievement.Bit.Type.TEXT) {
+            return 1;
+          } else if (b.type === RawAchievement.Bit.Type.TEXT) {
+            return -1;
+          }
+
+          return 0;
+        })
+        // Sort completed bits to the bottom.
+        .sort((a, b) => {
+          if (a.done === b.done) return 0;
+
+          if (a.done) {
+            return 1;
+          }
+
+          return -1;
+        });
+    }
+
     return {
       ...achievement,
       icon: achievement.icon ?? category?.icon,
