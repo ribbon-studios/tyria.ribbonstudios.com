@@ -4,7 +4,7 @@
   @apply flex flex-col relative;
 
   > .spinner {
-    @apply absolute left-1/2 -translate-x-1/2 animate-spin transition-opacity opacity-0 pointer-events-none;
+    @apply absolute left-1/2 -translate-x-1/2;
   }
 
   &:not(.center) > .spinner {
@@ -30,9 +30,4 @@
   &.loading > .content {
     @apply opacity-0 pointer-events-none;
   }
-}
-
-.spinner.loading,
-.loadingContainer.loading > .spinner {
-  @apply opacity-100;
 }

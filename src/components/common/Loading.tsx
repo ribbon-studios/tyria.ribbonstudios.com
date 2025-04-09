@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
-import { Loader2 } from 'lucide-react';
 import { useEffect, useState, type FC, type ReactNode } from 'react';
 import * as styles from './Loading.module.css';
+import { Spinner } from './Spinner';
 
 export const Loading: FC<Loading.Props> = ({
   direction = 'vertical',
@@ -34,13 +34,13 @@ export const Loading: FC<Loading.Props> = ({
           className
         )}
       >
-        <Loader2 className={styles.spinner} size={size} />
+        <Spinner className={styles.spinner} loading={internalLoading} size={size} />
         {!loading && <div className={cn(styles.content, contentClassName)}>{children}</div>}
       </div>
     );
   }
 
-  return <Loader2 className={cn(styles.spinner, internalLoading && styles.loading, className)} size={size} />;
+  return <Spinner className={styles.spinner} loading={internalLoading} size={size} />;
 };
 
 export namespace Loading {
