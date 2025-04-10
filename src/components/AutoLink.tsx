@@ -1,5 +1,5 @@
+import { useLinks } from '@/hooks/use-links';
 import { api } from '@/service/api';
-import { cn } from '@/utils/cn';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, type ComponentProps, type ElementType } from 'react';
 
@@ -40,8 +40,10 @@ export function AutoLink<T extends ElementType = 'div'>({ as, children, ...props
     return static_names;
   }, [map_names]);
 
+  const name_links = useLinks(names);
+
   const formattedChildren = useMemo<string>(() => {
-    return AutoLink.replaceAll(names, children);
+    return AutoLink.replaceAll(name_links, children);
   }, [names, children]);
 
   return (
@@ -60,14 +62,12 @@ export namespace AutoLink {
     children: string;
   } & Omit<ComponentProps<T>, 'dangerouslySetInnerHTML'>;
 
-  export function replaceAll(names: string[], requirement: string) {
-    return names.reduce(
+  export function replaceAll(names: Record<string, string>, requirement: string) {
+    return Object.keys(names).reduce(
       (output, name) =>
         output.replace(
           name,
-          `<a class="text-tui-info hover:underline" target="_blank" href="https://wiki.guildwars2.com/wiki/${name
-            .replace(/\s/g, '_')
-            .replace(/[\[\]"]/g, '')}">${name}</a>`
+          `<a class="text-tui-info hover:underline" target="_blank" href="${names[name]}">${name}</a>`
         ),
       requirement
     );

@@ -1,7 +1,8 @@
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
-import { Eye, Link, type LucideIcon } from 'lucide-react';
+import { Eye, type LucideIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import type { UseEnhancedAchievements } from './use-enhanced-achievements';
+import { UseLinks } from './use-links';
 
 export function useAchievementActions(achievement: UseEnhancedAchievements.Achievement) {
   return useMemo(() => {
@@ -52,14 +53,10 @@ export namespace UseAchievementActions {
     tooltip?: string;
   };
 
-  export const TypeLinkMap: Record<Exclude<Type, Type.PREREQUISITE>, (name: string) => string> = {
-    [Type.STORY]: (name: string) => `https://wiki.guildwars2.com/wiki/${sanitize(name)}`,
-  };
-
   export const TypeMap: Record<Type, (value: string) => Action> = {
     [Type.STORY]: (value) => ({
       icon: 'https://render.guildwars2.com/file/540BA9BB6662A5154BD13306A1AEAD6219F95361/102369.png',
-      href: `https://wiki.guildwars2.com/wiki/${sanitize(value)}`,
+      href: UseLinks.link(value),
       tooltip: 'Story Mission',
     }),
     [Type.PREREQUISITE]: (value) => ({
@@ -68,12 +65,6 @@ export namespace UseAchievementActions {
       tooltip: 'Locked Achievement',
     }),
   };
-
-  function sanitize(name: string) {
-    const result = name.replace(/\s/g, '_').replace(/[\[\]"]/g, '');
-
-    return result.split('—')[0];
-  }
 
   export function getDescriptionActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
     if (!achievement.description) return [];
