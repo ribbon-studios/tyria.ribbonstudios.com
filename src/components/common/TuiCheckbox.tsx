@@ -3,7 +3,6 @@ import { type FC } from 'react';
 import * as styles from './TuiCheckbox.module.css';
 import { cn } from '@/utils/cn';
 import { useRandomId } from '@/hooks/use-random-id';
-import { Tally4 } from 'lucide-react';
 
 export const TuiCheckbox: FC<TuiCheckbox.Props> = ({ label, value, variant = 'checkbox', onChange, ...props }) => {
   const id = useRandomId('input', props.id);

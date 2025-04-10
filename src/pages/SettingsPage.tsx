@@ -72,7 +72,7 @@ export const Component: FC = () => {
     <>
       <Card className="mt-6">
         <div className="text-xl font-light">Settings</div>
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
           <TuiInput
             className="flex-1"
             label="Api Key"
@@ -97,7 +97,7 @@ export const Component: FC = () => {
             }}
           />
           <TuiButton
-            className="self-end px-6!"
+            className="md:self-end px-6!"
             color="tui-error"
             onClick={() => dispatch(fetchAchievementSections())}
             loading={isApiLoading}
