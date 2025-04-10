@@ -4,7 +4,7 @@ import * as styles from './TuiCard.module.css';
 import { TuiSplash } from './TuiSplash';
 import { TuiIcon } from './TuiIcon';
 
-export function TuiCard({ className, contentClassName, children, icon, splash, onClick }: Card.Props) {
+export function TuiCard({ className, contentClassName, children, icon, splash, onClick }: TuiCard.Props) {
   const internalIcon = useMemo(() => {
     if (typeof icon === 'string') return <TuiIcon icon={icon} size={64} />;
 

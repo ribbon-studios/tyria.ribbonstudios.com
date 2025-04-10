@@ -1,5 +1,5 @@
-export function formatter(value: string) {
-  return new Formatter(value);
+export function formatter(value: string | number | boolean) {
+  return new Formatter(value.toString());
 }
 
 class Formatter {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { RefreshCw } from 'lucide-react';
@@ -21,6 +21,10 @@ import { computeMasteryTier } from '@/utils/achievements';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { TuiIcon } from '@/components/common/TuiIcon';
 import { TuiBadge } from '@/components/common/TuiBadge';
+import { TuiCard } from '@/components/common/TuiCard';
+import { TuiInput } from '@/components/common/TuiInput';
+import { useAchievementSearch } from '@/hooks/use-achievement-search';
+import { useQueryParam } from '@/hooks/use-query-param';
 
 export function CategoryPageSlice({
   category,
@@ -34,6 +38,7 @@ export function CategoryPageSlice({
   const stickyHeader = useRef<HTMLDivElement>(null);
   const settings = useSelector(selectSettings);
   const sticky = useSticky(stickyHeader);
+  const [search, setSearch] = useQueryParam('achievements');
 
   if (!category) {
     return <Navigate to="/" />;
@@ -72,6 +77,8 @@ export function CategoryPageSlice({
     dispatch(setMasteryTier([category.id, currentMasteryTier]));
   }, [achievements]);
 
+  const filteredAchievements = useAchievementSearch(basics, search);
+
   return (
     <>
       <div
@@ -102,8 +109,11 @@ export function CategoryPageSlice({
           <AchievementCard className={styles.pinnedCard} key={achievement.id} achievement={achievement} />
         ))}
       </div>
+      <TuiCard splash={{ image: category.icon, grayscale: true }}>
+        <TuiInput mode="input" placeholder="Search..." value={search} onChange={setSearch} />
+      </TuiCard>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
-        {basics.map((achievement) => (
+        {filteredAchievements.map((achievement) => (
           <AchievementCard key={achievement.id} achievement={achievement} />
         ))}
       </div>
