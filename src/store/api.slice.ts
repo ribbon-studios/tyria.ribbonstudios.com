@@ -59,17 +59,20 @@ export const appSlice = createAppSlice({
         ]);
 
         const sortedCategories: ApiSlice.Category[] = categories
+          .filter((category) => category.achievements.length > 0)
           .sort((a, b) => a.order - b.order)
           .map((category) => ({
             ...category,
             name_sanitized: formatter(category.name).sanitize.lower.value(),
           }));
+
         const sortedGroups: ApiSlice.Group[] = groups
-          .sort((a, b) => a.order - b.order)
           .map((group) => ({
             ...group,
             categories: sortedCategories.filter((category) => group.categories.includes(category.id)),
-          }));
+          }))
+          .filter(({ categories }) => categories.length > 0)
+          .sort((a, b) => a.order - b.order);
 
         return [sortedGroups, sortedCategories] as const;
       },
