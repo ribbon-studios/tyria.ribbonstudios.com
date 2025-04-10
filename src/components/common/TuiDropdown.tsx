@@ -1,7 +1,7 @@
 import { Children, cloneElement, useEffect, useRef, useState, type FC, type ReactElement, type ReactNode } from 'react';
 import * as styles from './TuiDropdown.module.css';
 import { cn } from '@/utils/cn';
-import { Card } from './Card';
+import { TuiCard } from './TuiCard';
 
 export const TuiDropdown: FC<TuiDropdown.Props> = ({
   align = 'left',
@@ -40,13 +40,13 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({
           onClick: () => setOpen(!open),
         })
       )}
-      <Card
+      <TuiCard
         className={cn(styles.dropdown, dropdownClassName)}
         contentClassName={dropdownContentClassName}
         onClick={() => setOpen(false)}
       >
         {children}
-      </Card>
+      </TuiCard>
     </div>
   );
 };

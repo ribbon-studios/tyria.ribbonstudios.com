@@ -1,10 +1,10 @@
 import { cn } from '@/utils/cn';
 import { useMemo, type ReactNode } from 'react';
-import * as styles from './Card.module.css';
+import * as styles from './TuiCard.module.css';
 import { TuiSplash } from './TuiSplash';
 import { TuiIcon } from './TuiIcon';
 
-export function Card({ className, contentClassName, children, icon, splash, onClick }: Card.Props) {
+export function TuiCard({ className, contentClassName, children, icon, splash, onClick }: Card.Props) {
   const internalIcon = useMemo(() => {
     if (typeof icon === 'string') return <TuiIcon icon={icon} size={64} />;
 
@@ -27,7 +27,7 @@ export function Card({ className, contentClassName, children, icon, splash, onCl
   );
 }
 
-export namespace Card {
+export namespace TuiCard {
   export type Props = {
     className?: string;
     contentClassName?: string;

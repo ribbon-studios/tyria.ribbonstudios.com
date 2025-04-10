@@ -1,4 +1,4 @@
-import { Card } from '@/components/common/Card';
+import { TuiCard } from '@/components/common/TuiCard';
 import { TuiInput } from '@/components/common/TuiInput';
 import { api } from '@/service/api';
 import { useAppDispatch } from '@/store';
@@ -70,7 +70,7 @@ export const Component: FC = () => {
 
   return (
     <>
-      <Card className="mt-6">
+      <TuiCard className="mt-6">
         <div className="text-xl font-light">Settings</div>
         <div className="flex flex-col md:flex-row gap-2">
           <TuiInput
@@ -190,7 +190,7 @@ export const Component: FC = () => {
           variant="toggle"
           onChange={(value) => dispatch(setToggle(['debug_mode', value]))}
         />
-      </Card>
+      </TuiCard>
     </>
   );
 };

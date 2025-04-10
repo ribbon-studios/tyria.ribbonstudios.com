@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Loading } from '@/components/common/Loading';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { useSelector } from 'react-redux';
-import { Card } from '@/components/common/Card';
+import { TuiCard } from '@/components/common/TuiCard';
 import { ContentHeader } from '@/components/common/IncompletePage';
 import { AchievementRewards } from '@/components/achievements/rewards/AchievementRewards';
 import { DebugInfo } from '@/components/DebugInfo';
@@ -89,15 +89,15 @@ export const Component: FC = () => {
         contentClassName="gap-4 w-full max-w-[1200px]"
       >
         {error && (
-          <Card>
+          <TuiCard>
             <div className="text-lg font-light">Error!</div>
             <div className="whitespace-pre">{JSON.stringify(error, null, 4)}</div>
-          </Card>
+          </TuiCard>
         )}
         {enhanced_achievement && (
           <>
             <AchievementCard achievement={enhanced_achievement} />
-            <Card>
+            <TuiCard>
               <div className="flex flex-col items-start gap-1">
                 <div className="text-sm font-bold">Requirement</div>
                 {enhanced_achievement.requirement}
@@ -108,7 +108,7 @@ export const Component: FC = () => {
               <DebugInfo className="whitespace-pre overflow-x-auto py-2">
                 {JSON.stringify(enhanced_achievement, null, 2)}
               </DebugInfo>
-            </Card>
+            </TuiCard>
           </>
         )}
       </Loading>

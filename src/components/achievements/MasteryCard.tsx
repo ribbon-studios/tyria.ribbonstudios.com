@@ -1,5 +1,5 @@
 import { ProgressBar } from '@/components/common/ProgressBar';
-import { Card } from '@/components/common/Card';
+import { TuiCard } from '@/components/common/TuiCard';
 import { cn } from '@/utils/cn';
 import { useMemo, type ReactNode } from 'react';
 import * as styles from './MasteryCard.module.css';
@@ -27,7 +27,7 @@ export function MasteryCard({ category, achievements, children, className }: Mas
   }, [achievements]);
 
   return (
-    <Card
+    <TuiCard
       className={cn(styles.masteryCard, className)}
       icon={<MasteryIcon masteryTier={masteryTier} size={64} />}
       splash={{
@@ -40,7 +40,7 @@ export function MasteryCard({ category, achievements, children, className }: Mas
         {children && <div className="flex gap-4 items-center">{children}</div>}
       </div>
       <ProgressBar current={current} max={achievements?.length} markers={markers} />
-    </Card>
+    </TuiCard>
   );
 }
 

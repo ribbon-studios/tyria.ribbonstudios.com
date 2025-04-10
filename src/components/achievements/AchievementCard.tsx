@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { Card } from '../common/Card';
+import { TuiCard } from '../common/TuiCard';
 import * as styles from './AchievementCard.module.css';
 import React from 'react';
 import { AchievementActions } from './AchievementActions';
@@ -20,7 +20,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
   if (settings.toggles.hide_hidden_achievements && achievement.flags.includes(Achievement.Flags.HIDDEN)) return null;
 
   return (
-    <Card
+    <TuiCard
       className={cn(styles.achievementCard, achievement.meta && styles.meta, className)}
       contentClassName={styles.achievementCardContent}
       icon={achievement.icon}
@@ -56,7 +56,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
 
         {!achievement.done && <AchievementProgress progress={achievement.progress} tiers={achievement.tiers} />}
       </div>
-    </Card>
+    </TuiCard>
   );
 }
 
