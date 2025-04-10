@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { RefreshCw } from 'lucide-react';
-import { Button } from '@/components/common/Button';
+import { TuiButton } from '@/components/common/TuiButton';
 import { TimeTill } from '@/components/common/TimeTill';
 import { useSelector } from 'react-redux';
 import { selectRefreshInterval, selectSettings } from '@/store/settings.slice';
@@ -88,7 +88,7 @@ export function CategoryPageSlice({
               to enable auto refresh...
             </div>
           )}
-          <Button color="light" loading={loading} onClick={onRefresh}>
+          <TuiButton color="tui-light-gray" loading={loading} onClick={onRefresh}>
             <TuiIcon icon={RefreshCw} />
             Refresh
             {settings.api.key && nextUpdateAt && (
@@ -96,7 +96,7 @@ export function CategoryPageSlice({
                 <TimeTill timestamp={nextUpdateAt} suffix="s" />
               </TuiBadge>
             )}
-          </Button>
+          </TuiButton>
         </MasteryCard>
         {incompleteMetas.map((achievement) => (
           <AchievementCard className={styles.pinnedCard} key={achievement.id} achievement={achievement} />

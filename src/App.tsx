@@ -21,6 +21,11 @@ export const Component: FC = () => {
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
   const location = useLocation();
 
+  const isLoading = useMemo(
+    () => api.loading && (!api.groups || !api.categories),
+    [api.loading, api.groups, api.categories]
+  );
+
   useEffect(() => {
     if (api.version !== CURRENT_VERSION || !api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {
       dispatch(fetchAchievementSections());
@@ -54,7 +59,7 @@ export const Component: FC = () => {
       <Loading
         className="min-h-dvh"
         contentClassName={styles.app}
-        loading={api.loading || isBackgroundLoading}
+        loading={isLoading || isBackgroundLoading}
         size={128}
         delay={500}
         direction="horizontal"

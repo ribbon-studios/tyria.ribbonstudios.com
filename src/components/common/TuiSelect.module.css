@@ -16,21 +16,25 @@
   }
 
   .select {
-    @apply gap-0 p-0;
+    @apply p-0;
 
-    > .item {
-      &.selected {
-        @apply bg-tui-gray/50;
-      }
+    > .selectContent {
+      @apply gap-0;
 
-      @apply py-4 hover:bg-tui-gray transition-colors cursor-pointer;
+      > .item {
+        &.selected {
+          @apply bg-tui-gray/50;
+        }
 
-      &:first-child {
-        @apply rounded-t-[inherit];
-      }
+        @apply py-4 hover:bg-tui-gray transition-colors cursor-pointer;
 
-      &:last-child {
-        @apply rounded-b-[inherit];
+        &:first-child {
+          @apply rounded-t-[inherit];
+        }
+
+        &:last-child {
+          @apply rounded-b-[inherit];
+        }
       }
     }
   }

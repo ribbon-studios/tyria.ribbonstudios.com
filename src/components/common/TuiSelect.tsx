@@ -33,6 +33,7 @@ export function TuiSelect<T extends string | number>({
       <TuiDropdown
         align={align}
         dropdownClassName={styles.select}
+        dropdownContentClassName={styles.selectContent}
         button={
           <TuiInput
             className="cursor-pointer"

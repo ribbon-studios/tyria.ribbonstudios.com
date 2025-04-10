@@ -1,7 +1,8 @@
 import { cn } from '@/utils/cn';
-import { useEffect, useState, type FC, type ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import * as styles from './Loading.module.css';
 import { Spinner } from './Spinner';
+import { useDelayedLoading } from '@/hooks/use-delayed';
 
 export const Loading: FC<Loading.Props> = ({
   direction = 'vertical',
@@ -14,13 +15,7 @@ export const Loading: FC<Loading.Props> = ({
   delay,
   ...props
 }) => {
-  const [internalLoading, setInternalLoading] = useState(loading);
-
-  useEffect(() => {
-    if (loading) setInternalLoading(true);
-    else if (delay) setTimeout(() => setInternalLoading(false), delay);
-    else setInternalLoading(false);
-  }, [loading]);
+  const internalLoading = useDelayedLoading(loading);
 
   if (children) {
     return (

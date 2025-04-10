@@ -9,6 +9,7 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({
   children,
   className,
   dropdownClassName,
+  dropdownContentClassName,
   ...props
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,7 +40,11 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({
           onClick: () => setOpen(!open),
         })
       )}
-      <Card className={cn(styles.dropdown, dropdownClassName)} onClick={() => setOpen(false)}>
+      <Card
+        className={cn(styles.dropdown, dropdownClassName)}
+        contentClassName={dropdownContentClassName}
+        onClick={() => setOpen(false)}
+      >
         {children}
       </Card>
     </div>
@@ -53,5 +58,6 @@ export namespace TuiDropdown {
     align?: 'left' | 'center' | 'right' | 'full';
     className?: string;
     dropdownClassName?: string;
+    dropdownContentClassName?: string;
   };
 }

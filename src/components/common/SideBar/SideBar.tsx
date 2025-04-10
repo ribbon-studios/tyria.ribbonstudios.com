@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState, type FC } from 'react';
 import { Bug, Code2, Eye, Menu } from 'lucide-react';
 import { SideBarItem } from './SideBarItem';
 import * as styles from './SideBar.module.css';
-import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
 import { cn } from '@/utils/cn';
-import { Button } from '../Button';
+import { TuiButton } from '../TuiButton';
 import { useSelector } from 'react-redux';
 import { selectMasteryCategories } from '@/store/mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
@@ -82,9 +82,9 @@ export function SideBar({ open, onClose }: SideBar.Props) {
           mode="input"
         />
         <div className="flex md:hidden items-center gap-4 mx-6 my-[17px]">
-          <Button className="min-w-10" onClick={() => onClose()}>
+          <TuiButton className="min-w-10" onClick={() => onClose()}>
             <Menu />
-          </Button>
+          </TuiButton>
           <TuiLink className="text-2xl font-bold" to="/" onClick={() => onClose()}>
             Tyria UI
           </TuiLink>
@@ -132,22 +132,22 @@ export function SideBar({ open, onClose }: SideBar.Props) {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <Button
-              color="light"
+            <TuiButton
+              color="tui-light-gray"
               as={Link}
               to="https://github.com/ribbon-studios/tyria.ribbonstudios.com/issues"
               target="_blank"
             >
               <Bug />
-            </Button>
-            <Button
-              color="light"
+            </TuiButton>
+            <TuiButton
+              color="tui-light-gray"
               as={Link}
               to="https://github.com/ribbon-studios/tyria.ribbonstudios.com"
               target="_blank"
             >
               <Code2 />
-            </Button>
+            </TuiButton>
           </div>
         </div>
       </div>

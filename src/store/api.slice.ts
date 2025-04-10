@@ -110,6 +110,7 @@ export const appSlice = createAppSlice({
 export const { fetchAchievementSections, setApiLoading } = appSlice.actions;
 
 export const selectApiState = (state: AppState) => state.api;
+export const selectApiLoading = (state: AppState) => selectApiState(state).loading;
 
 export const selectGroups = (state: AppState) => selectApiState(state).groups;
 export const selectGroup = (id: string) => (state: AppState) =>

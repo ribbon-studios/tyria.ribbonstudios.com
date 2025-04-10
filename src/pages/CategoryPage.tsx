@@ -73,7 +73,7 @@ export const Component: FC = () => {
     <Loading
       loading={isLoading || isAccountAchievementsLoading}
       className="flex flex-col flex-1 items-center"
-      contentClassName="gap-2"
+      contentClassName="w-full gap-2"
       size={128}
     >
       <CategoryPageSlice
