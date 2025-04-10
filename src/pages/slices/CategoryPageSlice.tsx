@@ -108,10 +108,17 @@ export function CategoryPageSlice({
         {incompleteMetas.map((achievement) => (
           <AchievementCard className={styles.pinnedCard} key={achievement.id} achievement={achievement} />
         ))}
+        {settings.toggles.pin_search && (
+          <TuiCard className={styles.pinnedCard} splash={{ image: category.icon, grayscale: true }}>
+            <TuiInput mode="input" placeholder="Search..." value={search} onChange={setSearch} />
+          </TuiCard>
+        )}
       </div>
-      <TuiCard splash={{ image: category.icon, grayscale: true }}>
-        <TuiInput mode="input" placeholder="Search..." value={search} onChange={setSearch} />
-      </TuiCard>
+      {!settings.toggles.pin_search && (
+        <TuiCard splash={{ image: category.icon, grayscale: true }}>
+          <TuiInput mode="input" placeholder="Search..." value={search} onChange={setSearch} />
+        </TuiCard>
+      )}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
         {filteredAchievements.map((achievement) => (
           <AchievementCard key={achievement.id} achievement={achievement} />

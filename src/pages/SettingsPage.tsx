@@ -149,47 +149,68 @@ export const Component: FC = () => {
           value={settings.background}
           onChange={(value) => dispatch(setBackground(value))}
         />
-        <div className="text-xl font-light">Toggles</div>
-        <TuiCheckbox
-          label="Hide Completed Achievements"
-          value={settings.toggles.hide_completed_achievements}
-          variant="toggle"
-          onChange={(value) => {
-            dispatch(setToggle(['hide_completed_achievements', value]));
+        <div className="grid xl:grid-cols-2 gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="text-xl font-light">Sticky Toggles</div>
+            <div className="text-sm text-tui-muted">These toggles make various parts of the category page sticky.</div>
+            <TuiCheckbox
+              label="Incomplete Meta Achievements"
+              value={settings.toggles.pin_incomplete_meta_achievements}
+              variant="toggle"
+              onChange={(value) => dispatch(setToggle(['pin_incomplete_meta_achievements', value]))}
+            />
+            <TuiCheckbox
+              label="Search"
+              value={settings.toggles.pin_search}
+              variant="toggle"
+              onChange={(value) => dispatch(setToggle(['pin_search', value]))}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="text-xl font-light">Visibility Toggles</div>
+            <div className="text-sm text-tui-muted">
+              Want to declutter the UI? Hide achievements based on their state!
+            </div>
+            <TuiCheckbox
+              label="Hide Hidden Achievements"
+              value={settings.toggles.hide_hidden_achievements}
+              variant="toggle"
+              onChange={(value) => {
+                dispatch(setToggle(['hide_hidden_achievements', value]));
 
-            if (value) {
-              toast.success('Achievements will now be hidden upon completion.');
-            } else {
-              toast.success('Achievements will no longer be hidden upon completion.');
-            }
-          }}
-        />
-        <TuiCheckbox
-          label="Hide Hidden Achievements"
-          value={settings.toggles.hide_hidden_achievements}
-          variant="toggle"
-          onChange={(value) => {
-            dispatch(setToggle(['hide_hidden_achievements', value]));
+                if (value) {
+                  toast.success('Hidden achievements will no longer be displayed.');
+                } else {
+                  toast.success('Hidden achievements will now be visible!');
+                }
+              }}
+            />
+            <TuiCheckbox
+              label="Hide Completed Achievements"
+              value={settings.toggles.hide_completed_achievements}
+              variant="toggle"
+              onChange={(value) => {
+                dispatch(setToggle(['hide_completed_achievements', value]));
 
-            if (value) {
-              toast.success('Hidden achievements will no longer be displayed.');
-            } else {
-              toast.success('Hidden achievements will now be visible!');
-            }
-          }}
-        />
-        <TuiCheckbox
-          label="Make Incomplete Meta Achievements Sticky"
-          value={settings.toggles.pin_incomplete_meta_achievements}
-          variant="toggle"
-          onChange={(value) => dispatch(setToggle(['pin_incomplete_meta_achievements', value]))}
-        />
-        <TuiCheckbox
-          label="Debug Mode"
-          value={settings.toggles.debug_mode}
-          variant="toggle"
-          onChange={(value) => dispatch(setToggle(['debug_mode', value]))}
-        />
+                if (value) {
+                  toast.success('Achievements will now be hidden upon completion.');
+                } else {
+                  toast.success('Achievements will no longer be hidden upon completion.');
+                }
+              }}
+            />
+          </div>
+          <div className="flex flex-col col-span-full gap-2">
+            <div className="text-xl font-light">Miscelaneous Toggles</div>
+            <div className="text-sm text-tui-muted">Toggles that just didn't make sense anywhere else!</div>
+            <TuiCheckbox
+              label="Debug Mode"
+              value={settings.toggles.debug_mode}
+              variant="toggle"
+              onChange={(value) => dispatch(setToggle(['debug_mode', value]))}
+            />
+          </div>
+        </div>
       </TuiCard>
     </>
   );

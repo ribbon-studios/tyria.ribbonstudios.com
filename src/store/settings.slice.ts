@@ -41,6 +41,7 @@ export type SettingsSlice = {
   background: Background;
   toggles: {
     pin_incomplete_meta_achievements: boolean;
+    pin_search: boolean;
     hide_completed_achievements: boolean;
     hide_hidden_achievements: boolean;
     debug_mode: boolean;
@@ -54,6 +55,7 @@ const initialState: SettingsSlice = {
   ...cachedState,
   toggles: {
     pin_incomplete_meta_achievements: true,
+    pin_search: false,
     hide_completed_achievements: false,
     hide_hidden_achievements: false,
     debug_mode: false,
