@@ -20,7 +20,7 @@
   @apply relative inline-flex flex-1 rounded-lg overflow-hidden bg-tui-light-gray text-white;
 
   > input {
-    @apply pl-4 pr-10 py-2.5 flex-1 outline-none;
+    @apply pl-4 pr-10 py-2.5 w-full outline-none;
   }
 
   &:before {
