@@ -20,11 +20,11 @@ import { MasteryTier, selectMasteryCategory, setMasteryTier } from '@/store/mast
 import { computeMasteryTier } from '@/utils/achievements';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { TuiIcon } from '@/components/common/TuiIcon';
-import { TuiBadge } from '@/components/common/TuiBadge';
 import { TuiCard } from '@/components/common/TuiCard';
 import { TuiInput } from '@/components/common/TuiInput';
 import { useAchievementSearch } from '@/hooks/use-achievement-search';
 import { useQueryParam } from '@/hooks/use-query-param';
+import { TuiProgressCircular } from '@/components/common/TuiProgressCircular';
 
 export function CategoryPageSlice({
   category,
@@ -96,13 +96,14 @@ export function CategoryPageSlice({
             </div>
           )}
           <TuiButton color="tui-light-gray" loading={loading} onClick={onRefresh}>
-            <TuiIcon icon={RefreshCw} />
-            Refresh
-            {settings.api.key && nextUpdateAt && (
-              <TuiBadge className="text-sm rounded-md min-w-10.5">
-                <TimeTill timestamp={nextUpdateAt} suffix="s" />
-              </TuiBadge>
+            {settings.api.key && nextUpdateAt ? (
+              <TimeTill timestamp={nextUpdateAt}>
+                {({ total_seconds }) => <TuiProgressCircular duration={total_seconds * 1000} loading={loading} />}
+              </TimeTill>
+            ) : (
+              <TuiIcon icon={RefreshCw} />
             )}
+            Refresh
           </TuiButton>
         </MasteryCard>
         {incompleteMetas.map((achievement) => (

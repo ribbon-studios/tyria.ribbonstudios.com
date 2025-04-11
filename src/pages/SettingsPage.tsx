@@ -72,40 +72,40 @@ export const Component: FC = () => {
     <>
       <TuiCard className="mt-6">
         <div className="text-xl font-light">Settings</div>
-        <div className="flex flex-col md:flex-row gap-2">
-          <TuiInput
-            className="flex-1"
-            label="Api Key"
-            type="password"
-            description={
-              <>
-                Your Guild Wars 2&nbsp;
-                <TuiLink color="info" to="https://account.arena.net/applications" target="_blank">
-                  API Key
-                </TuiLink>
-                . (requires the account and progression scopes)
-              </>
-            }
-            loading={isPending}
-            value={settings.api.key ?? ''}
-            subtext={submittedAt === 0 ? undefined : `Last verified @ ${format(submittedAt, 'h:mm aa')}`}
-            onChange={async (value) => {
-              await verifyToken(value);
+        <TuiInput
+          className="flex-1"
+          label="Api Key"
+          type="password"
+          description={
+            <>
+              Your Guild Wars 2&nbsp;
+              <TuiLink color="info" to="https://account.arena.net/applications" target="_blank">
+                API Key
+              </TuiLink>
+              . (requires the account and progression scopes)
+            </>
+          }
+          loading={isPending}
+          value={settings.api.key ?? ''}
+          subtext={submittedAt === 0 ? undefined : `Last verified @ ${format(submittedAt, 'h:mm aa')}`}
+          onChange={async (value) => {
+            await verifyToken(value);
 
-              dispatch(setApiKey(value));
-              dispatch(resetTrueMastery());
-            }}
-          />
-          <TuiButton
-            className="md:self-end px-6!"
-            color="tui-error"
-            onClick={() => dispatch(fetchAchievementSections())}
-            loading={isApiLoading}
-            delay={100}
-          >
-            Reset Cache
-          </TuiButton>
-        </div>
+            dispatch(setApiKey(value));
+            dispatch(resetTrueMastery());
+          }}
+          append={
+            <TuiButton
+              className="px-6!"
+              color="tui-error"
+              onClick={() => dispatch(fetchAchievementSections())}
+              loading={isApiLoading}
+              delay={100}
+            >
+              Reset Cache
+            </TuiButton>
+          }
+        />
         <TuiInput
           className="flex-1"
           label="Auto-Refresh Interval"

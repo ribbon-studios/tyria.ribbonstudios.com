@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
 import { useCachedState } from '@ribbon-studios/react-utils';
 
-import { type ComponentProps, useMemo, useState, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import { useState, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { SaveIndicator } from './SaveIndicator';
 import { XCircle } from 'lucide-react';
 import * as styles from './TuiInput.module.css';
@@ -20,6 +20,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
   subtext,
   onChange,
   prepend,
+  append,
   readOnly,
   onClick,
   type,
@@ -84,6 +85,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
             />
           )}
         </div>
+        {append}
       </div>
       <TuiMessages messages={messages} />
       {subtext && <div className={styles.subtext}>{subtext}</div>}
@@ -103,5 +105,6 @@ export namespace TuiInput {
     prepend?: ReactNode;
     rules?: Array<UseValidate.Rule<string> | UseValidate.Coerce<string>>;
     mode?: 'blur' | 'input';
+    append?: ReactNode;
   } & Omit<ComponentPropsWithoutRef<'input'>, 'onChange' | 'value'>;
 }
