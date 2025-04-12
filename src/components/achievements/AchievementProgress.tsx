@@ -27,7 +27,7 @@ export function AchievementProgress({ progress, tiers, className }: AchievementP
     return (
       <TuiTooltip
         className={cn('max-w-full', className)}
-        tooltip={<AchievementBits bits={bits?.bits} skins={bits?.skins} text={bits?.text} loading={isLoading} />}
+        tooltip={<AchievementBits bits={bits?.bits} text={bits?.text} loading={isLoading} />}
         onMouseOver={() => {
           if (isLoading || bits) return;
 
@@ -75,7 +75,6 @@ export namespace AchievementProgress {
 
   export type GetBitsResponse = {
     bits: IconBit[];
-    skins: UseEnhancedAchievements.Bit.Skin[];
     text: UseEnhancedAchievements.Bit.Text[];
   };
 
@@ -83,7 +82,6 @@ export namespace AchievementProgress {
     if (!progress?.bits) {
       return {
         bits: [],
-        skins: [],
         text: [],
       };
     }
@@ -102,17 +100,20 @@ export namespace AchievementProgress {
       }
     );
 
-    const [items, skins, minis] = await Promise.all([
+    const bits = await Promise.all([
       GetBits.getItems(bits_by_type[Achievement.Bit.Type.ITEM]),
       GetBits.getSkins(bits_by_type[Achievement.Bit.Type.SKIN]),
       GetBits.getMinis(bits_by_type[Achievement.Bit.Type.MINIPET]),
     ]);
 
-    const bits: IconBit[] = [...items, ...minis];
-
     return {
-      bits,
-      skins,
+      bits: bits
+        .reduce((output, items) => output.concat(items))
+        .sort((a, b) => {
+          if (a.done === b.done) return 0;
+          else if (a.done) return 1;
+          else return -1;
+        }),
       text: bits_by_type[Achievement.Bit.Type.TEXT],
     };
   }
@@ -126,7 +127,7 @@ export namespace AchievementProgress {
       });
 
       return bits.map((bit) => {
-        const item = items.find((mini) => mini.id === bit.id)!;
+        const item = items.find((item) => item.id === bit.id)!;
 
         return {
           id: item.id,
@@ -137,11 +138,23 @@ export namespace AchievementProgress {
       });
     }
 
-    export async function getSkins(bits: UseEnhancedAchievements.Bit.Skin[]): Promise<GetBitsResponse['skins']> {
+    export async function getSkins(bits: UseEnhancedAchievements.Bit.Skin[]): Promise<IconBit[]> {
       if (bits.length === 0) return [];
 
-      // TODO: Implement Support for Skins...
-      return bits;
+      const skins = await api.v2.skins.list({
+        ids: bits.map(({ id }) => id),
+      });
+
+      return bits.map((bit) => {
+        const skin = skins.find((skin) => skin.id === bit.id)!;
+
+        return {
+          id: skin.id,
+          name: skin.name,
+          icon: skin.icon,
+          done: bit.done,
+        };
+      });
     }
 
     export async function getMinis(bits: UseEnhancedAchievements.Bit.Minipet[]): Promise<IconBit[]> {

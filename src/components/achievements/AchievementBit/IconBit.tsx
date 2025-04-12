@@ -15,8 +15,13 @@ export function IconBit({ bit }: IconBit.Props) {
         </div>
       }
     >
-      <TuiLink to={UseLinks.link(bit.name)} className="rounded-sm overflow-hidden" target="_blank" overlay>
-        <TuiIcon icon={bit.icon} size={48} className={cn(['rounded-md', !bit.done && 'grayscale'])} />
+      <TuiLink
+        to={UseLinks.link(bit.name)}
+        className={cn('inline-flex rounded-sm overflow-hidden')}
+        target="_blank"
+        overlay
+      >
+        <TuiIcon icon={bit.icon} size={48} className={cn([!bit.done && 'grayscale'])} />
       </TuiLink>
     </TuiTooltip>
   );
