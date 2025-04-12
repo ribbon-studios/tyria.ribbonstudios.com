@@ -2,7 +2,7 @@ import type { AchievementProgress } from '../AchievementProgress';
 import { IconBit } from '../AchievementBit/IconBit';
 
 export function IconBits({ bits }: IconBits.Props) {
-  if (!bits) return null;
+  if (!bits?.length) return null;
 
   return (
     <>
