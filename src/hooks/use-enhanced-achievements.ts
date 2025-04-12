@@ -39,21 +39,21 @@ export function useEnhancedAchievements({
 
             return a.description.localeCompare(b.description);
           })
-          // Sort completed achievements to the bottom
-          .sort((a, b) => {
-            if (a.done === b.done) return 0;
-
-            if (a.done) {
-              return 1;
-            }
-
-            return -1;
-          })
           // Sort achievements that are locked to the bottom
           .sort((a, b) => {
             if (a.prerequisites === b.prerequisites) return 0;
 
             if (a.prerequisites) {
+              return 1;
+            }
+
+            return -1;
+          })
+          // Sort completed achievements to the bottom
+          .sort((a, b) => {
+            if (a.done === b.done) return 0;
+
+            if (a.done) {
               return 1;
             }
 
