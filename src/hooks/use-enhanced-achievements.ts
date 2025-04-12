@@ -29,47 +29,7 @@ export function useEnhancedAchievements({
         UseEnhancedAchievements.enhance(category, achievement, prerequisite_achievements, account_achievements)
       );
 
-      return (
-        enhanced_achievements
-          .sort((a, b) => {
-            if (a.description === b.description) return 0;
-
-            if (!b.description) return 1;
-            if (!a.description) return -1;
-
-            return a.description.localeCompare(b.description);
-          })
-          // Sort achievements that are locked to the bottom
-          .sort((a, b) => {
-            if (a.prerequisites === b.prerequisites) return 0;
-
-            if (a.prerequisites) {
-              return 1;
-            }
-
-            return -1;
-          })
-          // Sort completed achievements to the bottom
-          .sort((a, b) => {
-            if (a.done === b.done) return 0;
-
-            if (a.done) {
-              return 1;
-            }
-
-            return -1;
-          })
-          // Sort meta achievements to the top
-          .sort((a, b) => {
-            if (a.meta === b.meta) return 0;
-
-            if (a.meta) {
-              return -1;
-            }
-
-            return 1;
-          })
-      );
+      return UseEnhancedAchievements.sort(enhanced_achievements, ['description', 'locked', 'done', 'meta']);
     }, [category, achievements, prerequisite_achievements, account_achievements]),
   };
 }
@@ -222,4 +182,52 @@ export namespace UseEnhancedAchievements {
       progress,
     };
   }
+
+  export type Sort = (a: Achievement, b: Achievement) => number;
+
+  export function sort(achievements: Achievement[], order: (keyof typeof sorts)[]) {
+    return order.reduce((items, key) => items.sort(sorts[key]), achievements);
+  }
+
+  export const sorts = {
+    // Sort Alphabetically by Description
+    description: (a, b) => {
+      if (a.description === b.description) return 0;
+
+      if (!b.description) return 1;
+      if (!a.description) return -1;
+
+      return a.description.localeCompare(b.description);
+    },
+    // Sort achievements that are locked to the bottom
+    locked: (a, b) => {
+      if (a.prerequisites === b.prerequisites) return 0;
+
+      if (a.prerequisites) {
+        return 1;
+      }
+
+      return -1;
+    },
+    // Sort completed achievements to the bottom
+    done: (a, b) => {
+      if (a.done === b.done) return 0;
+
+      if (a.done) {
+        return 1;
+      }
+
+      return -1;
+    },
+    // Sort meta achievements to the top
+    meta: (a, b) => {
+      if (a.meta === b.meta) return 0;
+
+      if (a.meta) {
+        return -1;
+      }
+
+      return 1;
+    },
+  } satisfies Record<string, Sort>;
 }
