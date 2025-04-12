@@ -1,15 +1,18 @@
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import { ProgressBar } from '../common/ProgressBar';
-import { api } from '@/service/api';
+import { api, ApiError } from '@/service/api';
 import { useQuery } from '@tanstack/react-query';
 import { AchievementBits } from './AchievementBits';
 import { TuiTooltip } from '../common/TuiTooltip';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
+import { TuiError } from '../common/TuiError';
 
 export function AchievementProgress({ progress, tiers, className }: AchievementProgress.Props) {
   if (!progress) return null;
+
+  const [error, setError] = useState<ApiError>();
 
   const {
     data: bits,
@@ -18,7 +21,17 @@ export function AchievementProgress({ progress, tiers, className }: AchievementP
   } = useQuery({
     enabled: false,
     queryKey: ['bits', progress.bits],
-    queryFn: () => AchievementProgress.getBits(progress),
+    queryFn: async () => {
+      try {
+        return await AchievementProgress.getBits(progress);
+      } catch (error) {
+        if (ApiError.is(error) && error.status === 404) {
+          setError(error);
+        }
+
+        return null;
+      }
+    },
   });
 
   const markers = useMemo(() => tiers.map(({ count }) => count), [tiers]);
@@ -27,9 +40,16 @@ export function AchievementProgress({ progress, tiers, className }: AchievementP
     return (
       <TuiTooltip
         className={cn('max-w-full', className)}
-        tooltip={<AchievementBits bits={bits?.bits} text={bits?.text} loading={isLoading} />}
+        tooltipClassName={cn(error && 'min-w-full')}
+        tooltip={
+          error ? (
+            <TuiError error={error} />
+          ) : (
+            <AchievementBits bits={bits?.bits} text={bits?.text} loading={isLoading} />
+          )
+        }
         onMouseOver={() => {
-          if (isLoading || bits) return;
+          if (isLoading || bits || error) return;
 
           refetch();
         }}

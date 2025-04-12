@@ -8,3 +8,9 @@ export type ApiError = {
     text: string;
   };
 };
+
+export namespace ApiError {
+  export function is(error: any): error is ApiError {
+    return typeof error === 'object' && typeof error.status === 'number';
+  }
+}
