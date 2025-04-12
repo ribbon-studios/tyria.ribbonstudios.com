@@ -17,7 +17,7 @@ const static_names = [
   'Chatoyant Elixir',
 ];
 
-const excluded_names = ['Sabotage'];
+const excluded_names = ['Sabotage', 'Doubt'];
 
 export function AutoLink<T extends ElementType = 'div'>({ as, children, ...props }: AutoLink.Props<T>) {
   const Component = as ?? 'div';
