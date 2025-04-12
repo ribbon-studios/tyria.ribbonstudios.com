@@ -1,4 +1,4 @@
-import { Achievement, Schema, type Mini } from '@ribbon-studios/guild-wars-2/v2';
+import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import { ProgressBar } from '../common/ProgressBar';
 import { api } from '@/service/api';
 import { useQuery } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ export function AchievementProgress({ progress, tiers, className }: AchievementP
     return (
       <TuiTooltip
         className={cn('max-w-full', className)}
-        tooltip={<AchievementBits bits={bits} loading={isLoading} />}
+        tooltip={<AchievementBits bits={bits?.bits} skins={bits?.skins} text={bits?.text} loading={isLoading} />}
         onMouseOver={() => {
           if (isLoading || bits) return;
 
@@ -65,24 +65,30 @@ export namespace AchievementProgress {
     id?: number;
   };
 
+  export type IconBit = {
+    id: number;
+    name: string;
+    done: boolean;
+    icon?: string;
+    hint?: string;
+  };
+
   export type GetBitsResponse = {
-    items: UseEnhancedAchievements.Bit.Item[];
+    bits: IconBit[];
     skins: UseEnhancedAchievements.Bit.Skin[];
-    minis: (UseEnhancedAchievements.Bit.Minipet & Mini<Schema.LATEST>)[];
     text: UseEnhancedAchievements.Bit.Text[];
   };
 
   export async function getBits(progress: UseEnhancedAchievements.Achievement['progress']): Promise<GetBitsResponse> {
     if (!progress?.bits) {
       return {
-        minis: [],
-        items: [],
+        bits: [],
         skins: [],
         text: [],
       };
     }
 
-    const bits = progress.bits.reduce<AchievementProgress.BitsByType>(
+    const bits_by_type = progress.bits.reduce<AchievementProgress.BitsByType>(
       (output, bit) => {
         output[bit.type].push(bit);
 
@@ -97,25 +103,38 @@ export namespace AchievementProgress {
     );
 
     const [items, skins, minis] = await Promise.all([
-      GetBits.getItems(bits[Achievement.Bit.Type.ITEM]),
-      GetBits.getSkins(bits[Achievement.Bit.Type.SKIN]),
-      GetBits.getMinis(bits[Achievement.Bit.Type.MINIPET]),
+      GetBits.getItems(bits_by_type[Achievement.Bit.Type.ITEM]),
+      GetBits.getSkins(bits_by_type[Achievement.Bit.Type.SKIN]),
+      GetBits.getMinis(bits_by_type[Achievement.Bit.Type.MINIPET]),
     ]);
 
+    const bits: IconBit[] = [...items, ...minis];
+
     return {
-      items,
+      bits,
       skins,
-      minis,
-      text: bits[Achievement.Bit.Type.TEXT],
+      text: bits_by_type[Achievement.Bit.Type.TEXT],
     };
   }
 
   export namespace GetBits {
-    export async function getItems(bits: UseEnhancedAchievements.Bit.Item[]): Promise<GetBitsResponse['items']> {
+    export async function getItems(bits: UseEnhancedAchievements.Bit.Item[]): Promise<IconBit[]> {
       if (bits.length === 0) return [];
 
-      // TODO: Implement Support for Items...
-      return bits;
+      const items = await api.v2.items.list({
+        ids: bits.map(({ id }) => id),
+      });
+
+      return bits.map((bit) => {
+        const item = items.find((mini) => mini.id === bit.id)!;
+
+        return {
+          id: item.id,
+          name: item.name,
+          icon: item.icon,
+          done: bit.done,
+        };
+      });
     }
 
     export async function getSkins(bits: UseEnhancedAchievements.Bit.Skin[]): Promise<GetBitsResponse['skins']> {
@@ -125,7 +144,7 @@ export namespace AchievementProgress {
       return bits;
     }
 
-    export async function getMinis(bits: UseEnhancedAchievements.Bit.Minipet[]): Promise<GetBitsResponse['minis']> {
+    export async function getMinis(bits: UseEnhancedAchievements.Bit.Minipet[]): Promise<IconBit[]> {
       if (bits.length === 0) return [];
 
       const minis = await api.v2.minis.list({
@@ -133,11 +152,14 @@ export namespace AchievementProgress {
       });
 
       return bits.map((bit) => {
-        const mini = minis.find((mini) => mini.id === bit.id);
+        const mini = minis.find((mini) => mini.id === bit.id)!;
 
         return {
-          ...bit,
-          ...mini!,
+          id: mini.id,
+          name: mini.name,
+          icon: mini.icon,
+          done: bit.done,
+          hint: mini.unlock,
         };
       });
     }

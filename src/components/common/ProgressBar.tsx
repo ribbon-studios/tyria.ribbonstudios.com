@@ -56,6 +56,7 @@ export const ProgressBar: FC<ProgressBar.Props> = ({
           }}
           tooltip={marker.label}
           align="center"
+          preventNesting
         >
           <div className={styles.marker} />
         </TuiTooltip>

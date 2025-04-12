@@ -13,6 +13,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
   allowLocking,
   position = 'bottom',
   align = 'start',
+  preventNesting,
   ...props
 }) => {
   const [open, setOpen] = useState(false);
@@ -66,7 +67,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
         className
       )}
       onMouseOver={(event) => {
-        event.stopPropagation();
+        if (preventNesting) event.stopPropagation();
         setOpen(true);
         onMouseOver?.(event);
       }}
@@ -108,5 +109,6 @@ export namespace TuiTooltip {
     allowLocking?: boolean;
     position?: 'left' | 'right' | 'top' | 'bottom';
     align?: 'start' | 'center' | 'end';
+    preventNesting?: boolean;
   } & ComponentProps<'div'>;
 }
