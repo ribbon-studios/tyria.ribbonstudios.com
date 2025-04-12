@@ -135,7 +135,7 @@ export namespace UseEnhancedAchievements {
   export function enhance(
     category: AchievementCategory<Schema.LATEST> | undefined,
     { tiers, bits, prerequisites = [], requirement, ...achievement }: RawAchievement<Schema.LATEST>,
-    prerequisite_achievements?: RawAchievement<Schema.LATEST>[],
+    prerequisite_achievements: RawAchievement<Schema.LATEST>[] = [],
     account_achievements?: AccountAchievement<Schema.LATEST>[]
   ): Achievement {
     const account_achievement = account_achievements?.find(({ id }) => achievement.id === id);
@@ -147,7 +147,7 @@ export namespace UseEnhancedAchievements {
           !account_achievements?.find((account_achievement) => account_achievement.id === id)?.done
         );
       })
-      .map((id) => prerequisite_achievements?.find((prerequisite_achievement) => prerequisite_achievement.id === id)!);
+      .map((id) => prerequisite_achievements!.find((prerequisite_achievement) => prerequisite_achievement.id === id)!);
 
     const tier = tiers.reduce((output, tier) => ({
       count: tier.count,
@@ -172,7 +172,7 @@ export namespace UseEnhancedAchievements {
       progress = {
         current: 0,
         max: bits.length,
-        bits: bits?.map((bit, i) => ({
+        bits: bits?.map((bit) => ({
           ...bit,
           done: false,
         })),

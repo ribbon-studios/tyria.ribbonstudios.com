@@ -21,7 +21,7 @@ export function TuiProgressCircular({ duration, size = 24, className, loading }:
       viewBox={`0 0 ${size} ${size}`}
       className={cn(styles.progressCircular, loading && styles.loading, className)}
       style={{
-        /* @ts-expect-error */
+        /* @ts-expect-error Typescript considers all css variables as invalid */
         '--size': `${size}px`,
       }}
       ref={progress}

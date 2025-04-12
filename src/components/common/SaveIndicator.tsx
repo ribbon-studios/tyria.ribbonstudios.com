@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { Check, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 import { type FC } from 'react';
 

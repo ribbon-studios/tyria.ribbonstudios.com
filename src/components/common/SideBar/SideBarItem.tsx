@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, type ElementType, type FC, type ReactNode } from 'react';
+import { type ComponentPropsWithoutRef, type ElementType, type ReactNode } from 'react';
 import { ChevronRight, type LucideIcon } from 'lucide-react';
 import * as styles from './SideBarItem.module.css';
 import { cn } from '@/utils/cn';

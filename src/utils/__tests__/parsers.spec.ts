@@ -1,6 +1,4 @@
 import { describe, it, expect, expectTypeOf } from 'vitest';
-import { variable } from '../css';
-import { chance } from '@/__tests__/chance';
 import { json } from '../parsers';
 
 describe('Parser', () => {

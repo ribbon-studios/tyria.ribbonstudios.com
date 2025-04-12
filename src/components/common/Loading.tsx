@@ -15,7 +15,7 @@ export const Loading: FC<Loading.Props> = ({
   delay,
   ...props
 }) => {
-  const internalLoading = useDelayedLoading(loading);
+  const internalLoading = useDelayedLoading(loading, delay);
 
   if (children) {
     return (

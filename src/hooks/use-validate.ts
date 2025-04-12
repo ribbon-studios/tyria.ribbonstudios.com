@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 export function useValidate<T>(rules?: Array<UseValidate.Rule<T> | UseValidate.Coerce<T>>) {
   const [state, setState] = useState<UseValidate.State>({

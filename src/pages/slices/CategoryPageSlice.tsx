@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { RefreshCw } from 'lucide-react';

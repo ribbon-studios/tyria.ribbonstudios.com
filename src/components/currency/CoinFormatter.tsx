@@ -4,10 +4,9 @@ import { TuiIcon } from '../common/TuiIcon';
 
 export function CoinFormatter({ value }: CoinFormatter.Props) {
   const [gold, silver, copper] = useMemo<[number, number, number]>(() => {
-    let test = 123456789;
-    const gold = Math.floor(test / 10000);
-    const silver = Math.floor((test - gold * 10000) / 100);
-    const copper = test - gold * 10000 - silver * 100;
+    const gold = Math.floor(value / 10000);
+    const silver = Math.floor((value - gold * 10000) / 100);
+    const copper = value - gold * 10000 - silver * 100;
 
     return [gold, silver, copper];
   }, [value]);

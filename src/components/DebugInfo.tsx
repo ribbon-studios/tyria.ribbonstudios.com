@@ -1,6 +1,6 @@
 import { selectToggle } from '@/store/settings.slice';
 import { cn } from '@/utils/cn';
-import type { ComponentProps, ElementType, FC, ReactNode } from 'react';
+import type { ComponentProps, ElementType, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 
 export function DebugInfo<T extends ElementType>({ as, children, className, ...props }: DebugInfo.Props<T>) {
