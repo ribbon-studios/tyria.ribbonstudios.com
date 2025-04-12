@@ -96,6 +96,7 @@ export function SideBar({ open, onClose }: SideBar.Props) {
             <SideBarItem
               key={group.id}
               label={group.name}
+              tooltip={group.description}
               className={styles.alternating}
               isOpen={group.id === activeGroupId}
               onClick={() => setActiveGroupId(activeGroupId === group.id ? undefined : group.id)}
@@ -107,6 +108,7 @@ export function SideBar({ open, onClose }: SideBar.Props) {
                   key={category.id}
                   id={`category-${category.id}`}
                   label={category.name}
+                  tooltip={category.description}
                   icon={category.icon}
                   to={`/categories/${category.id}`}
                   onClick={() => onClose()}

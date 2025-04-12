@@ -4,6 +4,7 @@ import * as styles from './SideBarItem.module.css';
 import { cn } from '@/utils/cn';
 import { Accordion } from '../Accordion';
 import { TuiIcon } from '../TuiIcon';
+import { TuiTooltip } from '../TuiTooltip';
 
 export function SideBarItem<T extends ElementType = 'div'>({
   as,
@@ -14,23 +15,34 @@ export function SideBarItem<T extends ElementType = 'div'>({
   isOpen,
   onClick,
   append,
+  tooltip,
   ...props
 }: SideBarItem.Props<T>) {
   const Component = as ?? 'div';
 
+  const toggle = (
+    <div className={cn(styles.target, isOpen && styles.open)} onClick={onClick}>
+      {icon ? (
+        <>
+          <TuiIcon icon={icon} size={{ img: 30, icon: 24 }} />
+        </>
+      ) : (
+        <ChevronRight className={cn('transition-transform', isOpen && 'rotate-90')} />
+      )}
+      <div className="flex-1">{label}</div>
+      {append}
+    </div>
+  );
+
   return (
     <Component {...props} className={cn(styles.item, className)}>
-      <div className={cn(styles.target, isOpen && styles.open)} onClick={onClick}>
-        {icon ? (
-          <>
-            <TuiIcon icon={icon} size={{ img: 30, icon: 24 }} />
-          </>
-        ) : (
-          <ChevronRight className={cn('transition-transform', isOpen && 'rotate-90')} />
-        )}
-        <div className="flex-1">{label}</div>
-        {append}
-      </div>
+      {tooltip ? (
+        <TuiTooltip tooltip={tooltip} position="bottom" align="full" noHover>
+          {toggle}
+        </TuiTooltip>
+      ) : (
+        toggle
+      )}
       {children && <Accordion isOpen={isOpen}>{children}</Accordion>}
     </Component>
   );
@@ -42,6 +54,7 @@ export namespace SideBarItem {
     label: string;
     onClick?: () => void;
     append?: ReactNode;
+    tooltip?: string;
   } & (
     | {
         children: ReactNode;
