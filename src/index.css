@@ -11,7 +11,7 @@ body {
   @apply flex flex-1 flex-col;
 }
 
-@theme {
+@theme static {
   --color-tui-primary: #65247e;
   --color-tui-success: #38c12b;
   --color-tui-error: #c0392b;
