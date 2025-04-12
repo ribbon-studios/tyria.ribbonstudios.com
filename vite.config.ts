@@ -28,6 +28,11 @@ export default defineConfig(async () => {
     test: {
       environment: 'happy-dom',
       setupFiles: ['./src/__tests__/setup.ts'],
+      coverage: {
+        reporter: ['text', 'lcovonly'],
+        include: ['src/**/*.{ts,tsx}'],
+        exclude: ['/demo/', '**/dist/', '**/__tests__/'],
+      },
     },
     plugins: [react(), tailwindcss()],
   };
