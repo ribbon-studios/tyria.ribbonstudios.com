@@ -18,7 +18,7 @@ export function TuiHeader() {
   if (mdAndUp) {
     return (
       <div className={styles.header}>
-        <TuiLink className="items-center gap-4" to="/">
+        <TuiLink className="flex items-center gap-4" to="/">
           <TuiIcon icon={header.image ?? '/favicon.png'} size={48} />
           Tyria UI
         </TuiLink>

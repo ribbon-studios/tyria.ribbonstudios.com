@@ -96,8 +96,8 @@ export const Component: FC = () => {
           }}
           append={
             <TuiButton
-              className="px-6!"
-              color="tui-error"
+              className="w-full md:w-auto"
+              color="error"
               onClick={() => dispatch(fetchAchievementSections())}
               loading={isApiLoading}
               delay={100}

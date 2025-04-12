@@ -13,7 +13,7 @@ export const TopBar: FC<TopBar.Props> = ({ onSideBarToggle }) => {
         </TuiButton>
         <TuiHeader />
         <div className="flex gap-2 ml-auto">
-          <TuiButton as={NavLink} color="tui-light-gray" to="/settings">
+          <TuiButton as={NavLink} color="light-gray" to="/settings">
             <Settings />
             <span className="hidden lg:inline-flex">Settings</span>
           </TuiButton>

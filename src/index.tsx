@@ -11,7 +11,7 @@ import { Component as HomePage } from './pages/HomePage';
 import { Component as AchievementPage } from './pages/AchievementPage';
 import { Component as CategoryPage } from './pages/CategoryPage';
 import { Component as SettingsPage } from './pages/SettingsPage';
-import { github } from './utils/github';
+import * as github from './utils/github';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
 
 const version = import.meta.env.APP_VERSION!;
 
-console.log(`%cApp Version:%c${version} (${github(version)})`, 'font-weight: bold;');
+console.log(`%cApp Version:%c${version} (${github.commit(version)})`, 'font-weight: bold;');
 
 const client = new QueryClient({
   defaultOptions: {

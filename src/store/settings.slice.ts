@@ -1,7 +1,7 @@
 import { api } from '@/service/api';
 import { type AppState } from '.';
 import { createAppSlice } from './utils';
-import { parseSafe } from '@/utils/json';
+import { json } from '@/utils/parsers';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { TuiSelect } from '@/components/common/TuiSelect';
 
@@ -48,7 +48,7 @@ export type SettingsSlice = {
   };
 };
 
-const cachedState = parseSafe<SettingsSlice>(localStorage.getItem('account'));
+const cachedState = json<SettingsSlice>(localStorage.getItem('account'));
 
 const initialState: SettingsSlice = {
   background: Background.Random,

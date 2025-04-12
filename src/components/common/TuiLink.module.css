@@ -1,15 +1,7 @@
 @reference '@/index.css';
 
 .tuiLink {
-  @apply inline-flex;
-
-  &:hover {
-    @apply underline;
-  }
-
-  &.color__info {
-    @apply text-tui-info;
-  }
+  @apply hover:underline;
 
   &.overlay {
     @apply relative;

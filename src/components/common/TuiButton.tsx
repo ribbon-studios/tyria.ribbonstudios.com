@@ -1,14 +1,16 @@
-import { useMemo, type ComponentProps, type ElementType, type FC, type ReactNode } from 'react';
+import { useMemo, type ComponentProps, type ElementType, type ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import * as styles from './TuiButton.module.css';
 import { useDelayedLoading } from '@/hooks/use-delayed';
+import type { Color } from '@/types';
+import { variable } from '@/utils/css';
 
 export function TuiButton<T extends ElementType = 'button'>({
   as,
   className,
   children,
-  color = 'tui-dark',
+  color = 'dark',
   disabled,
   loading,
   delay,
@@ -23,7 +25,7 @@ export function TuiButton<T extends ElementType = 'button'>({
 
     return {
       ...props.styles,
-      '--tui-button-background': `var(--color-${color})`,
+      '--tui-button-background': variable.tui(color),
       '--tui-button-color': colors.color,
       '--tui-button-border': colors.border,
     };
@@ -53,36 +55,39 @@ export namespace TuiButton {
     delay?: number;
   } & Omit<ComponentProps<T>, 'color'>;
 
-  export type Color = 'tui-gray' | 'tui-light-gray' | 'tui-dark' | 'tui-error' | 'tui-success' | 'tui-warning';
   export type Colors = {
     border: string;
     color: string;
   };
 
   export const COLORS: Record<Color, Colors> = {
-    'tui-dark': {
-      border: 'var(--color-tui-gray)',
+    info: {
+      border: variable.tui('gray'),
       color: 'white',
     },
-    'tui-gray': {
-      border: 'var(--color-tui-light-gray)',
+    dark: {
+      border: variable.tui('gray'),
       color: 'white',
     },
-    'tui-light-gray': {
-      border: 'var(--color-tui-gray)',
+    gray: {
+      border: variable.tui('light-gray'),
       color: 'white',
     },
-    'tui-error': {
-      border: 'var(--color-tui-gray)',
+    'light-gray': {
+      border: variable.tui('gray'),
       color: 'white',
     },
-    'tui-success': {
-      border: 'var(--color-tui-gray)',
+    error: {
+      border: variable.tui('gray'),
       color: 'white',
     },
-    'tui-warning': {
-      border: 'var(--color-tui-gray)',
-      color: 'var(--color-tui-dark)',
+    success: {
+      border: variable.tui('gray'),
+      color: 'white',
+    },
+    warning: {
+      border: variable.tui('gray'),
+      color: variable.tui('dark'),
     },
   };
 }

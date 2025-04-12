@@ -1,6 +1,6 @@
 import { type AppState } from '.';
 import { createAppSlice } from './utils';
-import { parseSafe } from '@/utils/json';
+import { json } from '@/utils/parsers';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type TrueMasterySlice = {
@@ -25,7 +25,7 @@ if (localStorage.getItem('true-mastery')) {
   localStorage.removeItem('true-mastery');
 }
 
-const cachedState = parseSafe<TrueMasterySlice>(localStorage.getItem('mastery'));
+const cachedState = json<TrueMasterySlice>(localStorage.getItem('mastery'));
 
 const CURRENT_VERSION = 1;
 

@@ -1,7 +1,7 @@
 @reference '@/index.css';
 
 .button {
-  @apply relative p-2 border rounded-lg cursor-pointer overflow-hidden;
+  @apply relative p-3 border rounded-lg cursor-pointer overflow-hidden;
 
   background-color: var(--tui-button-background, black);
   color: var(--tui-button-color, white);

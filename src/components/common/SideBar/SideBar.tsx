@@ -133,7 +133,7 @@ export function SideBar({ open, onClose }: SideBar.Props) {
           </div>
           <div className="flex flex-col gap-2">
             <TuiButton
-              color="tui-light-gray"
+              color="light-gray"
               as={Link}
               to="https://github.com/ribbon-studios/tyria.ribbonstudios.com/issues"
               target="_blank"
@@ -141,7 +141,7 @@ export function SideBar({ open, onClose }: SideBar.Props) {
               <Bug />
             </TuiButton>
             <TuiButton
-              color="tui-light-gray"
+              color="light-gray"
               as={Link}
               to="https://github.com/ribbon-studios/tyria.ribbonstudios.com"
               target="_blank"

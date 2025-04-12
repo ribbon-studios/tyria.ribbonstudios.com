@@ -2,9 +2,9 @@ import { api } from '@/service/api';
 import { type AppState } from '.';
 import { createAppSlice } from './utils';
 import type { AchievementCategory, AchievementGroup, Schema } from '@ribbon-studios/guild-wars-2/v2';
-import { parseSafe } from '@/utils/json';
+import { json } from '@/utils/parsers';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { formatter, sanitize } from '@/utils/formatter';
+import { formatter } from '@/utils/formatter';
 
 export type ApiSlice = {
   version: number;
@@ -37,7 +37,7 @@ const initialState: ApiSlice = {
   version: 0,
   groups: [],
   categories: [],
-  ...parseSafe<Omit<ApiSlice, 'loading'>>(localStorage.getItem('api')),
+  ...json<Omit<ApiSlice, 'loading'>>(localStorage.getItem('api')),
   loading: true,
 };
 
