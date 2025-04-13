@@ -173,7 +173,7 @@ export namespace UseEnhancedAchievements {
     return {
       ...achievement,
       icon: achievement.icon ?? category?.icon,
-      requirement: requirement.replace(/\s{2}/gi, ` ${tier.count} `),
+      requirement: process.requirement(requirement, tier, progress),
       tier,
       tiers,
       done: account_achievement?.done ?? false,
@@ -181,6 +181,18 @@ export namespace UseEnhancedAchievements {
       meta: achievement.flags.includes(RawAchievement.Flags.CATEGORY_DISPLAY),
       progress,
     };
+  }
+
+  export namespace process {
+    export function requirement(value: string, tier: RawAchievement.Tier, progress?: Achievement['progress']): string {
+      let output = value.replace(/\s{2}/gi, ` ${tier.count} `);
+
+      if (progress) {
+        output = output.replace(/\s\/\s/gi, ` ${progress.current}/${tier.count} `);
+      }
+
+      return output;
+    }
   }
 
   export type Sort = (a: Achievement, b: Achievement) => number;
