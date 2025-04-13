@@ -4,7 +4,7 @@
   @apply relative rounded-full bg-tui-light-gray;
 
   > .indicator {
-    @apply absolute rounded-[inherit] bg-tui-info min-w-0;
+    @apply absolute rounded-[inherit] bg-tui-info min-w-0 transition-all;
   }
 
   > .markerTooltip {
