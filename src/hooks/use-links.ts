@@ -16,6 +16,7 @@ export function useLinks(
 export namespace UseLinks {
   export const story: Record<string, string> = {
     'Heart of the Volcano': 'Heart of the Volcano (story)',
+    'Hallowed Ground': 'Hallowed_Ground_(story)',
   };
 
   export const object: Record<string, string> = {
