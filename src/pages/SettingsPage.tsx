@@ -130,8 +130,7 @@ export const Component: FC = () => {
           rules={[
             UseValidate.rules.number(),
             UseValidate.coerce.number(
-              UseValidate.rules.min(10, 'Please avoid intervals less than 10s to avoid spamming the Guild Wars 2 API.'),
-              UseValidate.rules.max(60, 'Please avoid intervals greater than a minute.')
+              UseValidate.rules.min(10, 'Please avoid intervals less than 10s to avoid spamming the Guild Wars 2 API.')
             ),
           ]}
           disabled={settings.api.refresh_interval === null}
