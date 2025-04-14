@@ -1,7 +1,6 @@
 import { cn } from '@/utils/cn';
 import { TuiCard } from '../common/TuiCard';
 import * as styles from './AchievementCard.module.css';
-import React from 'react';
 import { AchievementActions } from './AchievementActions';
 import { useSelector } from 'react-redux';
 import { selectSettings } from '@/store/settings.slice';
@@ -13,7 +12,7 @@ import { AutoLink } from '../AutoLink';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 
-export function AchievementCard({ achievement, className }: AchievementCard.Props) {
+export function AchievementCard({ achievement, className, basic }: AchievementCard.Props) {
   const settings = useSelector(selectSettings);
 
   if (settings.toggles.hide_completed_achievements && achievement.done) return null;
@@ -21,7 +20,7 @@ export function AchievementCard({ achievement, className }: AchievementCard.Prop
 
   return (
     <TuiCard
-      className={cn(styles.achievementCard, achievement.meta && styles.meta, className)}
+      className={cn(styles.achievementCard, !basic && achievement.meta && styles.meta, className)}
       contentClassName={styles.achievementCardContent}
       icon={achievement.icon}
       splash={
@@ -64,5 +63,6 @@ export namespace AchievementCard {
   export type Props = {
     achievement: UseEnhancedAchievements.Achievement;
     className?: string;
+    basic?: boolean;
   };
 }
