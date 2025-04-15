@@ -7,15 +7,18 @@ import {
 import { useMemo } from 'react';
 import { useAccountAchievements } from './use-account-achievements';
 
-export function useEnhancedAchievements({
-  category,
-  achievements,
-  prerequisite_achievements,
-}: {
-  category?: AchievementCategory<Schema.LATEST>;
-  achievements?: RawAchievement<Schema.LATEST>[];
-  prerequisite_achievements?: RawAchievement<Schema.LATEST>[];
-}) {
+export function useEnhancedAchievements(
+  {
+    category,
+    achievements,
+    prerequisite_achievements,
+  }: {
+    category?: AchievementCategory<Schema.LATEST>;
+    achievements?: RawAchievement<Schema.LATEST>[];
+    prerequisite_achievements?: RawAchievement<Schema.LATEST>[];
+  },
+  sorts: UseEnhancedAchievements.SortKey[] = ['name', 'progress', 'locked', 'done', 'meta']
+) {
   const { account_achievements, ...query } = useAccountAchievements({
     achievements,
   });
@@ -29,7 +32,7 @@ export function useEnhancedAchievements({
         UseEnhancedAchievements.enhance(category, achievement, prerequisite_achievements, account_achievements)
       );
 
-      return UseEnhancedAchievements.sort(enhanced_achievements, ['description', 'locked', 'done', 'meta']);
+      return UseEnhancedAchievements.sort(enhanced_achievements, sorts);
     }, [category, achievements, prerequisite_achievements, account_achievements]),
   };
 }
@@ -196,12 +199,26 @@ export namespace UseEnhancedAchievements {
   }
 
   export type Sort = (a: Achievement, b: Achievement) => number;
+  export type SortKey = keyof typeof sorts;
 
-  export function sort(achievements: Achievement[], order: (keyof typeof sorts)[]) {
+  export function sort(achievements: Achievement[], order: SortKey[]) {
     return order.reduce((items, key) => items.sort(sorts[key]), achievements);
   }
 
   export const sorts = {
+    id: (a, b) => {
+      if (a.id > b.id) return 1;
+      else return -1;
+    },
+    // Sort Alphabetically by Name
+    name: (a, b) => {
+      if (a.name === b.name) return 0;
+
+      if (!b.name) return 1;
+      if (!a.name) return -1;
+
+      return a.name.localeCompare(b.name);
+    },
     // Sort Alphabetically by Description
     description: (a, b) => {
       if (a.description === b.description) return 0;
@@ -210,6 +227,16 @@ export namespace UseEnhancedAchievements {
       if (!a.description) return -1;
 
       return a.description.localeCompare(b.description);
+    },
+    progress: (a, b) => {
+      const progress = {
+        a: a.progress ? a.progress.current / a.progress.max : a.done ? 1 : 0,
+        b: b.progress ? b.progress.current / b.progress.max : b.done ? 1 : 0,
+      };
+
+      if (progress.a < progress.b) return 1;
+      if (progress.a > progress.b) return -1;
+      return 0;
     },
     // Sort achievements that are locked to the bottom
     locked: (a, b) => {

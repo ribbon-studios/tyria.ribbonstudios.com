@@ -23,20 +23,13 @@ export function useNearingCompletion() {
           !done && categories.some((category) => category.achievements.some((achievement) => achievement.id === id))
       )
       .sort((a, b) => {
-        if (a.current && a.max && b.current && b.max) {
-          const progress = {
-            a: a.current / a.max,
-            b: b.current / b.max,
-          };
+        const progress = {
+          a: a.current && a.max ? a.current / a.max : 0,
+          b: b.current && b.max ? b.current / b.max : 0,
+        };
 
-          if (progress.a === progress.b) return 0;
-          else if (progress.a > progress.b) return -1;
-          else return 1;
-        }
-
-        if (!a.current) return -1;
-        if (!b.current) return 1;
-
+        if (progress.a < progress.b) return 1;
+        if (progress.a > progress.b) return -1;
         return 0;
       })
       .splice(0, 10)

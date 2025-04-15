@@ -119,6 +119,12 @@ export const selectGroups = (state: AppState) => selectApiState(state).groups;
 export const selectGroup = (id: string) => (state: AppState) =>
   selectApiState(state).groups?.find((group) => group.id === id);
 
+export const selectGroupByCategoryId = (id: number) => (state: AppState) => {
+  if (isNaN(id)) return undefined;
+
+  return selectApiState(state).groups.find((group) => group.categories.some((category) => category.id === id));
+};
+
 export const selectCategories = (state: AppState) => selectApiState(state).categories;
 export const selectCategory = (id: number) => (state: AppState) => {
   if (isNaN(id)) return undefined;
