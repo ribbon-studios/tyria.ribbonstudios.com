@@ -59,7 +59,14 @@ export const appSlice = createAppSlice({
         ]);
 
         const sortedCategories: ApiSlice.Category[] = categories
-          .filter((category) => category.achievements.length > 0)
+          .filter(
+            (category) =>
+              category.achievements.length > 0 &&
+              ![
+                // Daily Fooling (not tracked)
+                448,
+              ].includes(category.id)
+          )
           .sort((a, b) => a.order - b.order)
           .map((category) => ({
             ...category,
