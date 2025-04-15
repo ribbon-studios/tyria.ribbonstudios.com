@@ -31,7 +31,7 @@ export namespace ApiSlice {
 /**
  * Update this to force the cache to update.
  */
-export const CURRENT_VERSION = 1;
+export const CURRENT_VERSION = 2;
 
 const initialState: ApiSlice = {
   version: 0,
@@ -71,7 +71,16 @@ export const appSlice = createAppSlice({
             ...group,
             categories: sortedCategories.filter((category) => group.categories.includes(category.id)),
           }))
-          .filter(({ categories }) => categories.length > 0)
+          .filter(
+            ({ id, categories }) =>
+              categories.length > 0 &&
+              ![
+                // Daily Group (not tracked)
+                '18DB115A-8637-4290-A636-821362A3C4A8',
+                // Character Adventure Guide (not tracked)
+                'EFADEE67-588F-412F-A1BD-6C9AFF782988',
+              ].includes(id)
+          )
           .sort((a, b) => a.order - b.order);
 
         return [sortedGroups, sortedCategories] as const;
