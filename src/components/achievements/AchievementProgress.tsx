@@ -146,16 +146,23 @@ export namespace AchievementProgress {
         ids: bits.map(({ id }) => id),
       });
 
-      return bits.map((bit) => {
-        const item = items.find((item) => item.id === bit.id)!;
+      return bits
+        .map((bit) => {
+          const item = items.find((item) => item.id === bit.id);
 
-        return {
-          id: item.id,
-          name: item.name,
-          icon: item.icon,
-          done: bit.done,
-        };
-      });
+          if (!item) {
+            console.error(`Failed to find item. (${bit.id})`);
+            return undefined;
+          }
+
+          return {
+            id: item.id,
+            name: item.name,
+            icon: item.icon,
+            done: bit.done,
+          };
+        })
+        .filter(Boolean) as IconBit[];
     }
 
     export async function getSkins(bits: UseEnhancedAchievements.Bit.Skin[]): Promise<IconBit[]> {
@@ -165,16 +172,23 @@ export namespace AchievementProgress {
         ids: bits.map(({ id }) => id),
       });
 
-      return bits.map((bit) => {
-        const skin = skins.find((skin) => skin.id === bit.id)!;
+      return bits
+        .map((bit) => {
+          const skin = skins.find((skin) => skin.id === bit.id);
 
-        return {
-          id: skin.id,
-          name: skin.name,
-          icon: skin.icon,
-          done: bit.done,
-        };
-      });
+          if (!skin) {
+            console.error(`Failed to find skin. (${bit.id})`);
+            return undefined;
+          }
+
+          return {
+            id: skin.id,
+            name: skin.name,
+            icon: skin.icon,
+            done: bit.done,
+          };
+        })
+        .filter(Boolean) as IconBit[];
     }
 
     export async function getMinis(bits: UseEnhancedAchievements.Bit.Minipet[]): Promise<IconBit[]> {
@@ -184,17 +198,24 @@ export namespace AchievementProgress {
         ids: bits.map(({ id }) => id),
       });
 
-      return bits.map((bit) => {
-        const mini = minis.find((mini) => mini.id === bit.id)!;
+      return bits
+        .map((bit) => {
+          const mini = minis.find((mini) => mini.id === bit.id);
 
-        return {
-          id: mini.id,
-          name: mini.name,
-          icon: mini.icon,
-          done: bit.done,
-          hint: mini.unlock,
-        };
-      });
+          if (!mini) {
+            console.error(`Failed to find mini. (${bit.id})`);
+            return undefined;
+          }
+
+          return {
+            id: mini.id,
+            name: mini.name,
+            icon: mini.icon,
+            done: bit.done,
+            hint: mini.unlock,
+          };
+        })
+        .filter(Boolean) as IconBit[];
     }
 
     export async function getText(bits: UseEnhancedAchievements.Bit.Text[]): Promise<GetBitsResponse['text']> {
