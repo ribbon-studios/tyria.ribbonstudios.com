@@ -22,7 +22,7 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
     }
 
     output = output.concat(UseAchievementActions.getDescriptionActions(achievement));
-    output = output.concat(UseAchievementActions.getPrerequisiteActions(achievement));
+    output = output.concat(UseAchievementActions.getLockedActions(achievement));
 
     output.push({
       icon: '/guild-wars-2-logo.png',
@@ -38,6 +38,7 @@ export namespace UseAchievementActions {
   export enum Type {
     STORY = 'Story Instance:',
     PREREQUISITE = 'Prerequisite',
+    LOCKED = 'Locked',
   }
 
   export namespace Type {
@@ -64,6 +65,10 @@ export namespace UseAchievementActions {
       href: `/achievements/${value}`,
       tooltip: 'Locked Achievement',
     }),
+    [Type.LOCKED]: (value) => ({
+      icon: '/lock.png',
+      tooltip: `To Unlock: ${value}`,
+    }),
   };
 
   export function getDescriptionActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
@@ -80,11 +85,15 @@ export namespace UseAchievementActions {
     return [UseAchievementActions.TypeMap[type](name)];
   }
 
-  export function getPrerequisiteActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
-    if (!achievement.prerequisites) return [];
+  export function getLockedActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
+    if (achievement.prerequisites) {
+      return achievement.prerequisites.map((prerequisite) =>
+        UseAchievementActions.TypeMap[Type.PREREQUISITE](prerequisite.id.toString())
+      );
+    } else if (achievement.locked_text) {
+      return [UseAchievementActions.TypeMap[Type.LOCKED](achievement.locked_text)];
+    }
 
-    return achievement.prerequisites.map((prerequisite) =>
-      UseAchievementActions.TypeMap[UseAchievementActions.Type.PREREQUISITE](prerequisite.id.toString())
-    );
+    return [];
   }
 }
