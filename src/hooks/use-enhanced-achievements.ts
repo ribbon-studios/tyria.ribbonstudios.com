@@ -28,9 +28,14 @@ export function useEnhancedAchievements(
     enhanced_achievements: useMemo(() => {
       if (!achievements) return [];
 
-      const enhanced_achievements = achievements.map((achievement) =>
-        UseEnhancedAchievements.enhance(category, achievement, prerequisite_achievements, account_achievements)
-      );
+      const enhanced_achievements = achievements
+        .map((achievement) =>
+          UseEnhancedAchievements.enhance(category, achievement, prerequisite_achievements, account_achievements)
+        )
+        .filter(
+          (achievement) =>
+            !UseEnhancedAchievements.UNOBTAINABLE_ACHIEVEMENTS.includes(achievement.id) || achievement.done
+        );
 
       return UseEnhancedAchievements.sort(enhanced_achievements, sorts);
     }, [category, achievements, prerequisite_achievements, account_achievements]),
@@ -61,6 +66,13 @@ export function useEnhancedAchievement({
 }
 
 export namespace UseEnhancedAchievements {
+  export const UNOBTAINABLE_ACHIEVEMENTS: Achievement['id'][] = [
+    // Super Adventure Secret
+    871,
+    // Special Instruction
+    872,
+  ];
+
   export type Achievement = Omit<RawAchievement<Schema.LATEST>, 'prerequisites' | 'bits'> & {
     tier: RawAchievement.Tier;
     done: boolean;
