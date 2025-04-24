@@ -1,5 +1,5 @@
 import { api } from '@/service/api';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAppDispatch } from '@/store';
@@ -8,7 +8,7 @@ import { Loading } from '@/components/common/Loading';
 import { useSelector } from 'react-redux';
 import { selectCategory, selectGroupByCategoryId } from '@/store/api.slice';
 import { CategoryPageSlice } from './slices/CategoryPageSlice';
-import { UseEnhancedAchievements, useEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
+import { useEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 
 export function Component() {
@@ -18,16 +18,6 @@ export function Component() {
 
   const group = useSelector(selectGroupByCategoryId(categoryId));
   const category = useSelector(selectCategory(categoryId));
-
-  const sorts = useMemo<UseEnhancedAchievements.SortKey[] | undefined>(() => {
-    if (!group) return undefined;
-
-    if (group.id === 'A4ED8379-5B6B-4ECC-B6E1-70C350C902D2') {
-      return ['description', 'locked', 'done', 'meta'];
-    }
-
-    return undefined;
-  }, [group?.id]);
 
   if (!group || !category) {
     return <Navigate to="/" />;
@@ -68,14 +58,11 @@ export function Component() {
     isLoading: isAccountAchievementsLoading,
     isFetching,
     refetch,
-  } = useEnhancedAchievements(
-    {
-      category,
-      achievements,
-      prerequisite_achievements,
-    },
-    sorts
-  );
+  } = useEnhancedAchievements({
+    category,
+    achievements,
+    prerequisite_achievements,
+  });
 
   useEffect(() => {
     dispatch(
