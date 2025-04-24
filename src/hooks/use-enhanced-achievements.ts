@@ -252,9 +252,14 @@ export namespace UseEnhancedAchievements {
     },
     // Sort achievements that are locked to the bottom
     locked: (a, b) => {
-      if (a.prerequisites === b.prerequisites) return 0;
+      const locked = {
+        a: !a.done && !a.progress?.current && (!!a.prerequisites || !!a.locked_text),
+        b: !b.done && !b.progress?.current && (!!b.prerequisites || !!b.locked_text),
+      };
 
-      if (a.prerequisites) {
+      if (locked.a === locked.b) return 0;
+
+      if (locked.a) {
         return 1;
       }
 
