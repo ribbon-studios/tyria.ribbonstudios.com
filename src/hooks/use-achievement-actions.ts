@@ -86,6 +86,8 @@ export namespace UseAchievementActions {
   }
 
   export function getLockedActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
+    if (achievement.done || achievement.progress?.current) return [];
+
     if (achievement.prerequisites) {
       return achievement.prerequisites.map((prerequisite) =>
         UseAchievementActions.TypeMap[Type.PREREQUISITE](prerequisite.id.toString())
