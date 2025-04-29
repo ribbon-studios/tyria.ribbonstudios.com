@@ -6,7 +6,7 @@ import { UseLinks } from './use-links';
 
 export function useAchievementActions(achievement: UseEnhancedAchievements.Achievement) {
   return useMemo(() => {
-    let output: UseAchievementActions.Action[] = [];
+    const output: UseAchievementActions.Action[] = [];
 
     const url = new URL('https://wiki.guildwars2.com/index.php');
     url.searchParams.set('title', 'Special:Search');
@@ -21,16 +21,17 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
       });
     }
 
-    output = output.concat(UseAchievementActions.getDescriptionActions(achievement));
-    output = output.concat(UseAchievementActions.getLockedActions(achievement));
-
-    output.push({
-      icon: '/guild-wars-2-logo.png',
-      href: url.toString(),
-      tooltip: 'Wiki Page',
-    });
-
-    return output;
+    return [
+      ...output,
+      ...UseAchievementActions.overrides.get(achievement.id),
+      ...UseAchievementActions.getDescriptionActions(achievement),
+      ...UseAchievementActions.getLockedActions(achievement),
+      {
+        icon: '/guild-wars-2-logo.png',
+        href: url.toString(),
+        tooltip: 'Wiki Page',
+      },
+    ];
   }, [achievement]);
 }
 
@@ -58,7 +59,7 @@ export namespace UseAchievementActions {
     [Type.STORY]: (value) => ({
       icon: 'https://render.guildwars2.com/file/540BA9BB6662A5154BD13306A1AEAD6219F95361/102369.png',
       href: UseLinks.link(value),
-      tooltip: 'Story Mission',
+      tooltip: `Story: ${value}`,
     }),
     [Type.PREREQUISITE]: (value) => ({
       icon: '/lock.png',
@@ -97,5 +98,21 @@ export namespace UseAchievementActions {
     }
 
     return [];
+  }
+
+  export namespace overrides {
+    export function get(id: number): Action[] {
+      const stories = Object.entries(story).filter(([, ids]) => ids.includes(id));
+
+      return stories.map(([story]) => TypeMap[Type.STORY](story));
+    }
+
+    const story: Record<string, number[]> = {
+      // 5234 should be in both of these lists, but currently we don't support multiple story missions
+      'Forging Steel': [
+        5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214,
+      ],
+      'Darkrime Delves': [5192, 5209, 5181],
+    };
   }
 }

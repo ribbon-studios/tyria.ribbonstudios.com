@@ -15,6 +15,7 @@ const static_names = [
   "Fool's Tall Tonic",
   "Fool's Dog Treat",
   'Chatoyant Elixir',
+  'Forging Steel',
 ];
 
 const excluded_names = ['Sabotage', 'Doubt'];
