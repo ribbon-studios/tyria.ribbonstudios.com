@@ -23,8 +23,7 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
 
     return [
       ...output,
-      ...UseAchievementActions.overrides.get(achievement.id),
-      ...UseAchievementActions.getDescriptionActions(achievement),
+      ...UseAchievementActions.getStoryActions(achievement),
       ...UseAchievementActions.getLockedActions(achievement),
       {
         icon: '/guild-wars-2-logo.png',
@@ -37,9 +36,9 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
 
 export namespace UseAchievementActions {
   export enum Type {
-    STORY = 'Story Instance:',
-    PREREQUISITE = 'Prerequisite',
-    LOCKED = 'Locked',
+    STORY,
+    PREREQUISITE,
+    LOCKED,
   }
 
   export namespace Type {
@@ -72,18 +71,12 @@ export namespace UseAchievementActions {
     }),
   };
 
-  export function getDescriptionActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
-    if (!achievement.description) return [];
+  export function getStoryActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
+    if (!achievement.stories || achievement.stories.length > 1) return [];
 
-    const [, ...matches] = achievement.description.match(/([^:]+:)([^<]+)/) ?? [];
+    const [story] = achievement.stories;
 
-    if (matches.length !== 2) return [];
-
-    const [type, name] = matches.map((match) => match.trim());
-
-    if (!UseAchievementActions.Type.is(type) || type === Type.PREREQUISITE) return [];
-
-    return [UseAchievementActions.TypeMap[type](name)];
+    return [TypeMap[Type.STORY](story)];
   }
 
   export function getLockedActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
@@ -98,21 +91,5 @@ export namespace UseAchievementActions {
     }
 
     return [];
-  }
-
-  export namespace overrides {
-    export function get(id: number): Action[] {
-      const stories = Object.entries(story).filter(([, ids]) => ids.includes(id));
-
-      return stories.map(([story]) => TypeMap[Type.STORY](story));
-    }
-
-    const story: Record<string, number[]> = {
-      // 5234 should be in both of these lists, but currently we don't support multiple story missions
-      'Forging Steel': [
-        5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214,
-      ],
-      'Darkrime Delves': [5192, 5209, 5181],
-    };
   }
 }

@@ -82,6 +82,7 @@ export namespace UseEnhancedAchievements {
       max: number;
       bits?: Bit[];
     };
+    stories?: string[];
     meta?: boolean;
   };
 
@@ -187,6 +188,7 @@ export namespace UseEnhancedAchievements {
 
     return {
       ...achievement,
+      ...process.description(achievement),
       icon: achievement.icon ?? category?.icon,
       requirement: process.requirement(requirement, tier, progress),
       tier,
@@ -208,6 +210,46 @@ export namespace UseEnhancedAchievements {
 
       return output;
     }
+
+    export function description(
+      achievement: Pick<RawAchievement<Schema.LATEST>, 'id' | 'description'>
+    ): Partial<Achievement> | undefined {
+      const [, ...matches] = achievement.description?.match(/([^:]+:)([^<]+)/) ?? [];
+      const [type, name] = matches.map((match) => match.trim());
+
+      switch (type) {
+        case 'Story Instance:':
+        case 'Journal:': {
+          return { stories: [name] };
+        }
+        default: {
+          const [, overrides] = description_fallbacks.find(([ids]) => ids.includes(achievement.id)) ?? [];
+
+          return overrides;
+        }
+      }
+    }
+
+    const description_fallbacks: [number[], Partial<Achievement>][] = [
+      [
+        [5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214],
+        {
+          stories: ['Forging Steel'],
+        },
+      ],
+      [
+        [5192, 5209, 5181],
+        {
+          stories: ['Darkrime Delves'],
+        },
+      ],
+      [
+        [5234],
+        {
+          stories: ['Forging Steel', 'Darkrime Delves'],
+        },
+      ],
+    ];
   }
 
   export type Sort = (a: Achievement, b: Achievement) => number;

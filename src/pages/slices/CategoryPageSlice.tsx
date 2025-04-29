@@ -117,7 +117,12 @@ export function CategoryPageSlice({
       </div>
       {!settings.toggles.pin_search && (
         <TuiCard splash={{ image: category.icon, grayscale: true }}>
-          <TuiInput mode="input" placeholder="Search..." value={search} onChange={setSearch} />
+          <TuiInput
+            mode="input"
+            placeholder="Search (e.g. 'Aurora', 'story:&quot;Darkrime Delves&quot;')"
+            value={search}
+            onChange={setSearch}
+          />
         </TuiCard>
       )}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
