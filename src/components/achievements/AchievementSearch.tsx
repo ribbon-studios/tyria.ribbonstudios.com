@@ -6,16 +6,15 @@ export function AchievementSearch(props: AchievementSearch.Props) {
   return (
     <TuiInput
       {...props}
-      appendInner={
+      prependInner={
         <TuiTooltip
-          align="end"
           tooltip={<AchievementSearch.Info />}
           tooltipClassName="w-[400px]"
           tooltipContentsClassName="flex flex-col gap-2 text-sm"
           allowLocking
         >
           <Info
-            className="cursor-pointer mr-2 p-[2px] rounded-full transition-all bg-transparent hover:bg-white/20"
+            className="cursor-pointer p-[2px] rounded-full transition-all bg-transparent hover:bg-white/20"
             size={26}
           />
         </TuiTooltip>
