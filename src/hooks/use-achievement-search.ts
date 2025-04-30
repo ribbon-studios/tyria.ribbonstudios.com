@@ -6,8 +6,10 @@ export function useAchievementSearch(achievements: UseEnhancedAchievements.Achie
   return useMemo(() => {
     if (!search) return achievements;
 
+    const criteria = UseAchievementSearch.criteria.parse(search);
+
     return achievements.filter((achievement) => {
-      return UseAchievementSearch.search(achievement, ['name', 'requirement', 'description'], search);
+      return UseAchievementSearch.search(achievement, ['name', 'requirement', 'description'], criteria);
     });
   }, [achievements, search]);
 }
@@ -19,17 +21,21 @@ export namespace UseAchievementSearch {
 
   export type ValidKeys<T> = KeysMatching<T, string | number | boolean>;
 
-  export function search<T extends object>(item: T, keys: ValidKeys<T>[], search: string) {
-    const options = criteria.parse(search);
-
+  export function search(
+    achievement: UseEnhancedAchievements.Achievement,
+    keys: ValidKeys<UseEnhancedAchievements.Achievement>[],
+    options: criteria.Criteria
+  ) {
     return (
-      (!options.has || options.has.some((has) => has in item)) &&
+      (!options.has || options.has.some((has) => has in achievement)) &&
+      (!options.stories ||
+        options.stories.some((story) =>
+          achievement.stories?.map((story) => formatter(story).lower.value()).includes(story)
+        )) &&
       keys.some((key) => {
-        const value = formatter(item[key] as string | number | boolean).lower.value();
+        const value = formatter(achievement[key] as string | number | boolean).lower.value();
 
-        return (
-          (!options.stories || options.stories.some((story) => value.includes(story))) && value.includes(options.search)
-        );
+        return value.includes(options.search);
       })
     );
   }
