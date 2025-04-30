@@ -33,15 +33,17 @@ export namespace UseAchievementSearch {
 
   export namespace criteria {
     export function parse(value: string): Criteria {
-      const search = formatter(value).lower.value();
+      const lower_search = formatter(value).lower.value();
 
-      const matches = Array.from(search.matchAll(/(\w+):"([^"]+)"|(?:([^\s]+))/g) ?? []);
+      const matches = Array.from(lower_search.matchAll(/(\w+):("[^"]+"|[^\s]+)/g) ?? []);
 
-      return matches.reduce<Criteria>(
+      const { search, ...other_criteria } = matches.reduce<Criteria>(
         (output, [match, type, value]) => {
+          const corrected_value = value.replace(/"/g, '');
+
           switch (type) {
             case 'story': {
-              output.stories = output.stories ? [...output.stories, value] : [value];
+              output.stories = output.stories ? [...output.stories, corrected_value] : [corrected_value];
               break;
             }
           }
@@ -51,9 +53,14 @@ export namespace UseAchievementSearch {
           return output;
         },
         {
-          search,
+          search: lower_search,
         }
       );
+
+      return {
+        search: search.split(' ').filter(Boolean).join(' '),
+        ...other_criteria,
+      };
     }
 
     export type Criteria = {
