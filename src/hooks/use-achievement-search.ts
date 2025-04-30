@@ -30,7 +30,7 @@ export namespace UseAchievementSearch {
       (!options.has || options.has.some((has) => has in achievement)) &&
       (!options.stories ||
         options.stories.some((story) =>
-          achievement.stories?.map((story) => formatter(story).lower.value()).includes(story)
+          achievement.stories?.some((value) => formatter(value).lower.value().includes(story))
         )) &&
       keys.some((key) => {
         const value = formatter(achievement[key] as string | number | boolean).lower.value();
