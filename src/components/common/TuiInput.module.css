@@ -17,14 +17,14 @@
 }
 
 .input {
-  @apply relative inline-flex flex-1 rounded-lg overflow-hidden bg-tui-light-gray text-white;
+  @apply relative inline-flex items-center flex-1 rounded-lg bg-tui-light-gray text-white;
 
   > input {
-    @apply pl-4 pr-10 py-2.5 w-full outline-none;
+    @apply px-4 py-2.5 w-full outline-none;
   }
 
   &:before {
-    @apply content-[''] absolute inset-0 pointer-events-none bg-transparent transition-colors;
+    @apply content-[''] absolute inset-0 rounded-[inherit] pointer-events-none bg-transparent transition-colors;
   }
 
   &:not(:has(input[disabled])):hover:before {
@@ -43,5 +43,5 @@
 }
 
 .clear {
-  @apply absolute cursor-pointer top-1/2 -translate-y-1/2 right-2 p-[2px] rounded-full transition-all bg-transparent hover:bg-white/20;
+  @apply cursor-pointer mr-2 p-[2px] rounded-full transition-all bg-transparent hover:bg-white/20;
 }

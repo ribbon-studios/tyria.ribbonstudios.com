@@ -20,7 +20,9 @@ export const TuiInput: FC<TuiInput.Props> = ({
   subtext,
   onChange,
   prepend,
+  prependInner,
   append,
+  appendInner,
   readOnly,
   onClick,
   type,
@@ -42,7 +44,8 @@ export const TuiInput: FC<TuiInput.Props> = ({
       {description && <div className={styles.description}>{description}</div>}
       <div className="flex flex-wrap gap-2">
         {prepend}
-        <div className={styles.input} onClick={onClick}>
+        <div className={cn(styles.input)} onClick={onClick}>
+          {prependInner && <div className="pl-4">{prependInner}</div>}
           <input
             {...props}
             className={inputClassName}
@@ -73,6 +76,7 @@ export const TuiInput: FC<TuiInput.Props> = ({
             }}
           />
 
+          {appendInner}
           <SaveIndicator loading={loading} />
           {!readOnly && (
             <XCircle
@@ -103,6 +107,8 @@ export namespace TuiInput {
     onChange?: (value: string | undefined) => void;
     loading?: boolean;
     prepend?: ReactNode;
+    prependInner?: ReactNode;
+    appendInner?: ReactNode;
     rules?: Array<UseValidate.Rule<string> | UseValidate.Coerce<string>>;
     mode?: 'blur' | 'input';
     append?: ReactNode;

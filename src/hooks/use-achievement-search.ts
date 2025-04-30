@@ -22,13 +22,16 @@ export namespace UseAchievementSearch {
   export function search<T extends object>(item: T, keys: ValidKeys<T>[], search: string) {
     const options = criteria.parse(search);
 
-    return keys.some((key) => {
-      const value = formatter(item[key] as string | number | boolean).lower.value();
+    return (
+      (!options.has || options.has.some((has) => has in item)) &&
+      keys.some((key) => {
+        const value = formatter(item[key] as string | number | boolean).lower.value();
 
-      return (
-        (!options.stories || options.stories.some((story) => value.includes(story))) && value.includes(options.search)
-      );
-    });
+        return (
+          (!options.stories || options.stories.some((story) => value.includes(story))) && value.includes(options.search)
+        );
+      })
+    );
   }
 
   export namespace criteria {
@@ -39,11 +42,15 @@ export namespace UseAchievementSearch {
 
       const { search, ...other_criteria } = matches.reduce<Criteria>(
         (output, [match, type, value]) => {
-          const corrected_value = value.replace(/"/g, '');
+          const corrected_value = correct(value);
 
           switch (type) {
             case 'story': {
               output.stories = output.stories ? [...output.stories, corrected_value] : [corrected_value];
+              break;
+            }
+            case 'has': {
+              output.has = output.has ? [...output.has, corrected_value] : [corrected_value];
               break;
             }
           }
@@ -63,9 +70,20 @@ export namespace UseAchievementSearch {
       };
     }
 
+    export function correct(value: string) {
+      const clean_value = value.replace(/"/g, '');
+
+      return CORRECTION_MAP[clean_value] ?? clean_value;
+    }
+
+    export const CORRECTION_MAP: Record<string, string> = {
+      story: 'stories',
+    };
+
     export type Criteria = {
       search: string;
       stories?: string[];
+      has?: string[];
     };
   }
 }

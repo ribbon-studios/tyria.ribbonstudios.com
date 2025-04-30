@@ -21,10 +21,10 @@ import { computeMasteryTier } from '@/utils/achievements';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { TuiIcon } from '@/components/common/TuiIcon';
 import { TuiCard } from '@/components/common/TuiCard';
-import { TuiInput } from '@/components/common/TuiInput';
 import { useAchievementSearch } from '@/hooks/use-achievement-search';
 import { useQueryParam } from '@/hooks/use-query-param';
 import { TuiProgressCircular } from '@/components/common/TuiProgressCircular';
+import { AchievementSearch } from '@/components/achievements/AchievementSearch';
 
 export function CategoryPageSlice({
   category,
@@ -111,18 +111,13 @@ export function CategoryPageSlice({
         ))}
         {settings.toggles.pin_search && (
           <TuiCard className={styles.pinnedCard} splash={{ image: category.icon, grayscale: true }}>
-            <TuiInput mode="input" placeholder="Search..." value={search} onChange={setSearch} />
+            <AchievementSearch value={search} onChange={setSearch} />
           </TuiCard>
         )}
       </div>
       {!settings.toggles.pin_search && (
         <TuiCard splash={{ image: category.icon, grayscale: true }}>
-          <TuiInput
-            mode="input"
-            placeholder="Search (e.g. 'Aurora', 'story:&quot;Darkrime Delves&quot;')"
-            value={search}
-            onChange={setSearch}
-          />
+          <AchievementSearch value={search} onChange={setSearch} />
         </TuiCard>
       )}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">

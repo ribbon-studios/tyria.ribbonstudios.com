@@ -7,6 +7,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
   className,
   tooltip,
   tooltipClassName,
+  tooltipContentsClassName,
   offset = 4,
   onMouseOver,
   onMouseOut,
@@ -95,7 +96,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
     >
       {children}
       <div className={cn(styles.tooltip, tooltipClassName)} style={dynamicStyles} ref={tooltipRef}>
-        <div className={styles.contents}>{tooltip}</div>
+        <div className={cn(styles.contents, tooltipContentsClassName)}>{tooltip}</div>
       </div>
     </div>
   );
@@ -105,6 +106,7 @@ export namespace TuiTooltip {
   export type Props = {
     className?: string;
     tooltipClassName?: string;
+    tooltipContentsClassName?: string;
     children?: ReactNode;
     tooltip: ReactNode;
     offset?: number;
