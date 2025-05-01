@@ -249,6 +249,12 @@ export namespace UseEnhancedAchievements {
           stories: ['Forging Steel', 'Darkrime Delves'],
         },
       ],
+      [
+        [5243],
+        {
+          stories: ['Turnabout'],
+        },
+      ],
     ];
   }
 
