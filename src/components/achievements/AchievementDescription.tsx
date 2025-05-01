@@ -5,16 +5,20 @@ export function AchievementDescription({ description }: AchievementDescription.P
   if (!description) return null;
 
   const html = useMemo<string>(() => {
-    return description.replaceAll(/<c=([^>]+)>(.+)<\/c>/g, (match, tag, text) => {
-      switch (tag?.toLowerCase()) {
-        case '@flavor':
-          return `<div class="text-cyan-200">${text}</div>`;
-        default:
-          toast.warning(`The description of an achievement contained an unhanded formatting tag. (${tag})`);
-          return match;
-      }
-    });
+    return description
+      .replaceAll(/<c=([^>]+)>(.+)<\/c>/g, (match, tag, text) => {
+        switch (tag?.toLowerCase()) {
+          case '@flavor':
+            return `<div class="text-cyan-200">${text}</div>`;
+          default:
+            toast.warning(`The description of an achievement contained an unhanded formatting tag. (${tag})`);
+            return match;
+        }
+      })
+      .replaceAll(/\n/g, '<br />');
   }, [description]);
+
+  console.log(html);
 
   return <div className="text-shadow-ally text-sm italic text-tui-muted" dangerouslySetInnerHTML={{ __html: html }} />;
 }

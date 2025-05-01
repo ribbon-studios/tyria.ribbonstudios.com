@@ -214,7 +214,7 @@ export namespace UseEnhancedAchievements {
     export function description(
       achievement: Pick<RawAchievement<Schema.LATEST>, 'id' | 'description'>
     ): Partial<Achievement> | undefined {
-      const [, ...matches] = achievement.description?.match(/([^:]+:)([^<]+)/) ?? [];
+      const [, ...matches] = achievement.description?.match(/([^:]+:)([^<\n]+)/) ?? [];
       const [type, name] = matches.map((match) => match.trim());
 
       switch (type) {
