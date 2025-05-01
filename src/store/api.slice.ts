@@ -65,6 +65,8 @@ export const appSlice = createAppSlice({
               ![
                 // Daily Fooling (not tracked)
                 448,
+                // Bonus Events > Marshaling ... (only has dailies, not tracked)
+                262, 263, 267, 272, 274, 278, 280, 282,
               ].includes(category.id)
           )
           .sort((a, b) => a.order - b.order)
