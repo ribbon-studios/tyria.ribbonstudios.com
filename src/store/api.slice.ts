@@ -67,6 +67,8 @@ export const appSlice = createAppSlice({
                 448,
                 // Bonus Events > Marshaling ... (only has dailies, not tracked)
                 262, 263, 267, 272, 274, 278, 280, 282,
+                // Weekly Fractals (not tracked)
+                261,
               ].includes(category.id)
           )
           .sort((a, b) => a.order - b.order)
