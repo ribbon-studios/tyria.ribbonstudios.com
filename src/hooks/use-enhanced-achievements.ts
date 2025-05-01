@@ -220,7 +220,7 @@ export namespace UseEnhancedAchievements {
       switch (type) {
         case 'Story Instance:':
         case 'Journal:': {
-          return { stories: [name] };
+          return { stories: [name.replace(/ Completed$/, '')] };
         }
         default: {
           const [, overrides] = description_fallbacks.find(([ids]) => ids.includes(achievement.id)) ?? [];
