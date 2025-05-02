@@ -261,6 +261,26 @@ export namespace UseEnhancedAchievements {
           stories: ['Primordus Rising'],
         },
       ],
+      [
+        [5517, 5534, 5709, 5511],
+        {
+          stories: ['Dragon Response Mission: Metrica Province'],
+        },
+      ],
+      [
+        [5568],
+        {
+          stories: [
+            'Dragon Response Mission: Caledon Forest',
+            'Dragon Response Mission: Metrica Province',
+            'Dragon Response Mission: Bloodtide Coast',
+            'Dragon Response Mission: Fields of Ruin',
+            'Dragon Response Mission: Snowden Drifts',
+            'Dragon Response Mission: Gendarran Fields',
+            'Dragon Response Mission: Lake Doric',
+          ],
+        },
+      ],
     ];
   }
 
