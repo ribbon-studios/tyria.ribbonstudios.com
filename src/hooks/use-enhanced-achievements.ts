@@ -268,6 +268,60 @@ export namespace UseEnhancedAchievements {
         },
       ],
       [
+        [5498, 5490, 5698, 5475],
+        {
+          stories: ['Dragon Response Mission: Brisban Wildlands'],
+        },
+      ],
+      [
+        [5485, 5642, 5688, 5622],
+        {
+          stories: ['Dragon Response Mission: Bloodtide Coast'],
+        },
+      ],
+      [
+        [5478, 5650, 5691, 5644],
+        {
+          stories: ['Dragon Response Mission: Caledon Forest'],
+        },
+      ],
+      [
+        [5536, 5581, 5693, 5580, 5589],
+        {
+          stories: ['Dragon Response Mission: Fields of Ruin'],
+        },
+      ],
+      [
+        [5515, 5640, 5658, 5704, 5663],
+        {
+          stories: ['Dragon Response Mission: Fireheart Rise'],
+        },
+      ],
+      [
+        [5533, 5510, 5486, 5700, 5496],
+        {
+          stories: ['Dragon Response Mission: Gendarran Fields'],
+        },
+      ],
+      [
+        [5504, 5590, 5596, 5697, 5555],
+        {
+          stories: ['Dragon Response Mission: Lake Doric'],
+        },
+      ],
+      [
+        [5502, 5578, 5708, 5593],
+        {
+          stories: ['Dragon Response Mission: Snowden Drifts'],
+        },
+      ],
+      [
+        [5540, 5579, 5703, 5569],
+        {
+          stories: ['Dragon Response Mission: Thunderhead Peaks'],
+        },
+      ],
+      [
         [5568],
         {
           stories: [
