@@ -139,10 +139,12 @@ export namespace UseEnhancedAchievements {
       progress = {
         current: account_achievement.current,
         max: account_achievement.max,
-        bits: bits?.map((bit, i) => ({
-          ...bit,
-          done: (account_achievement.done || account_achievement.bits.includes(i)) ?? false,
-        })),
+        bits: bits
+          ?.map((bit, i) => ({
+            ...bit,
+            done: (account_achievement.done || account_achievement.bits.includes(i)) ?? false,
+          }))
+          ?.filter((bit) => bit.type !== RawAchievement.Bit.Type.TEXT || Boolean(bit.text)),
       };
     } else if (bits) {
       progress = {
