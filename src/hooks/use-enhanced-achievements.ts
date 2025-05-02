@@ -255,6 +255,12 @@ export namespace UseEnhancedAchievements {
           stories: ['Turnabout'],
         },
       ],
+      [
+        [5508],
+        {
+          stories: ['Primordus Rising'],
+        },
+      ],
     ];
   }
 
