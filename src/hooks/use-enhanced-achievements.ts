@@ -266,6 +266,12 @@ export namespace UseEnhancedAchievements {
         },
       ],
       [
+        [5247],
+        {
+          strikes: ['Cold War'],
+        },
+      ],
+      [
         [5517, 5534, 5709, 5511],
         {
           strikes: ['Dragon Response Mission: Metrica Province'],
