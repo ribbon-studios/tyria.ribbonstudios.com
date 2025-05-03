@@ -16,11 +16,18 @@ export function useLinks(
 export namespace UseLinks {
   export const story: Record<string, string> = {
     'Heart of the Volcano': 'Heart of the Volcano (story)',
-    'Hallowed Ground': 'Hallowed_Ground_(story)',
-    'Darkrime Delves': 'Darkrime_Delves_(story)',
+    'Hallowed Ground': 'Hallowed Ground (story)',
+    'Darkrime Delves': 'Darkrime Delves (story)',
   };
 
-  export const strike: Record<string, string> = {};
+  export const strike: Record<string, string> = {
+    'Shiverpeaks Pass': 'Strike Mission: Shiverpeaks Pass',
+    Boneskinner: 'Weekly Strike Mission: Boneskinner',
+    'Whisper of Jormag': 'Strike Mission: Whisper of Jormag',
+    'Cold War': 'Strike Mission: Cold War',
+    'Fraenir of Jormag': 'Weekly Strike Mission: Fraenir of Jormag',
+    'Voice of the Fallen and Claw of the Fallen': 'Weekly Strike Mission: Voice of the Fallen and Claw of the Fallen',
+  };
 
   export const object: Record<string, string> = {
     'Heart of the Volcano': 'Heart of the Volcano (object)',

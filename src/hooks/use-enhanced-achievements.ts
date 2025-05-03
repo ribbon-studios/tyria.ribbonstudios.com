@@ -235,6 +235,30 @@ export namespace UseEnhancedAchievements {
 
     const description_fallbacks: [number[], Partial<Achievement>][] = [
       [
+        [4919, 4928, 4979, 5872],
+        {
+          strikes: ['Shiverpeaks Pass'],
+        },
+      ],
+      [
+        [5095, 5099, 5094],
+        {
+          strikes: ['Boneskinner'],
+        },
+      ],
+      [
+        [5132, 5118, 5029, 5126, 5879],
+        {
+          strikes: ['Whisper of Jormag'],
+        },
+      ],
+      [
+        [5942],
+        {
+          strikes: ['Boneskinner', 'Fraenir of Jormag', 'Voice of the Fallen and Claw of the Fallen'],
+        },
+      ],
+      [
         [5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214],
         {
           strikes: ['Forging Steel'],
