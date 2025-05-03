@@ -140,12 +140,10 @@ export namespace UseEnhancedAchievements {
       progress = {
         current: account_achievement.current,
         max: account_achievement.max,
-        bits: bits
-          ?.map((bit, i) => ({
-            ...bit,
-            done: (account_achievement.done || account_achievement.bits.includes(i)) ?? false,
-          }))
-          ?.filter((bit) => bit.type !== RawAchievement.Bit.Type.TEXT || Boolean(bit.text)),
+        bits: bits?.map((bit, i) => ({
+          ...bit,
+          done: (account_achievement.done || account_achievement.bits.includes(i)) ?? false,
+        })),
       };
     } else if (bits) {
       progress = {
@@ -164,7 +162,7 @@ export namespace UseEnhancedAchievements {
     }
 
     if (progress?.bits) {
-      progress.bits
+      progress.bits = progress.bits
         // Sort text bits alphabetically
         .sort((a, b) => {
           if (a.type === RawAchievement.Bit.Type.TEXT && b.type === RawAchievement.Bit.Type.TEXT) {
@@ -186,7 +184,8 @@ export namespace UseEnhancedAchievements {
           }
 
           return -1;
-        });
+        })
+        ?.filter((bit) => bit.type !== RawAchievement.Bit.Type.TEXT || Boolean(bit.text));
     }
 
     return {
