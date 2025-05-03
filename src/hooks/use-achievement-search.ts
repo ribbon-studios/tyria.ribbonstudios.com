@@ -32,6 +32,10 @@ export namespace UseAchievementSearch {
         options.stories.some((story) =>
           achievement.stories?.some((value) => formatter(value).lower.value().includes(story))
         )) &&
+      (!options.strikes ||
+        options.strikes.some((story) =>
+          achievement.strikes?.some((value) => formatter(value).lower.value().includes(story))
+        )) &&
       keys.some((key) => {
         const value = formatter(achievement[key] as string | number | boolean).lower.value();
 
@@ -53,6 +57,10 @@ export namespace UseAchievementSearch {
           switch (type) {
             case 'story': {
               output.stories = output.stories ? [...output.stories, corrected_value] : [corrected_value];
+              break;
+            }
+            case 'strike': {
+              output.strikes = output.strikes ? [...output.strikes, corrected_value] : [corrected_value];
               break;
             }
             case 'has': {
@@ -84,11 +92,13 @@ export namespace UseAchievementSearch {
 
     export const CORRECTION_MAP: Record<string, string> = {
       story: 'stories',
+      strike: 'strikes',
     };
 
     export type Criteria = {
       search: string;
       stories?: string[];
+      strikes?: string[];
       has?: string[];
     };
   }

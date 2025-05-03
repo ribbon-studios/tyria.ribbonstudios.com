@@ -83,6 +83,7 @@ export namespace UseEnhancedAchievements {
       bits?: Bit[];
     };
     stories?: string[];
+    strikes?: string[];
     meta?: boolean;
   };
 
@@ -236,7 +237,7 @@ export namespace UseEnhancedAchievements {
       [
         [5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214],
         {
-          stories: ['Forging Steel'],
+          strikes: ['Forging Steel'],
         },
       ],
       [
@@ -248,7 +249,8 @@ export namespace UseEnhancedAchievements {
       [
         [5234, 5236],
         {
-          stories: ['Forging Steel', 'Darkrime Delves'],
+          strikes: ['Forging Steel'],
+          stories: ['Darkrime Delves'],
         },
       ],
       [
@@ -266,67 +268,67 @@ export namespace UseEnhancedAchievements {
       [
         [5517, 5534, 5709, 5511],
         {
-          stories: ['Dragon Response Mission: Metrica Province'],
+          strikes: ['Dragon Response Mission: Metrica Province'],
         },
       ],
       [
         [5498, 5490, 5698, 5475],
         {
-          stories: ['Dragon Response Mission: Brisban Wildlands'],
+          strikes: ['Dragon Response Mission: Brisban Wildlands'],
         },
       ],
       [
         [5485, 5642, 5688, 5622],
         {
-          stories: ['Dragon Response Mission: Bloodtide Coast'],
+          strikes: ['Dragon Response Mission: Bloodtide Coast'],
         },
       ],
       [
         [5478, 5650, 5691, 5644],
         {
-          stories: ['Dragon Response Mission: Caledon Forest'],
+          strikes: ['Dragon Response Mission: Caledon Forest'],
         },
       ],
       [
         [5536, 5581, 5693, 5580, 5589],
         {
-          stories: ['Dragon Response Mission: Fields of Ruin'],
+          strikes: ['Dragon Response Mission: Fields of Ruin'],
         },
       ],
       [
         [5515, 5640, 5658, 5704, 5663],
         {
-          stories: ['Dragon Response Mission: Fireheart Rise'],
+          strikes: ['Dragon Response Mission: Fireheart Rise'],
         },
       ],
       [
         [5533, 5510, 5486, 5700, 5496],
         {
-          stories: ['Dragon Response Mission: Gendarran Fields'],
+          strikes: ['Dragon Response Mission: Gendarran Fields'],
         },
       ],
       [
         [5504, 5590, 5596, 5697, 5555],
         {
-          stories: ['Dragon Response Mission: Lake Doric'],
+          strikes: ['Dragon Response Mission: Lake Doric'],
         },
       ],
       [
         [5502, 5578, 5708, 5593],
         {
-          stories: ['Dragon Response Mission: Snowden Drifts'],
+          strikes: ['Dragon Response Mission: Snowden Drifts'],
         },
       ],
       [
         [5540, 5579, 5703, 5569],
         {
-          stories: ['Dragon Response Mission: Thunderhead Peaks'],
+          strikes: ['Dragon Response Mission: Thunderhead Peaks'],
         },
       ],
       [
         [5568],
         {
-          stories: [
+          strikes: [
             'Dragon Response Mission: Caledon Forest',
             'Dragon Response Mission: Metrica Province',
             'Dragon Response Mission: Bloodtide Coast',

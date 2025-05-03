@@ -27,6 +27,28 @@ export function AchievementSearch(props: AchievementSearch.Props) {
 export namespace AchievementSearch {
   export type Props = Omit<TuiInput.Props, 'prependInner' | 'mode' | 'placeholder'>;
 
+  const filters: {
+    name: string;
+    example: string;
+    description: string;
+  }[] = [
+    {
+      name: 'has',
+      example: 'has:story',
+      description: 'Filters an achievement based upon them having a given value.',
+    },
+    {
+      name: 'story',
+      example: 'story:"Darkrime Delves"',
+      description: "Filters the achievements based on which story missions they're associated with.",
+    },
+    {
+      name: 'strike',
+      example: 'strike:"Forging Steel"',
+      description: "Filters the achievements based on which strike missions they're associated with.",
+    },
+  ];
+
   export function Info() {
     return (
       <>
@@ -50,22 +72,16 @@ export namespace AchievementSearch {
           </li>
         </ul>
         <div className="font-bold">Advanced Searches</div>
-        <div className="flex flex-col ml-2 gap-2 bg-tui-gray/50 px-1 py-0.5 leading-none rounded-sm">
-          <div className="flex justify-between font-bold">
-            <div>story</div>
-            <div className="text-tui-muted text-xs italic">(e.g. 'story:"Darkrime Delves"')</div>
-          </div>
+        {filters.map((filter) => (
+          <div className="flex flex-col ml-2 gap-2 bg-tui-gray/50 px-1 py-0.5 leading-none rounded-sm">
+            <div className="flex justify-between font-bold">
+              <div>{filter.name}</div>
+              <div className="text-tui-muted text-xs italic">(e.g. '{filter.example}')</div>
+            </div>
 
-          <div>Filters the achievements based on which story mission they're associated with.</div>
-        </div>
-        <div className="flex flex-col ml-2 gap-2 bg-tui-gray/50 px-1 py-0.5 leading-none rounded-sm">
-          <div className="flex justify-between font-bold">
-            <div>has</div>
-            <div className="text-tui-muted text-xs italic">(e.g. 'has:story')</div>
+            <div>{filter.description}</div>
           </div>
-
-          <div>Filters an achievement based upon them having a given value.</div>
-        </div>
+        ))}
         <div className="italic">All advanced searches support the following formats:</div>
         <ul className="ml-4 list-disc">
           <li>

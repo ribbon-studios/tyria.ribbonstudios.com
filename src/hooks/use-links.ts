@@ -20,12 +20,15 @@ export namespace UseLinks {
     'Darkrime Delves': 'Darkrime_Delves_(story)',
   };
 
+  export const strike: Record<string, string> = {};
+
   export const object: Record<string, string> = {
     'Heart of the Volcano': 'Heart of the Volcano (object)',
   };
 
   export const collisions = {
     story,
+    strike,
     object,
   };
 

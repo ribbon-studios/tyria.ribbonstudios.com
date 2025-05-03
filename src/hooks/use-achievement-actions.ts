@@ -23,6 +23,7 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
 
     return [
       ...output,
+      ...UseAchievementActions.getStrikeActions(achievement),
       ...UseAchievementActions.getStoryActions(achievement),
       ...UseAchievementActions.getLockedActions(achievement),
       {
@@ -37,6 +38,7 @@ export function useAchievementActions(achievement: UseEnhancedAchievements.Achie
 export namespace UseAchievementActions {
   export enum Type {
     STORY,
+    STRIKE,
     PREREQUISITE,
     LOCKED,
   }
@@ -60,6 +62,11 @@ export namespace UseAchievementActions {
       href: UseLinks.link(value),
       tooltip: `Story: ${value}`,
     }),
+    [Type.STRIKE]: (value) => ({
+      icon: '/strike-mission.png',
+      href: UseLinks.link(value, ['strike', 'story', 'object']),
+      tooltip: `Strike Mission: ${value}`,
+    }),
     [Type.PREREQUISITE]: (value) => ({
       icon: '/lock.png',
       href: `/achievements/${value}`,
@@ -77,6 +84,14 @@ export namespace UseAchievementActions {
     const [story] = achievement.stories;
 
     return [TypeMap[Type.STORY](story)];
+  }
+
+  export function getStrikeActions(achievement: UseEnhancedAchievements.Achievement): Action[] {
+    if (!achievement.strikes || achievement.strikes.length > 1) return [];
+
+    const [strike] = achievement.strikes;
+
+    return [TypeMap[Type.STRIKE](strike)];
   }
 
   export function getLockedActions(achievement: UseEnhancedAchievements.Achievement): Action[] {

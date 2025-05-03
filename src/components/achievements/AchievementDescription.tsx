@@ -18,8 +18,6 @@ export function AchievementDescription({ description }: AchievementDescription.P
       .replaceAll(/\n/g, '<br />');
   }, [description]);
 
-  console.log(html);
-
   return <div className="text-shadow-ally text-sm italic text-tui-muted" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
