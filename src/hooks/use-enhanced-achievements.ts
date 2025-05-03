@@ -283,7 +283,7 @@ export namespace UseEnhancedAchievements {
         },
       ],
       [
-        [5508],
+        [5508, 6009],
         {
           stories: ['Primordus Rising'],
         },
@@ -295,67 +295,67 @@ export namespace UseEnhancedAchievements {
         },
       ],
       [
-        [5517, 5534, 5709, 5511],
+        [5517, 5534, 5709, 5511, 5980],
         {
           strikes: ['Dragon Response Mission: Metrica Province'],
         },
       ],
       [
-        [5498, 5490, 5698, 5475],
+        [5498, 5490, 5698, 5475, 5967],
         {
           strikes: ['Dragon Response Mission: Brisban Wildlands'],
         },
       ],
       [
-        [5485, 5642, 5688, 5622],
+        [5485, 5642, 5688, 5622, 5952],
         {
           strikes: ['Dragon Response Mission: Bloodtide Coast'],
         },
       ],
       [
-        [5478, 5650, 5691, 5644],
+        [5478, 5650, 5691, 5644, 5944],
         {
           strikes: ['Dragon Response Mission: Caledon Forest'],
         },
       ],
       [
-        [5536, 5581, 5693, 5580, 5589],
+        [5536, 5581, 5693, 5580, 5589, 5920],
         {
           strikes: ['Dragon Response Mission: Fields of Ruin'],
         },
       ],
       [
-        [5515, 5640, 5658, 5704, 5663],
+        [5515, 5640, 5658, 5704, 5663, 6025],
         {
           strikes: ['Dragon Response Mission: Fireheart Rise'],
         },
       ],
       [
-        [5533, 5510, 5486, 5700, 5496],
+        [5533, 5510, 5486, 5700, 5496, 5892],
         {
           strikes: ['Dragon Response Mission: Gendarran Fields'],
         },
       ],
       [
-        [5504, 5590, 5596, 5697, 5555],
+        [5504, 5590, 5596, 5697, 5555, 6010],
         {
           strikes: ['Dragon Response Mission: Lake Doric'],
         },
       ],
       [
-        [5502, 5578, 5708, 5593],
+        [5502, 5578, 5708, 5593, 5951],
         {
           strikes: ['Dragon Response Mission: Snowden Drifts'],
         },
       ],
       [
-        [5540, 5579, 5703, 5569],
+        [5540, 5579, 5703, 5569, 5982],
         {
           strikes: ['Dragon Response Mission: Thunderhead Peaks'],
         },
       ],
       [
-        [5568],
+        [5568, 5528, 5483, 5489, 5484],
         {
           strikes: [
             'Dragon Response Mission: Caledon Forest',
@@ -366,6 +366,24 @@ export namespace UseEnhancedAchievements {
             'Dragon Response Mission: Gendarran Fields',
             'Dragon Response Mission: Lake Doric',
           ],
+        },
+      ],
+      [
+        [5667, 5652, 5651, 5989],
+        {
+          stories: ['Wildfire'],
+        },
+      ],
+      [
+        [6011],
+        {
+          stories: ["Champion's End"],
+        },
+      ],
+      [
+        [5934],
+        {
+          stories: ['Dragonstorm'],
         },
       ],
     ];
