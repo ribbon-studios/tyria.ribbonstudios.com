@@ -24,6 +24,14 @@ describe('Formatter Utils', () => {
     });
   });
 
+  describe('fn(simplify)', () => {
+    it('should remove special characters from the string', () => {
+      expect(
+        formatter('This is a "very" complex sentence that wouldn\'t match in most cases.').simplify.value()
+      ).toEqual('This is a very complex sentence that wouldnt match in most cases');
+    });
+  });
+
   describe('fn(value)', () => {
     it('should return the adjusted value', () => {
       expect(formatter('Hello World').upper.value()).toEqual('HELLO WORLD');

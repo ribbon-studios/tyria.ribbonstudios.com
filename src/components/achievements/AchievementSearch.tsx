@@ -72,8 +72,8 @@ export namespace AchievementSearch {
           </li>
         </ul>
         <div className="font-bold">Advanced Searches</div>
-        {filters.map((filter) => (
-          <div className="flex flex-col ml-2 gap-2 bg-tui-gray/50 px-1 py-0.5 leading-none rounded-sm">
+        {filters.map((filter, i) => (
+          <div key={i} className="flex flex-col ml-2 gap-2 bg-tui-gray/50 px-1 py-0.5 leading-none rounded-sm">
             <div className="flex justify-between font-bold">
               <div>{filter.name}</div>
               <div className="text-tui-muted text-xs italic">(e.g. '{filter.example}')</div>

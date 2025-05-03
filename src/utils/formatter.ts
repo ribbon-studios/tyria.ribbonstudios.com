@@ -30,6 +30,12 @@ class Formatter {
     return this;
   }
 
+  get simplify(): this {
+    this.#value = this.#value.replace(/[^\d\w\s]/g, '');
+
+    return this;
+  }
+
   value(): string {
     return this.#value;
   }

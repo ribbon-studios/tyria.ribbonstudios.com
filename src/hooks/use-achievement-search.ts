@@ -30,14 +30,14 @@ export namespace UseAchievementSearch {
       (!options.has || options.has.some((has) => has in achievement)) &&
       (!options.stories ||
         options.stories.some((story) =>
-          achievement.stories?.some((value) => formatter(value).lower.value().includes(story))
+          achievement.stories?.some((value) => formatter(value).lower.simplify.value().includes(story))
         )) &&
       (!options.strikes ||
         options.strikes.some((story) =>
-          achievement.strikes?.some((value) => formatter(value).lower.value().includes(story))
+          achievement.strikes?.some((value) => formatter(value).lower.simplify.value().includes(story))
         )) &&
       keys.some((key) => {
-        const value = formatter(achievement[key] as string | number | boolean).lower.value();
+        const value = formatter(achievement[key] as string | number | boolean).simplify.sanitize.lower.value();
 
         return value.includes(options.search);
       })
@@ -46,15 +46,16 @@ export namespace UseAchievementSearch {
 
   export namespace criteria {
     export function parse(value: string): Criteria {
-      const lower_search = formatter(value).lower.value();
+      const lower_search = formatter(value).sanitize.lower.value();
 
       const matches = Array.from(lower_search.matchAll(/(\w+):("[^"]+"|[^\s]+)/g) ?? []);
 
       const { search, ...other_criteria } = matches.reduce<Criteria>(
         (output, [match, type, value]) => {
-          const corrected_value = correct(value);
+          const corrected_type = CORRECTION_MAP[value] ?? type;
+          const corrected_value = formatter(value).simplify.value();
 
-          switch (type) {
+          switch (corrected_type) {
             case 'story': {
               output.stories = output.stories ? [...output.stories, corrected_value] : [corrected_value];
               break;
@@ -79,15 +80,9 @@ export namespace UseAchievementSearch {
       );
 
       return {
-        search: search.split(' ').filter(Boolean).join(' '),
+        search: formatter(search.split(' ').filter(Boolean).join(' ')).simplify.value(),
         ...other_criteria,
       };
-    }
-
-    export function correct(value: string) {
-      const clean_value = value.replace(/"/g, '');
-
-      return CORRECTION_MAP[clean_value] ?? clean_value;
     }
 
     export const CORRECTION_MAP: Record<string, string> = {
