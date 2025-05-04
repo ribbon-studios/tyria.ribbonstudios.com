@@ -412,6 +412,12 @@ export namespace UseEnhancedAchievements {
             stories: ['Outreach'],
           },
         ],
+        [
+          [6237],
+          {
+            stories: ['Your Kind of People'],
+          },
+        ],
       ];
     }
   }
