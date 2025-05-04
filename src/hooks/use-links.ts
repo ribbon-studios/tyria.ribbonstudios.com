@@ -20,6 +20,7 @@ export namespace UseLinks {
     'Darkrime Delves': 'Darkrime Delves (story)',
     Dragonstorm: 'Dragonstorm (story)',
     Wildfire: 'Wildfire (story)',
+    Convergence: 'Convergence (story)',
   };
 
   export const strike: Record<string, string> = {

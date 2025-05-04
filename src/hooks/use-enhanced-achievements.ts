@@ -396,6 +396,12 @@ export namespace UseEnhancedAchievements {
           },
         ],
         [
+          [6204],
+          {
+            stories: ['Convergence'],
+          },
+        ],
+        [
           [6232],
           {
             stories: ['Old Friends'],
