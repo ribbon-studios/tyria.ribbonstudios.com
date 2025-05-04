@@ -6,6 +6,7 @@ import {
 } from '@ribbon-studios/guild-wars-2/v2';
 import { useMemo } from 'react';
 import { useAccountAchievements } from './use-account-achievements';
+import { formatter } from '@/utils/formatter';
 
 export function useEnhancedAchievements(
   {
@@ -222,7 +223,13 @@ export namespace UseEnhancedAchievements {
       switch (type) {
         case 'Story Instance:':
         case 'Journal:': {
-          return { stories: [name.replace(/ Completed$/, '')] };
+          return {
+            stories: [
+              formatter(name)
+                .simplify.value()
+                .replace(/ Completed$/, ''),
+            ],
+          };
         }
         default: {
           const [, overrides] = description_fallbacks.find(([ids]) => ids.includes(achievement.id)) ?? [];

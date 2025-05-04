@@ -56,11 +56,11 @@ export namespace UseAchievementSearch {
           const simplified_value = formatter(value).simplify.value();
 
           switch (corrected_type) {
-            case 'story': {
+            case 'stories': {
               output.stories = output.stories ? [...output.stories, simplified_value] : [simplified_value];
               break;
             }
-            case 'strike': {
+            case 'strikes': {
               output.strikes = output.strikes ? [...output.strikes, simplified_value] : [simplified_value];
               break;
             }
