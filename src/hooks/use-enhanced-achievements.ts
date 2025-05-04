@@ -7,6 +7,7 @@ import {
 import { useMemo } from 'react';
 import { useAccountAchievements } from './use-account-achievements';
 import { formatter } from '@/utils/formatter';
+import type { Better } from '@/types';
 
 export function useEnhancedAchievements(
   {
@@ -112,7 +113,7 @@ export namespace UseEnhancedAchievements {
 
   export function enhance(
     category: AchievementCategory<Schema.LATEST> | undefined,
-    { tiers, bits, prerequisites = [], requirement, ...achievement }: RawAchievement<Schema.LATEST>,
+    { tiers, bits, prerequisites = [], description, requirement, ...achievement }: RawAchievement<Schema.LATEST>,
     prerequisite_achievements: RawAchievement<Schema.LATEST>[] = [],
     account_achievements?: AccountAchievement<Schema.LATEST>[]
   ): Achievement {
@@ -189,18 +190,18 @@ export namespace UseEnhancedAchievements {
         ?.filter((bit) => bit.type !== RawAchievement.Bit.Type.TEXT || Boolean(bit.text));
     }
 
-    return {
+    return process.fallbacks({
       ...achievement,
-      ...process.description(achievement),
+      ...process.description(description),
       icon: achievement.icon ?? category?.icon,
-      requirement: process.requirement(requirement, tier, progress),
       tier,
       tiers,
+      requirement: process.requirement(requirement, tier, progress),
       done: account_achievement?.done ?? false,
       prerequisites: required_achievements.length > 0 ? required_achievements : undefined,
       meta: achievement.flags.includes(RawAchievement.Flags.CATEGORY_DISPLAY),
       progress,
-    };
+    });
   }
 
   export namespace process {
@@ -214,16 +215,15 @@ export namespace UseEnhancedAchievements {
       return output;
     }
 
-    export function description(
-      achievement: Pick<RawAchievement<Schema.LATEST>, 'id' | 'description'>
-    ): Partial<Achievement> | undefined {
-      const [, ...matches] = achievement.description?.match(/([^:]+:)([^<\n]+)/) ?? [];
+    export function description(description: string): Better.Partial.Inverse<Achievement, 'description'> {
+      const [, ...matches] = description?.match(/([^:]+:)([^<\n]+)/) ?? [];
       const [type, name] = matches.map((match) => match.trim());
 
       switch (type) {
         case 'Story Instance:':
         case 'Journal:': {
           return {
+            description,
             stories: [
               formatter(name)
                 .simplify.value()
@@ -231,169 +231,183 @@ export namespace UseEnhancedAchievements {
             ],
           };
         }
-        default: {
-          const [, overrides] = description_fallbacks.find(([ids]) => ids.includes(achievement.id)) ?? [];
-
-          return overrides;
-        }
+        default:
+          return { description };
       }
     }
 
-    const description_fallbacks: [number[], Partial<Achievement>][] = [
-      [
-        [4919, 4928, 4979, 5872],
-        {
-          strikes: ['Shiverpeaks Pass'],
-        },
-      ],
-      [
-        [5095, 5099, 5094],
-        {
-          strikes: ['Boneskinner'],
-        },
-      ],
-      [
-        [5132, 5118, 5029, 5126, 5879],
-        {
-          strikes: ['Whisper of Jormag'],
-        },
-      ],
-      [
-        [5942],
-        {
-          strikes: ['Boneskinner', 'Fraenir of Jormag', 'Voice of the Fallen and Claw of the Fallen'],
-        },
-      ],
-      [
-        [5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214],
-        {
-          strikes: ['Forging Steel'],
-        },
-      ],
-      [
-        [5192, 5209, 5181],
-        {
-          stories: ['Darkrime Delves'],
-        },
-      ],
-      [
-        [5234, 5236],
-        {
-          strikes: ['Forging Steel'],
-          stories: ['Darkrime Delves'],
-        },
-      ],
-      [
-        [5243],
-        {
-          stories: ['Turnabout'],
-        },
-      ],
-      [
-        [5508, 6009],
-        {
-          stories: ['Primordus Rising'],
-        },
-      ],
-      [
-        [5247],
-        {
-          strikes: ['Cold War'],
-        },
-      ],
-      [
-        [5517, 5534, 5709, 5511, 5980],
-        {
-          strikes: ['Dragon Response Mission: Metrica Province'],
-        },
-      ],
-      [
-        [5498, 5490, 5698, 5475, 5967],
-        {
-          strikes: ['Dragon Response Mission: Brisban Wildlands'],
-        },
-      ],
-      [
-        [5485, 5642, 5688, 5622, 5952],
-        {
-          strikes: ['Dragon Response Mission: Bloodtide Coast'],
-        },
-      ],
-      [
-        [5478, 5650, 5691, 5644, 5944],
-        {
-          strikes: ['Dragon Response Mission: Caledon Forest'],
-        },
-      ],
-      [
-        [5536, 5581, 5693, 5580, 5589, 5920],
-        {
-          strikes: ['Dragon Response Mission: Fields of Ruin'],
-        },
-      ],
-      [
-        [5515, 5640, 5658, 5704, 5663, 6025],
-        {
-          strikes: ['Dragon Response Mission: Fireheart Rise'],
-        },
-      ],
-      [
-        [5533, 5510, 5486, 5700, 5496, 5892],
-        {
-          strikes: ['Dragon Response Mission: Gendarran Fields'],
-        },
-      ],
-      [
-        [5504, 5590, 5596, 5697, 5555, 6010],
-        {
-          strikes: ['Dragon Response Mission: Lake Doric'],
-        },
-      ],
-      [
-        [5502, 5578, 5708, 5593, 5951],
-        {
-          strikes: ['Dragon Response Mission: Snowden Drifts'],
-        },
-      ],
-      [
-        [5540, 5579, 5703, 5569, 5982],
-        {
-          strikes: ['Dragon Response Mission: Thunderhead Peaks'],
-        },
-      ],
-      [
-        [5568, 5528, 5483, 5489, 5484],
-        {
-          strikes: [
-            'Dragon Response Mission: Caledon Forest',
-            'Dragon Response Mission: Metrica Province',
-            'Dragon Response Mission: Bloodtide Coast',
-            'Dragon Response Mission: Fields of Ruin',
-            'Dragon Response Mission: Snowden Drifts',
-            'Dragon Response Mission: Gendarran Fields',
-            'Dragon Response Mission: Lake Doric',
-          ],
-        },
-      ],
-      [
-        [5667, 5652, 5651, 5989],
-        {
-          stories: ['Wildfire'],
-        },
-      ],
-      [
-        [6011],
-        {
-          stories: ["Champion's End"],
-        },
-      ],
-      [
-        [5934],
-        {
-          stories: ['Dragonstorm'],
-        },
-      ],
-    ];
+    export function fallbacks(achievement: Achievement): Achievement {
+      const [, overrides] = fallbacks.manual_overrides.find(([ids]) => ids.includes(achievement.id)) ?? [];
+
+      return {
+        ...overrides,
+        ...achievement,
+      };
+    }
+
+    export namespace fallbacks {
+      export const manual_overrides: [number[], Partial<Achievement>][] = [
+        [
+          [4919, 4928, 4979, 5872],
+          {
+            strikes: ['Shiverpeaks Pass'],
+          },
+        ],
+        [
+          [5095, 5099, 5094],
+          {
+            strikes: ['Boneskinner'],
+          },
+        ],
+        [
+          [5132, 5118, 5029, 5126, 5879],
+          {
+            strikes: ['Whisper of Jormag'],
+          },
+        ],
+        [
+          [5942],
+          {
+            strikes: ['Boneskinner', 'Fraenir of Jormag', 'Voice of the Fallen and Claw of the Fallen'],
+          },
+        ],
+        [
+          [5178, 5191, 5205, 5223, 5228, 5217, 5230, 5202, 5182, 5222, 5200, 5227, 5225, 5189, 5197, 5212, 5214],
+          {
+            strikes: ['Forging Steel'],
+          },
+        ],
+        [
+          [5192, 5209, 5181],
+          {
+            stories: ['Darkrime Delves'],
+          },
+        ],
+        [
+          [5234, 5236],
+          {
+            strikes: ['Forging Steel'],
+            stories: ['Darkrime Delves'],
+          },
+        ],
+        [
+          [5243],
+          {
+            stories: ['Turnabout'],
+          },
+        ],
+        [
+          [5508, 6009],
+          {
+            stories: ['Primordus Rising'],
+          },
+        ],
+        [
+          [5247],
+          {
+            strikes: ['Cold War'],
+          },
+        ],
+        [
+          [5517, 5534, 5709, 5511, 5980],
+          {
+            strikes: ['Dragon Response Mission: Metrica Province'],
+          },
+        ],
+        [
+          [5498, 5490, 5698, 5475, 5967],
+          {
+            strikes: ['Dragon Response Mission: Brisban Wildlands'],
+          },
+        ],
+        [
+          [5485, 5642, 5688, 5622, 5952],
+          {
+            strikes: ['Dragon Response Mission: Bloodtide Coast'],
+          },
+        ],
+        [
+          [5478, 5650, 5691, 5644, 5944],
+          {
+            strikes: ['Dragon Response Mission: Caledon Forest'],
+          },
+        ],
+        [
+          [5536, 5581, 5693, 5580, 5589, 5920],
+          {
+            strikes: ['Dragon Response Mission: Fields of Ruin'],
+          },
+        ],
+        [
+          [5515, 5640, 5658, 5704, 5663, 6025],
+          {
+            strikes: ['Dragon Response Mission: Fireheart Rise'],
+          },
+        ],
+        [
+          [5533, 5510, 5486, 5700, 5496, 5892],
+          {
+            strikes: ['Dragon Response Mission: Gendarran Fields'],
+          },
+        ],
+        [
+          [5504, 5590, 5596, 5697, 5555, 6010],
+          {
+            strikes: ['Dragon Response Mission: Lake Doric'],
+          },
+        ],
+        [
+          [5502, 5578, 5708, 5593, 5951],
+          {
+            strikes: ['Dragon Response Mission: Snowden Drifts'],
+          },
+        ],
+        [
+          [5540, 5579, 5703, 5569, 5982],
+          {
+            strikes: ['Dragon Response Mission: Thunderhead Peaks'],
+          },
+        ],
+        [
+          [5568, 5528, 5483, 5489, 5484],
+          {
+            strikes: [
+              'Dragon Response Mission: Caledon Forest',
+              'Dragon Response Mission: Metrica Province',
+              'Dragon Response Mission: Bloodtide Coast',
+              'Dragon Response Mission: Fields of Ruin',
+              'Dragon Response Mission: Snowden Drifts',
+              'Dragon Response Mission: Gendarran Fields',
+              'Dragon Response Mission: Lake Doric',
+            ],
+          },
+        ],
+        [
+          [5667, 5652, 5651, 5989],
+          {
+            stories: ['Wildfire'],
+          },
+        ],
+        [
+          [6011],
+          {
+            stories: ["Champion's End"],
+          },
+        ],
+        [
+          [5934],
+          {
+            stories: ['Dragonstorm'],
+          },
+        ],
+        [
+          [6232],
+          {
+            stories: ['Old Friends'],
+          },
+        ],
+      ];
+    }
   }
 
   export type Sort = (a: Achievement, b: Achievement) => number;
