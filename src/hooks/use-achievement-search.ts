@@ -52,20 +52,20 @@ export namespace UseAchievementSearch {
 
       const { search, ...other_criteria } = matches.reduce<Criteria>(
         (output, [match, type, value]) => {
-          const corrected_type = CORRECTION_MAP[value] ?? type;
-          const corrected_value = formatter(value).simplify.value();
+          const corrected_type = correct(type);
+          const simplified_value = formatter(value).simplify.value();
 
           switch (corrected_type) {
             case 'story': {
-              output.stories = output.stories ? [...output.stories, corrected_value] : [corrected_value];
+              output.stories = output.stories ? [...output.stories, simplified_value] : [simplified_value];
               break;
             }
             case 'strike': {
-              output.strikes = output.strikes ? [...output.strikes, corrected_value] : [corrected_value];
+              output.strikes = output.strikes ? [...output.strikes, simplified_value] : [simplified_value];
               break;
             }
             case 'has': {
-              output.has = output.has ? [...output.has, corrected_value] : [corrected_value];
+              output.has = output.has ? [...output.has, correct(simplified_value)] : [correct(simplified_value)];
               break;
             }
           }
@@ -83,6 +83,10 @@ export namespace UseAchievementSearch {
         search: formatter(search.split(' ').filter(Boolean).join(' ')).simplify.value(),
         ...other_criteria,
       };
+    }
+
+    export function correct(value: string) {
+      return CORRECTION_MAP[value] ?? value;
     }
 
     export const CORRECTION_MAP: Record<string, string> = {
