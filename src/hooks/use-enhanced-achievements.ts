@@ -406,6 +406,12 @@ export namespace UseEnhancedAchievements {
             stories: ['Old Friends'],
           },
         ],
+        [
+          [6276, 6246],
+          {
+            stories: ['Outreach'],
+          },
+        ],
       ];
     }
   }
