@@ -19,6 +19,7 @@ export namespace UseLinks {
     'Hallowed Ground': 'Hallowed Ground (story)',
     'Darkrime Delves': 'Darkrime Delves (story)',
     Dragonstorm: 'Dragonstorm (story)',
+    Wildfire: 'Wildfire (story)',
   };
 
   export const strike: Record<string, string> = {
