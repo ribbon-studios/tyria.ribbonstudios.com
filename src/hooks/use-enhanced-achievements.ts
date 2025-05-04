@@ -413,6 +413,12 @@ export namespace UseEnhancedAchievements {
             stories: ['Your Kind of People'],
           },
         ],
+        [
+          [6503, 6318, 6371, 6210, 6085, 6218],
+          {
+            stories: ["Can't Trust a Pirate"],
+          },
+        ],
       ];
     }
   }
