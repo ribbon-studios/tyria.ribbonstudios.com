@@ -425,6 +425,24 @@ export namespace UseEnhancedAchievements {
             stories: ["Can't Trust a Pirate"],
           },
         ],
+        [
+          [6345, 6288, 6245, 6254],
+          {
+            stories: ['The Scenic Route'],
+          },
+        ],
+        [
+          [6425, 6089, 6454, 6101],
+          {
+            stories: ['The Future in Jade'],
+          },
+        ],
+        [
+          [6123, 6275, 6092, 6173],
+          {
+            stories: ['Deepest Secrets'],
+          },
+        ],
       ];
     }
   }
