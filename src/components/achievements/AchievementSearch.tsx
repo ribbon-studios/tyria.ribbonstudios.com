@@ -47,6 +47,11 @@ export namespace AchievementSearch {
       example: 'strike:"Forging Steel"',
       description: "Filters the achievements based on which strike missions they're associated with.",
     },
+    {
+      name: 'not',
+      example: 'not:has:story',
+      description: 'Does in inverse of whatever filter follows.',
+    },
   ];
 
   export function Info() {

@@ -491,6 +491,42 @@ export namespace UseEnhancedAchievements {
             stories: ['The Only One'],
           },
         ],
+        [
+          [6869, 6862, 5494],
+          {
+            stories: ['A Raw Deal'],
+          },
+        ],
+        [
+          [6853, 6870],
+          {
+            stories: ['Deep Trouble'],
+          },
+        ],
+        [
+          [6872, 6861],
+          {
+            stories: ['On the Case'],
+          },
+        ],
+        [
+          [6896],
+          {
+            stories: ['Emotional Release'],
+          },
+        ],
+        [
+          [6868],
+          {
+            stories: ['Entrapment'],
+          },
+        ],
+        [
+          [6951, 6936],
+          {
+            stories: ['Forward'],
+          },
+        ],
       ];
     }
   }

@@ -36,6 +36,12 @@ class Formatter {
     return this;
   }
 
+  get trim(): this {
+    this.#value = this.#value.trim();
+
+    return this;
+  }
+
   value(): string {
     return this.#value;
   }
