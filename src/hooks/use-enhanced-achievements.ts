@@ -443,6 +443,54 @@ export namespace UseEnhancedAchievements {
             stories: ['Deepest Secrets'],
           },
         ],
+        [
+          [6444, 6278, 6294, 6373],
+          {
+            stories: ['Empty'],
+          },
+        ],
+        [
+          [6474, 6208, 6376, 6322, 6255],
+          {
+            stories: ['Fallout'],
+          },
+        ],
+        [
+          [6430, 6301, 6452, 6391, 6340, 6446, 6523],
+          {
+            stories: ['To Catch a Spider'],
+          },
+        ],
+        [
+          [6280, 6130, 6355, 6114],
+          {
+            stories: ['In the Name of the Law'],
+          },
+        ],
+        [
+          [6081, 6491, 6251, 6361, 6225, 6125, 6120, 6400, 6329],
+          {
+            stories: ['Weight of the World'],
+          },
+        ],
+        [
+          [6240, 6171],
+          {
+            stories: ['Extraction Point'],
+          },
+        ],
+        [
+          [6497, 6435, 6362],
+          {
+            stories: ['The Cycle, Reborn'],
+          },
+        ],
+        [
+          [6438, 6184, 6437, 6350, 6091],
+          {
+            stories: ['The Only One'],
+          },
+        ],
       ];
     }
   }
