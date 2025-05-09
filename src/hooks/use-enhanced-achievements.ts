@@ -522,6 +522,18 @@ export namespace UseEnhancedAchievements {
           },
         ],
         [
+          [6879],
+          {
+            stories: ['Sleuthing a Solution'],
+          },
+        ],
+        [
+          [6907],
+          {
+            stories: ['Full Circle'],
+          },
+        ],
+        [
           [6951, 6936],
           {
             stories: ['Forward'],
