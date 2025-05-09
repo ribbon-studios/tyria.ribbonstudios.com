@@ -22,6 +22,7 @@ export namespace UseLinks {
     Wildfire: 'Wildfire (story)',
     Convergence: 'Convergence (story)',
     'Deep Trouble': 'Deep Trouble (story)',
+    'Uncertain Times': 'Prologue: Uncertain Times',
   };
 
   export const strike: Record<string, string> = {
