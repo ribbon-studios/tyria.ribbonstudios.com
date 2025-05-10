@@ -23,6 +23,7 @@ export namespace UseLinks {
     Convergence: 'Convergence (story)',
     'Deep Trouble': 'Deep Trouble (story)',
     'Uncertain Times': 'Prologue: Uncertain Times',
+    'The World Spire': 'The World Spire (story)',
   };
 
   export const strike: Record<string, string> = {
