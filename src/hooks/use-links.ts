@@ -24,6 +24,7 @@ export namespace UseLinks {
     'Deep Trouble': 'Deep Trouble (story)',
     'Uncertain Times': 'Prologue: Uncertain Times',
     'The World Spire': 'The World Spire (story)',
+    'The War Council': 'The War Council (story)',
   };
 
   export const strike: Record<string, string> = {
