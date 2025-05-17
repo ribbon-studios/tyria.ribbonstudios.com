@@ -1,5 +1,0 @@
-@reference '@/index.css';
-
-.splash {
-  @apply bg-linear-to-r from-neutral-900 from-5% to-75% to-tui-dark;
-}

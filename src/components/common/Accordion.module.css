@@ -1,9 +1,0 @@
-@reference '@/index.css';
-
-.accordion {
-  @apply flex flex-col overflow-hidden transition-all h-0 opacity-0;
-
-  &.open {
-    @apply opacity-100;
-  }
-}

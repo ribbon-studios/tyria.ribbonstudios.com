@@ -1,15 +1,13 @@
-export function CategoryPage({
-    params,
-}: CategoryPage.Props) {
-  return (
-    <div>Category: {params.id}</div>
-  );
+async function CategoryPage({ params }: CategoryPage.Props) {
+  const { id } = await params;
+
+  return <div>Category: {id}</div>;
 }
 
-export namespace CategoryPage {
-    export type Props = {
-        params: { id: number; }
-    };
+namespace CategoryPage {
+  export type Props = {
+    params: Promise<{ id: number }>;
+  };
 }
 
 export default CategoryPage;

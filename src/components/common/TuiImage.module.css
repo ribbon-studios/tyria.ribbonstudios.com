@@ -1,9 +1,0 @@
-@reference '@/index.css';
-
-.image {
-  @apply opacity-100 transition-opacity duration-150 ease-in-out;
-
-  &.loading {
-    @apply opacity-0;
-  }
-}
