@@ -69,17 +69,6 @@ export const $app_loading = computed([$loading, $groups, $categories], (loading,
   return loading && !groups.length && !categories.length;
 });
 
-batched([$version, $categories, $groups], (version, categories, groups) => {
-  localStorage.setItem(
-    'api',
-    JSON.stringify({
-      version,
-      categories,
-      groups,
-    })
-  );
-});
-
 export async function resetCache() {
   task(async () => {
     $loading.set(true);
@@ -144,4 +133,15 @@ onMount($loading, () => {
   } else {
     $loading.set(false);
   }
+});
+
+const $state = batched([$version, $categories, $groups, $lastUpdated], (version, categories, groups, lastUpdated) => ({
+  version,
+  categories,
+  groups,
+  lastUpdated,
+}));
+
+$state.listen((state) => {
+  localStorage.setItem('api', JSON.stringify(state));
 });

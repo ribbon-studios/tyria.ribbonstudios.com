@@ -81,12 +81,12 @@ $api.subscribe(({ key }) => {
 });
 
 // TODO: Is there a better way of doing this?
-const $settings = batched([$api, $toggles, $background], (api, toggles, background) => ({
+const $state = batched([$api, $toggles, $background], (api, toggles, background) => ({
   api,
   toggles,
   background,
 }));
 
-$settings.listen((settings) => {
-  localStorage.setItem('account', JSON.stringify(settings));
+$state.listen((state) => {
+  localStorage.setItem('account', JSON.stringify(state));
 });

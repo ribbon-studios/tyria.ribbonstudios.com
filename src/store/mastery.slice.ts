@@ -53,11 +53,11 @@ export const getMasteryByCategoryID = (id: number) => {
 };
 
 // TODO: Is there a better way of doing this?
-const $mastery = batched([$version, $category_masteries], (version, category_masteries) => ({
+const $state = batched([$version, $category_masteries], (version, category_masteries) => ({
   version,
   categories: category_masteries,
 }));
 
-$mastery.listen((mastery) => {
-  localStorage.setItem('mastery', JSON.stringify(mastery));
+$state.listen((state) => {
+  localStorage.setItem('mastery', JSON.stringify(state));
 });
