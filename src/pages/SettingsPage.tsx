@@ -24,7 +24,9 @@ export const Component: FC = () => {
   const loading = useStore($loading);
 
   useEffect(() => {
-    $header.setKey('breadcrumbs', []);
+    $header.set({
+      breadcrumbs: [],
+    });
   }, []);
 
   const {
