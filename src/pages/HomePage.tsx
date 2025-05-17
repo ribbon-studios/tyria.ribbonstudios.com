@@ -15,7 +15,7 @@ export const Component: FC = () => {
   }, []);
 
   return (
-    <Loading loading={isLoading} contentClassName="gap-4">
+    <Loading loading={isLoading} contentClassName="gap-4" size={128}>
       <TuiCard className="text-xl font-light mt-4">Nearing Completion</TuiCard>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {achievements.map((achievement) => (
