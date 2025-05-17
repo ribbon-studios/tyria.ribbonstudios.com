@@ -1,4 +1,4 @@
-import { atom, computed, map } from 'nanostores';
+import { atom, batched, computed, map } from 'nanostores';
 import { json } from '@/utils/parsers';
 
 export type TrueMasterySlice = {
@@ -51,3 +51,13 @@ export const getMasteryByCategoryID = (id: number) => {
     return category_masteries[id];
   });
 };
+
+// TODO: Is there a better way of doing this?
+const $mastery = batched([$version, $category_masteries], (version, category_masteries) => ({
+  version,
+  categories: category_masteries,
+}));
+
+$mastery.listen((mastery) => {
+  localStorage.setItem('mastery', JSON.stringify(mastery));
+});
