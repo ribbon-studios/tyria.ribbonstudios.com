@@ -4,8 +4,7 @@ import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { RefreshCw } from 'lucide-react';
 import { TuiButton } from '@/components/common/TuiButton';
 import { TimeTill } from '@/components/common/TimeTill';
-import { useSelector } from 'react-redux';
-import { selectRefreshInterval, selectSettings } from '@/store/settings.slice';
+import { $api, $refresh_interval_ms, $toggles } from '@/store/settings';
 import { MasteryCard } from '@/components/achievements/MasteryCard';
 import { Achievement, AchievementCategory, Schema } from '@ribbon-studios/guild-wars-2/v2';
 import { useSticky } from '@/hooks/use-sticky';
@@ -15,8 +14,7 @@ import { TuiLink } from '@/components/common/TuiLink';
 import { useQuery } from '@tanstack/react-query';
 import { delay, rfetch } from '@ribbon-studios/js-utils';
 import { Loading } from '@/components/common/Loading';
-import { useAppDispatch } from '@/store';
-import { MasteryTier, selectMasteryCategory, setMasteryTier } from '@/store/mastery.slice';
+import { $category_masteries, getMasteryByCategoryID, MasteryTier } from '@/store/mastery.slice';
 import { computeMasteryTier } from '@/utils/achievements';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { TuiIcon } from '@/components/common/TuiIcon';
@@ -25,6 +23,7 @@ import { useAchievementSearch } from '@/hooks/use-achievement-search';
 import { useQueryParam } from '@/hooks/use-query-param';
 import { TuiProgressCircular } from '@/components/common/TuiProgressCircular';
 import { AchievementSearch } from '@/components/achievements/AchievementSearch';
+import { useStore } from '@nanostores/react';
 
 export function CategoryPageSlice({
   category,
@@ -33,10 +32,10 @@ export function CategoryPageSlice({
   nextUpdateAt,
   onRefresh,
 }: CategoryPageSlice.Props) {
-  const mastery = useSelector(selectMasteryCategory(category.id));
-  const dispatch = useAppDispatch();
+  const mastery = useStore(getMasteryByCategoryID(category.id));
   const stickyHeader = useRef<HTMLDivElement>(null);
-  const settings = useSelector(selectSettings);
+  const { key } = useStore($api);
+  const toggles = useStore($toggles);
   const sticky = useSticky(stickyHeader);
   const [search, setSearch] = useQueryParam('achievements');
 
@@ -50,7 +49,7 @@ export function CategoryPageSlice({
   }>(
     (output, achievement) => {
       if (
-        settings.toggles.pin_incomplete_meta_achievements &&
+        toggles.pin_incomplete_meta_achievements &&
         achievement.flags.includes(Achievement.Flags.CATEGORY_DISPLAY) &&
         !achievement.done
       ) {
@@ -74,7 +73,7 @@ export function CategoryPageSlice({
 
     if (typeof currentMasteryTier === 'undefined' || mastery === currentMasteryTier) return;
 
-    dispatch(setMasteryTier([category.id, currentMasteryTier]));
+    $category_masteries.setKey(category.id, currentMasteryTier);
   }, [achievements]);
 
   const filteredAchievements = useAchievementSearch(basics, search);
@@ -86,7 +85,7 @@ export function CategoryPageSlice({
         ref={stickyHeader}
       >
         <MasteryCard category={category} className={styles.pinnedCard} achievements={achievements}>
-          {!settings.api.key && (
+          {!key && (
             <div className="hidden md:inline-block text-sm text-white/50">
               Provide an{' '}
               <TuiLink color="info" to="/settings">
@@ -96,7 +95,7 @@ export function CategoryPageSlice({
             </div>
           )}
           <TuiButton color="light-gray" loading={loading} onClick={onRefresh}>
-            {settings.api.key && nextUpdateAt ? (
+            {key && nextUpdateAt ? (
               <TimeTill timestamp={nextUpdateAt}>
                 {({ total_seconds }) => <TuiProgressCircular duration={total_seconds * 1000} loading={loading} />}
               </TimeTill>
@@ -109,13 +108,13 @@ export function CategoryPageSlice({
         {incompleteMetas.map((achievement) => (
           <AchievementCard className={styles.pinnedCard} key={achievement.id} achievement={achievement} />
         ))}
-        {settings.toggles.pin_search && (
+        {toggles.pin_search && (
           <TuiCard className={styles.pinnedCard} splash={{ image: category.icon, grayscale: true }}>
             <AchievementSearch value={search} onChange={setSearch} />
           </TuiCard>
         )}
       </div>
-      {!settings.toggles.pin_search && (
+      {!toggles.pin_search && (
         <TuiCard splash={{ image: category.icon, grayscale: true }}>
           <AchievementSearch value={search} onChange={setSearch} />
         </TuiCard>
@@ -139,7 +138,7 @@ export namespace CategoryPageSlice {
   };
 
   export function Demo() {
-    const refresh_interval = useSelector(selectRefreshInterval);
+    const refresh_interval = useStore($refresh_interval_ms);
     const category = useMemo<Props['category']>(() => {
       return {
         id: 139,
@@ -163,7 +162,7 @@ export namespace CategoryPageSlice {
     } = useQuery<UseEnhancedAchievements.Achievement[]>({
       queryKey: ['category-achievements/demo'],
       queryFn: () => delay(rfetch.get('/demo/category-achievements.json'), 1000),
-      refetchInterval: refresh_interval,
+      refetchInterval: refresh_interval ?? undefined,
     });
 
     return (

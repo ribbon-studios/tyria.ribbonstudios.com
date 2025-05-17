@@ -4,22 +4,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Loading } from '@/components/common/Loading';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
-import { useSelector } from 'react-redux';
 import { TuiCard } from '@/components/common/TuiCard';
 import { ContentHeader } from '@/components/common/IncompletePage';
 import { AchievementRewards } from '@/components/achievements/rewards/AchievementRewards';
 import { DebugInfo } from '@/components/DebugInfo';
-import { useAppDispatch } from '@/store';
-import { setHeader } from '@/store/app.slice';
+import { $header } from '@/store/app';
 import { toast } from 'sonner';
-import { selectCategoryByAchievementId } from '@/store/api.slice';
 import type { Achievement, Schema } from '@ribbon-studios/guild-wars-2/v2';
 import { useEnhancedAchievement } from '@/hooks/use-enhanced-achievements';
+import { useStore } from '@nanostores/react';
+import { getCategoryByAchievementId } from '@/store/api';
 
 export const Component: FC = () => {
   const params = useParams();
-  const category = useSelector(selectCategoryByAchievementId(Number(params.id!)));
-  const dispatch = useAppDispatch();
+  // TODO: Is there a better way of doing this... ?
+  const category = useStore(getCategoryByAchievementId(Number(params.id)));
   const navigate = useNavigate();
 
   const {
@@ -64,20 +63,18 @@ export const Component: FC = () => {
   useEffect(() => {
     if (!category || !enhanced_achievement) return;
 
-    dispatch(
-      setHeader({
-        image: enhanced_achievement.icon,
-        breadcrumbs: [
-          {
-            label: category.name,
-            link: `/categories/${category.id}`,
-          },
-          {
-            label: enhanced_achievement.name,
-          },
-        ],
-      })
-    );
+    $header.set({
+      breadcrumbs: [
+        {
+          label: category.name,
+          link: `/categories/${category.id}`,
+        },
+        {
+          label: enhanced_achievement.name,
+        },
+      ],
+      image: enhanced_achievement.icon,
+    });
   }, [category, enhanced_achievement]);
 
   return (

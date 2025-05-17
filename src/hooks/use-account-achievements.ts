@@ -1,15 +1,16 @@
-import { api } from '@/service/api';
-import { selectRefreshInterval } from '@/store/settings.slice';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useIsTabFocused } from './use-is-focused';
-import type { Achievement, Schema } from '@ribbon-studios/guild-wars-2/v2';
+import { type AccountAchievement, type Achievement, type Schema } from '@ribbon-studios/guild-wars-2/v2';
+import { $api, $refresh_interval_ms } from '@/store/settings';
+import { useStore } from '@nanostores/react';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '@/service/api';
 
 export function useAccountAchievements(options?: UseAccountAchievements.Options) {
   const isFocused = useIsTabFocused();
   const [nextUpdateTimestamp, setNextUpdateTimestamp] = useState<number>();
-  const refresh_interval = useSelector(selectRefreshInterval);
+  const { key } = useStore($api);
+  const refresh_interval = useStore($refresh_interval_ms);
 
   const {
     data: account_achievements,
@@ -18,10 +19,10 @@ export function useAccountAchievements(options?: UseAccountAchievements.Options)
     isLoading,
     isFetching,
     refetch,
-  } = useQuery({
-    queryKey: ['v2/account/achievements', api.config.access_token],
+  } = useQuery<AccountAchievement<Schema.LATEST>[]>({
+    queryKey: ['v2/account/achievements', key],
     queryFn: async () => {
-      if (!api.config.access_token) return [];
+      if (!key) return [];
 
       return api.v2.account.achievements();
     },

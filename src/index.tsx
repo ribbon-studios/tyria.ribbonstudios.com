@@ -2,8 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { Provider } from 'react-redux';
-import { store } from './store';
 import { Loading } from './components/common/Loading';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Component as App } from './App';
@@ -62,10 +60,8 @@ const client = new QueryClient({
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={client}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </Provider>
+    <QueryClientProvider client={client}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>
 );

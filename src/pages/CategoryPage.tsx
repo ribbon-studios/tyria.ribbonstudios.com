@@ -2,26 +2,31 @@ import { api } from '@/service/api';
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { useAppDispatch } from '@/store';
-import { setHeader } from '@/store/app.slice';
+import { $header } from '@/store/app';
 import { Loading } from '@/components/common/Loading';
-import { useSelector } from 'react-redux';
-import { selectCategory, selectGroupByCategoryId } from '@/store/api.slice';
 import { CategoryPageSlice } from './slices/CategoryPageSlice';
 import { useEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
+import { useStore } from '@nanostores/react';
+import { getCategoryById, getGroupByCategoryId } from '@/store/api';
 
 export function Component() {
   const params = useParams();
-  const dispatch = useAppDispatch();
-  const categoryId = Number(params.id);
 
-  const group = useSelector(selectGroupByCategoryId(categoryId));
-  const category = useSelector(selectCategory(categoryId));
+  const group = useStore(getGroupByCategoryId(Number(params.id)));
+  const category = useStore(getCategoryById(Number(params.id)));
 
   if (!group || !category) {
+    console.log('invalid');
     return <Navigate to="/" />;
   }
+
+  useEffect(() => {
+    $header.set({
+      breadcrumbs: [{ label: category.name }],
+      image: category.icon,
+    });
+  }, [category]);
 
   const { data: { achievements, prerequisite_achievements } = {}, isLoading } = useQuery({
     queryKey: ['v2/achievements/category', category.id],
@@ -63,19 +68,6 @@ export function Component() {
     achievements,
     prerequisite_achievements,
   });
-
-  useEffect(() => {
-    dispatch(
-      setHeader({
-        breadcrumbs: [
-          {
-            label: category.name,
-          },
-        ],
-        image: category.icon,
-      })
-    );
-  }, [category]);
 
   return (
     <Loading

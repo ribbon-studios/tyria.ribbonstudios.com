@@ -1,18 +1,18 @@
+import { api } from '@/service/api';
+import { $categories } from '@/store/api';
+import { useStore } from '@nanostores/react';
+import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useAccountAchievements } from './use-account-achievements';
-import { api } from '@/service/api';
-import { useQuery } from '@tanstack/react-query';
 import { UseEnhancedAchievements } from './use-enhanced-achievements';
-import { useSelector } from 'react-redux';
-import { selectCategories } from '@/store/api.slice';
 
 export function useNearingCompletion() {
-  const categories = useSelector(selectCategories);
   const {
     account_achievements,
     isLoading: isAccountAchievementsLoading,
     isFetching: isAccountAchievementsFetching,
   } = useAccountAchievements();
+  const categories = useStore($categories);
 
   const achievement_ids = useMemo(() => {
     if (!account_achievements) return null;
@@ -43,7 +43,7 @@ export function useNearingCompletion() {
   } = useQuery({
     queryKey: ['v2/achievements/nearing-completion', achievement_ids],
     queryFn: async () => {
-      if (!achievement_ids) return {};
+      if (!achievement_ids || achievement_ids.length === 0) return {};
 
       const achievements = await api.v2.achievements.list({
         ids: achievement_ids,

@@ -2,27 +2,17 @@ import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { Loading } from '@/components/common/Loading';
 import { TuiCard } from '@/components/common/TuiCard';
 import { useNearingCompletion } from '@/hooks/use-nearing-completion';
-import { useAppDispatch } from '@/store';
-import { setHeader } from '@/store/app.slice';
-import { selectSettings } from '@/store/settings.slice';
+import { $header } from '@/store/app';
 import { useEffect, type FC } from 'react';
-import { useSelector } from 'react-redux';
 
 export const Component: FC = () => {
-  const settings = useSelector(selectSettings);
-  const dispatch = useAppDispatch();
+  const { achievements, isLoading } = useNearingCompletion();
 
   useEffect(() => {
-    dispatch(
-      setHeader({
-        breadcrumbs: [],
-      })
-    );
+    $header.set({
+      breadcrumbs: [],
+    });
   }, []);
-
-  if (!settings.api.key) return null;
-
-  const { achievements, isLoading } = useNearingCompletion();
 
   return (
     <Loading loading={isLoading} contentClassName="gap-4">

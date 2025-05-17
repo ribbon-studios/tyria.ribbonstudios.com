@@ -1,34 +1,30 @@
 import { TuiCard } from '@/components/common/TuiCard';
 import { TuiInput } from '@/components/common/TuiInput';
-import { api } from '@/service/api';
-import { useAppDispatch } from '@/store';
-import { Background, selectSettings, setApiKey, setApiSetting, setBackground, setToggle } from '@/store/settings.slice';
+import { $api, $background, $toggles, Background } from '@/store/settings';
 import { delay } from '@ribbon-studios/js-utils';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, type FC } from 'react';
-import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { TuiCheckbox } from '@/components/common/TuiCheckbox';
 import { toast } from 'sonner';
 import { UseValidate } from '@/hooks/use-validate';
-import { setHeader } from '@/store/app.slice';
 import { TuiLink } from '@/components/common/TuiLink';
-import { resetTrueMastery } from '@/store/mastery.slice';
 import { TuiSelect } from '@/components/common/TuiSelect';
 import { TuiButton } from '@/components/common/TuiButton';
-import { fetchAchievementSections, selectApiLoading } from '@/store/api.slice';
+import { $loading, resetCache } from '@/store/api';
+import { useStore } from '@nanostores/react';
+import { api } from '@/service/api';
+import { $header } from '@/store/app';
+import { $category_masteries } from '@/store/mastery.slice';
 
 export const Component: FC = () => {
-  const dispatch = useAppDispatch();
-  const settings = useSelector(selectSettings);
-  const isApiLoading = useSelector(selectApiLoading);
+  const { refresh_interval, key } = useStore($api);
+  const toggles = useStore($toggles);
+  const background = useStore($background);
+  const loading = useStore($loading);
 
   useEffect(() => {
-    dispatch(
-      setHeader({
-        breadcrumbs: [],
-      })
-    );
+    $header.setKey('breadcrumbs', []);
   }, []);
 
   const {
@@ -86,20 +82,20 @@ export const Component: FC = () => {
             </>
           }
           loading={isPending}
-          value={settings.api.key ?? ''}
+          value={key ?? ''}
           subtext={submittedAt === 0 ? undefined : `Last verified @ ${format(submittedAt, 'h:mm aa')}`}
           onChange={async (value) => {
             await verifyToken(value);
 
-            dispatch(setApiKey(value));
-            dispatch(resetTrueMastery());
+            $api.setKey('key', value);
+            $category_masteries.set({});
           }}
           append={
             <TuiButton
               className="w-full md:w-auto"
               color="error"
-              onClick={() => dispatch(fetchAchievementSections())}
-              loading={isApiLoading}
+              onClick={() => resetCache()}
+              loading={loading}
               delay={100}
             >
               Reset Cache
@@ -110,17 +106,17 @@ export const Component: FC = () => {
           className="flex-1"
           label="Auto-Refresh Interval"
           description="The time (in seconds) between auto refreshes."
-          value={settings.api.refresh_interval ?? undefined}
+          value={refresh_interval ?? undefined}
           prepend={
             <TuiCheckbox
-              value={!!settings.api.refresh_interval}
+              value={!!refresh_interval}
               onChange={(value) => {
                 if (value) {
-                  dispatch(setApiSetting(['refresh_interval', 30]));
+                  $api.setKey('refresh_interval', 30);
 
                   toast.success('Achievement progress will now be refreshed automatically!');
                 } else {
-                  dispatch(setApiSetting(['refresh_interval', null]));
+                  $api.setKey('refresh_interval', null);
 
                   toast.success('Achievement progress will no longer be refreshed automatically.');
                 }
@@ -133,9 +129,9 @@ export const Component: FC = () => {
               UseValidate.rules.min(10, 'Please avoid intervals less than 10s to avoid spamming the Guild Wars 2 API.')
             ),
           ]}
-          disabled={settings.api.refresh_interval === null}
+          disabled={refresh_interval === null}
           onChange={async (value) => {
-            dispatch(setApiSetting(['refresh_interval', value ? Number(value) : null]));
+            $api.setKey('refresh_interval', value ? Number(value) : null);
 
             toast.success('Auto-Refresh interval updated successfully.');
           }}
@@ -145,8 +141,8 @@ export const Component: FC = () => {
           label="Background"
           description="The background of the page."
           items={Background.LabelValues}
-          value={settings.background}
-          onChange={(value) => dispatch(setBackground(value))}
+          value={background}
+          onChange={(value) => $background.set(value)}
         />
         <div className="grid xl:grid-cols-2 gap-2">
           <div className="flex flex-col gap-2">
@@ -154,15 +150,15 @@ export const Component: FC = () => {
             <div className="text-sm text-tui-muted">These toggles make various parts of the category page sticky.</div>
             <TuiCheckbox
               label="Incomplete Meta Achievements"
-              value={settings.toggles.pin_incomplete_meta_achievements}
+              value={toggles.pin_incomplete_meta_achievements}
               variant="toggle"
-              onChange={(value) => dispatch(setToggle(['pin_incomplete_meta_achievements', value]))}
+              onChange={(value) => $toggles.setKey('pin_incomplete_meta_achievements', value)}
             />
             <TuiCheckbox
               label="Search"
-              value={settings.toggles.pin_search}
+              value={toggles.pin_search}
               variant="toggle"
-              onChange={(value) => dispatch(setToggle(['pin_search', value]))}
+              onChange={(value) => $toggles.setKey('pin_search', value)}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -172,10 +168,10 @@ export const Component: FC = () => {
             </div>
             <TuiCheckbox
               label="Hide Hidden Achievements"
-              value={settings.toggles.hide_hidden_achievements}
+              value={toggles.hide_hidden_achievements}
               variant="toggle"
               onChange={(value) => {
-                dispatch(setToggle(['hide_hidden_achievements', value]));
+                $toggles.setKey('hide_hidden_achievements', value);
 
                 if (value) {
                   toast.success('Hidden achievements will no longer be displayed.');
@@ -186,10 +182,10 @@ export const Component: FC = () => {
             />
             <TuiCheckbox
               label="Hide Completed Achievements"
-              value={settings.toggles.hide_completed_achievements}
+              value={toggles.hide_completed_achievements}
               variant="toggle"
               onChange={(value) => {
-                dispatch(setToggle(['hide_completed_achievements', value]));
+                $toggles.setKey('hide_completed_achievements', value);
 
                 if (value) {
                   toast.success('Achievements will now be hidden upon completion.');
@@ -204,9 +200,9 @@ export const Component: FC = () => {
             <div className="text-sm text-tui-muted">Toggles that just didn't make sense anywhere else!</div>
             <TuiCheckbox
               label="Debug Mode"
-              value={settings.toggles.debug_mode}
+              value={toggles.debug_mode}
               variant="toggle"
-              onChange={(value) => dispatch(setToggle(['debug_mode', value]))}
+              onChange={(value) => $toggles.setKey('debug_mode', value)}
             />
           </div>
         </div>

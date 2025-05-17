@@ -1,11 +1,11 @@
-import { selectToggle } from '@/store/settings.slice';
+import { $toggles } from '@/store/settings';
 import { cn } from '@/utils/cn';
+import { useStore } from '@nanostores/react';
 import type { ComponentProps, ElementType, ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 
 export function DebugInfo<T extends ElementType>({ as, children, className, ...props }: DebugInfo.Props<T>) {
   const Component = as ?? 'div';
-  const debug_mode = useSelector(selectToggle('debug_mode'));
+  const { debug_mode } = useStore($toggles);
 
   if (!debug_mode) return null;
 

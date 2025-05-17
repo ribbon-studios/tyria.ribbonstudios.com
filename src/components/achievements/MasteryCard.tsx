@@ -4,13 +4,13 @@ import { cn } from '@/utils/cn';
 import { useMemo, type ReactNode } from 'react';
 import * as styles from './MasteryCard.module.css';
 import { Achievement, type AchievementCategory, type Schema } from '@ribbon-studios/guild-wars-2/v2';
-import { MasteryTier, selectMasteryCategory } from '@/store/mastery.slice';
-import { useSelector } from 'react-redux';
+import { getMasteryByCategoryID, MasteryTier } from '@/store/mastery.slice';
 import { MasteryIcon } from './MasteryIcon';
 import type { UseEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
+import { useStore } from '@nanostores/react';
 
 export function MasteryCard({ category, achievements, children, className }: MasteryCard.Props) {
-  const masteryTier = useSelector(selectMasteryCategory(category.id));
+  const masteryTier = useStore(getMasteryByCategoryID(category.id));
 
   const current = useMemo(
     () => achievements?.reduce((output, achievement) => (achievement.done ? output + 1 : output), 0),

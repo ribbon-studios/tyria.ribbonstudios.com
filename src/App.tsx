@@ -1,43 +1,28 @@
-import { useEffect, useMemo, useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import * as styles from './App.module.css';
 import { SideBar } from './components/common/SideBar';
 import { TopBar } from './components/common/TopBar';
 import { Info, Siren, TriangleAlert } from 'lucide-react';
-import { useSelector } from 'react-redux';
-import { CURRENT_VERSION, fetchAchievementSections, selectApiState, setApiLoading } from './store/api.slice';
+import { $app_loading } from './store/api';
 import { Loading } from './components/common/Loading';
 import { TuiImage } from './components/common/TuiImage';
-import { useAppDispatch } from './store';
-import { selectBackgroundImage } from './store/settings.slice';
+import { $background_url } from './store/settings';
 import { Ribbon } from '@ribbon-studios/ribbon';
+import { useStore } from '@nanostores/react';
 
 export const Component: FC = () => {
-  const dispatch = useAppDispatch();
-  const background = useSelector(selectBackgroundImage);
-  const api = useSelector(selectApiState);
+  const background_url = useStore($background_url);
+  const loading = useStore($app_loading);
   const [open, setOpen] = useState(false);
   const [isBackgroundLoading, setBackgroundLoading] = useState(true);
   const location = useLocation();
 
-  const isLoading = useMemo(
-    () => api.loading && (!api.groups || !api.categories),
-    [api.loading, api.groups, api.categories]
-  );
-
-  useEffect(() => {
-    if (api.version !== CURRENT_VERSION || !api.lastUpdated || api.lastUpdated < Date.now() - 86400000) {
-      dispatch(fetchAchievementSections());
-    } else {
-      dispatch(setApiLoading(false));
-    }
-  }, []);
-
   return (
     <>
       <div className={styles.overlay}>
-        <TuiImage className={styles.background} src={background} onLoad={() => setBackgroundLoading(false)} />
+        <TuiImage className={styles.background} src={background_url} onLoad={() => setBackgroundLoading(false)} />
       </div>
       <Toaster
         theme="dark"
@@ -59,7 +44,7 @@ export const Component: FC = () => {
       <Loading
         className="min-h-dvh"
         contentClassName={styles.app}
-        loading={isLoading || isBackgroundLoading}
+        loading={loading || isBackgroundLoading}
         size={128}
         delay={500}
         direction="horizontal"

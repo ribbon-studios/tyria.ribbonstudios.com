@@ -10,7 +10,7 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.6.1",
+    "@nanostores/react": "^1.0.0",
     "@ribbon-studios/guild-wars-2": "^1.12.0",
     "@ribbon-studios/js-utils": "^1.5.2",
     "@ribbon-studios/react-utils": "^3.0.2",
@@ -20,9 +20,9 @@
     "colorthief": "^2.6.0",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.487.0",
+    "nanostores": "^1.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-redux": "^9.2.0",
     "react-router-dom": "^7.5.0",
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.2.0"

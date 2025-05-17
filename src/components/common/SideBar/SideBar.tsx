@@ -6,20 +6,20 @@ import { Link, NavLink, useParams } from 'react-router-dom';
 import { TuiInput } from '../TuiInput';
 import { cn } from '@/utils/cn';
 import { TuiButton } from '../TuiButton';
-import { useSelector } from 'react-redux';
-import { selectMasteryCategories } from '@/store/mastery.slice';
+import { $category_masteries } from '@/store/mastery.slice';
 import { DebugInfo } from '@/components/DebugInfo';
 import { useBreakpoints } from '@/hooks/use-breakpoints';
 import { TuiLink } from '../TuiLink';
-import { selectGroups } from '@/store/api.slice';
+import { useStore } from '@nanostores/react';
+import { $groups } from '@/store/api';
 import { formatter } from '@/utils/formatter';
 import { MasteryIcon } from '@/components/achievements/MasteryIcon';
 import { useQueryParam } from '@/hooks/use-query-param';
 
 export function SideBar({ open, onClose }: SideBar.Props) {
   const { mdAndUp } = useBreakpoints();
-  const groups = useSelector(selectGroups);
-  const masteries = useSelector(selectMasteryCategories);
+  const groups = useStore($groups);
+  const masteries = useStore($category_masteries);
   const [activeGroupId, setActiveGroupId] = useState<string>();
   const params = useParams();
   const [search, setSearch] = useQueryParam('search');
