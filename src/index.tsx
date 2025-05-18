@@ -1,3 +1,4 @@
+import { scan } from 'react-scan';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -10,6 +11,10 @@ import { Component as AchievementPage } from './pages/AchievementPage';
 import { Component as CategoryPage } from './pages/CategoryPage';
 import { Component as SettingsPage } from './pages/SettingsPage';
 import * as github from './utils/github';
+
+scan({
+  enabled: location.hostname === 'localhost' || localStorage.getItem('react-scan') !== null,
+});
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

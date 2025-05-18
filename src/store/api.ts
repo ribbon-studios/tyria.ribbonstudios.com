@@ -88,8 +88,16 @@ export async function resetCache() {
               448,
               // Bonus Events > Marshaling ... (only has dailies, not tracked)
               262, 263, 267, 272, 274, 278, 280, 282,
+              // Bonus Events > Daily Roller Beatle
+              221,
               // Weekly Fractals (not tracked)
               261,
+              // Weekly WvW
+              346,
+              // Janthir Wilds - Weekly Rift Hunting
+              423,
+              // SotO - Weekly Rift Hunting
+              365,
             ].includes(category.id)
         )
         .sort((a, b) => a.order - b.order)
@@ -117,6 +125,7 @@ export async function resetCache() {
 
       $groups.set(sortedGroups);
       $categories.set(sortedCategories);
+      $version.set(CURRENT_VERSION);
     } catch (error: any) {
       console.error(error);
       $error.set('Failed to load achievement groups and categories.');
