@@ -53,6 +53,7 @@ export const Component: FC = () => {
         <SideBar open={open} onClose={() => setOpen(false)} />
         <div className={styles.container}>
           <TopBar onSideBarToggle={() => setOpen(!open)} />
+          <div id="top-bar-root"></div>
           <div className={styles.window}>
             <div className={styles.content}>
               <Outlet />

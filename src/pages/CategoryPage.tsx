@@ -8,15 +8,14 @@ import { CategoryPageSlice } from './slices/CategoryPageSlice';
 import { useEnhancedAchievements } from '@/hooks/use-enhanced-achievements';
 import { Achievement } from '@ribbon-studios/guild-wars-2/v2';
 import { useStore } from '@nanostores/react';
-import { getCategoryById, getGroupByCategoryId } from '@/store/api';
+import { getCategoryById } from '@/store/api';
 
 export function Component() {
   const params = useParams();
 
-  const group = useStore(getGroupByCategoryId(Number(params.id)));
   const category = useStore(getCategoryById(Number(params.id)));
 
-  if (!group || !category) {
+  if (!category) {
     return <Navigate to="/" />;
   }
 

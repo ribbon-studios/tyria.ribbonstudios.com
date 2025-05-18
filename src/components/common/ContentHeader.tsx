@@ -1,12 +1,13 @@
 import { cn } from '@/utils/cn';
 import { Siren, TriangleAlert } from 'lucide-react';
 import { type FC, type ReactNode } from 'react';
+import { SubHeader } from './SubHeader';
 
 export function ContentHeader({ children, className }: ContentHeader.Props) {
   return (
-    <div className="flex items-center min-h-10 bg-tui-dark/50 absolute top-0 inset-x-0">
+    <SubHeader className="bg-tui-dark/50">
       <div className={cn('flex mx-auto px-6 py-0.5 w-full max-w-[1200px] items-center', className)}>{children}</div>
-    </div>
+    </SubHeader>
   );
 }
 

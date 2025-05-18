@@ -94,7 +94,7 @@ export function CategoryPageSlice({
               to enable auto refresh...
             </div>
           )}
-          <TuiButton color="light-gray" loading={loading} onClick={onRefresh}>
+          <TuiButton color="light-gray" loading={loading} disabled={!key} onClick={onRefresh}>
             {key && nextUpdateAt ? (
               <TimeTill timestamp={nextUpdateAt}>
                 {({ total_seconds }) => <TuiProgressCircular duration={total_seconds * 1000} loading={loading} />}

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Loading } from '@/components/common/Loading';
 import { AchievementCard } from '@/components/achievements/AchievementCard';
 import { TuiCard } from '@/components/common/TuiCard';
-import { ContentHeader } from '@/components/common/IncompletePage';
+import { ContentHeader } from '@/components/common/ContentHeader';
 import { AchievementRewards } from '@/components/achievements/rewards/AchievementRewards';
 import { DebugInfo } from '@/components/DebugInfo';
 import { $header } from '@/store/app';
@@ -84,6 +84,7 @@ export const Component: FC = () => {
         loading={isLoading || isAccountAchievementLoading}
         className="flex flex-col flex-1 items-center pt-12"
         contentClassName="gap-4 w-full max-w-[1200px]"
+        size={128}
       >
         {error && (
           <TuiCard>
