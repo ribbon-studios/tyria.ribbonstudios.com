@@ -42,9 +42,6 @@ export namespace UseAchievementSearch {
         keys.some((key) => {
           const value = formatter(achievement[key] as string | number | boolean).simplify.sanitize.lower.value();
 
-          if (!not) {
-            console.log(options.search, value, value.includes(options.search!));
-          }
           return value.includes(options.search!);
         }))
     );

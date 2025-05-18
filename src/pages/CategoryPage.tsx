@@ -17,7 +17,6 @@ export function Component() {
   const category = useStore(getCategoryById(Number(params.id)));
 
   if (!group || !category) {
-    console.log('invalid');
     return <Navigate to="/" />;
   }
 
