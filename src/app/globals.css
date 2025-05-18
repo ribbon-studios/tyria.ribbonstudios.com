@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+body {
+  @apply antialiased flex bg-tui-dark text-white bg-cover;
+}
+
+@theme static {
+  --color-tui-primary: #65247e;
+  --color-tui-success: #38c12b;
+  --color-tui-error: #c0392b;
+  --color-tui-warning: oklch(0.879 0.169 91.605);
+  --color-tui-info: #2980b9;
+
+  --color-tui-dark: #0d0d0d;
+  --color-tui-gray: #141414;
+  --color-tui-light-gray: #212121;
+  --color-tui-muted: #bbbbbb;
+
+  --animate-spin: wiggle 1s ease-in-out infinite;
+  --animate-wiggle: wiggle 1s ease-in-out infinite;
+
+  @keyframes spin-smooth {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+}
+
+@utility text-shadow-ally {
+  text-shadow: black 0px 0px 5px;
+}

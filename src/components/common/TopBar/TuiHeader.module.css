@@ -1,5 +1,0 @@
-@reference '@/index.css';
-
-.header {
-  @apply flex gap-2 md:gap-4 items-center text-lg md:text-2xl font-bold;
-}

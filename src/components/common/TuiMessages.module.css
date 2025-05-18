@@ -1,9 +1,0 @@
-@reference '@/index.css';
-
-.messages {
-  @apply pt-0 text-xs text-tui-error;
-}
-
-.active > .messages {
-  @apply pt-2;
-}

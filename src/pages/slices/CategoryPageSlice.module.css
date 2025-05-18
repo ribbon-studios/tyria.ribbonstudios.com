@@ -1,9 +1,0 @@
-@reference '@/index.css';
-
-.pinnedCard {
-  @apply transition-shadow;
-}
-
-.sticky .pinnedCard {
-  @apply shadow-lg shadow-tui-dark;
-}
