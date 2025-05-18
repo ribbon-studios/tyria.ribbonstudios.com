@@ -26,7 +26,7 @@ export const Accordion: FC<Accordion.Props> = ({
     }
 
     const resizeObserver = new ResizeObserver(() => {
-      setHeight(childrenRef.current!.scrollHeight);
+      setHeight(childrenRef.current!.clientHeight);
     });
 
     resizeObserver.observe(childrenRef.current);
