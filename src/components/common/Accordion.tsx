@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type FC, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as styles from './Accordion.module.css';
 import { cn } from '@/utils/cn';
 
-export const Accordion: FC<Accordion.Props> = ({
+export function Accordion({
   children,
   className,
   activeClassName,
@@ -10,7 +10,7 @@ export const Accordion: FC<Accordion.Props> = ({
   isOpen,
   onOpenFinished,
   onCloseFinished,
-}) => {
+}: Accordion.Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const childrenRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -56,7 +56,7 @@ export const Accordion: FC<Accordion.Props> = ({
       </div>
     </div>
   );
-};
+}
 
 export namespace Accordion {
   export type Props = {

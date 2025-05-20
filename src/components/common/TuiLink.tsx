@@ -1,11 +1,11 @@
 import { cn } from '@/utils/cn';
-import { type ComponentProps, type FC } from 'react';
+import { type ComponentProps } from 'react';
 import { Link } from 'react-router-dom';
 import * as styles from './TuiLink.module.css';
 import type { Color } from '@/types';
 import { variable } from '@/utils/css';
 
-export const TuiLink: FC<TuiLink.Props> = ({ color, className, overlay, grayscale, ...props }) => {
+export function TuiLink({ color, className, overlay, grayscale, ...props }: TuiLink.Props) {
   return (
     <Link
       {...props}
@@ -15,7 +15,7 @@ export const TuiLink: FC<TuiLink.Props> = ({ color, className, overlay, grayscal
       }}
     />
   );
-};
+}
 
 export namespace TuiLink {
   export type Props = {

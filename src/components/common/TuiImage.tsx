@@ -1,8 +1,8 @@
-import { useState, type FC } from 'react';
+import { useState } from 'react';
 import * as styles from './TuiImage.module.css';
 import { cn } from '@/utils/cn';
 
-export const TuiImage: FC<TuiIcon.Props> = ({ src, className, onLoad, ...props }) => {
+export function TuiImage({ src, className, onLoad, ...props }: TuiIcon.Props) {
   const [loading, setLoading] = useState(true);
 
   return (
@@ -16,7 +16,7 @@ export const TuiImage: FC<TuiIcon.Props> = ({ src, className, onLoad, ...props }
       }}
     />
   );
-};
+}
 
 export namespace TuiIcon {
   export type Props = {

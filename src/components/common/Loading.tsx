@@ -1,10 +1,10 @@
 import { cn } from '@/utils/cn';
-import { type FC, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import * as styles from './Loading.module.css';
 import { Spinner } from './Spinner';
 import { useDelayedLoading } from '@/hooks/use-delayed';
 
-export const Loading: FC<Loading.Props> = ({
+export function Loading({
   direction = 'vertical',
   loading,
   size = 40,
@@ -14,7 +14,7 @@ export const Loading: FC<Loading.Props> = ({
   center,
   delay,
   ...props
-}) => {
+}: Loading.Props) {
   const internalLoading = useDelayedLoading(loading, delay);
 
   if (children) {
@@ -36,7 +36,7 @@ export const Loading: FC<Loading.Props> = ({
   }
 
   return <Spinner className={styles.spinner} loading={internalLoading} size={size} />;
-};
+}
 
 export namespace Loading {
   export type Props = {

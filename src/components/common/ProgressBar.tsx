@@ -1,17 +1,9 @@
-import { useMemo, type ComponentProps, type FC } from 'react';
+import { useMemo, type ComponentProps } from 'react';
 import * as styles from './ProgressBar.module.css';
 import { cn } from '@/utils/cn';
 import { TuiTooltip } from './TuiTooltip';
 
-export const ProgressBar: FC<ProgressBar.Props> = ({
-  current,
-  max,
-  markers,
-  size = 12,
-  buffer = 2,
-  className,
-  ...props
-}) => {
+export function ProgressBar({ current, max, markers, size = 12, buffer = 2, className, ...props }: ProgressBar.Props) {
   const internalPercentage = useMemo(() => {
     if (current && max) return (current / max) * 100;
 
@@ -63,7 +55,7 @@ export const ProgressBar: FC<ProgressBar.Props> = ({
       ))}
     </div>
   );
-};
+}
 
 export namespace ProgressBar {
   export type Props = {

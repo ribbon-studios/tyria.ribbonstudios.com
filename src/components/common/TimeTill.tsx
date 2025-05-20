@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, type FC, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 
-export const TimeTill: FC<TimeTill.Props> = ({ timestamp, interval = 100, children }) => {
+export function TimeTill({ timestamp, interval = 100, children }: TimeTill.Props) {
   const [percentage, setPercentage] = useState<number>();
   const total_seconds = useMemo(() => {
     if (!timestamp) return undefined;
@@ -28,7 +28,7 @@ export const TimeTill: FC<TimeTill.Props> = ({ timestamp, interval = 100, childr
   if (total_seconds === undefined || percentage === undefined) return null;
 
   return children({ total_seconds, percentage });
-};
+}
 
 export namespace TimeTill {
   export type Props = {

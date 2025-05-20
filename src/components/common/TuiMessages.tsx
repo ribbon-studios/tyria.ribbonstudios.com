@@ -1,8 +1,8 @@
 import * as styles from './TuiMessages.module.css';
-import { useEffect, useMemo, useState, type FC } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Accordion } from './Accordion';
 
-export const TuiMessages: FC<TuiMessages.Props> = ({ messages }) => {
+export function TuiMessages({ messages }: TuiMessages.Props) {
   const isOpen = useMemo(() => {
     return messages.length > 0;
   }, [messages]);
@@ -24,7 +24,7 @@ export const TuiMessages: FC<TuiMessages.Props> = ({ messages }) => {
       {cachedMessages}
     </Accordion>
   );
-};
+}
 
 export namespace TuiMessages {
   export type Props = {

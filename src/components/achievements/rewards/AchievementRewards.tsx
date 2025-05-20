@@ -1,8 +1,8 @@
 import type { Achievement } from '@ribbon-studios/guild-wars-2/v2';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { AchievementReward } from './AchievementReward';
 
-export const AchievementRewards: FC<AchievementRewards.Props> = ({ children, rewards }) => {
+export function AchievementRewards({ children, rewards }: AchievementRewards.Props) {
   if (!rewards) return null;
 
   return (
@@ -15,7 +15,7 @@ export const AchievementRewards: FC<AchievementRewards.Props> = ({ children, rew
       </div>
     </div>
   );
-};
+}
 
 export namespace AchievementRewards {
   export type Props = {

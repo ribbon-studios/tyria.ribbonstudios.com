@@ -1,4 +1,4 @@
-import { useEffect, useState, type ComponentProps, type FC, type ReactNode } from 'react';
+import { useEffect, useState, type ComponentProps, type ReactNode } from 'react';
 import * as styles from './TuiSplash.module.css';
 import { cn } from '@/utils/cn';
 import { type RGBColor } from 'colorthief';
@@ -40,7 +40,7 @@ const formatRGB = (
   return `rgba(${final_r}, ${final_g}, ${final_b}, ${opacity})`;
 };
 
-export const TuiSplash: FC<TuiSplash.Props> = ({ className, grayscale, image, ...props }) => {
+export function TuiSplash({ className, grayscale, image, ...props }: TuiSplash.Props) {
   const [color, setColor] = useState<string>();
   const [borderColor, setBorderColor] = useState<string>();
 
@@ -84,7 +84,7 @@ export const TuiSplash: FC<TuiSplash.Props> = ({ className, grayscale, image, ..
       }}
     />
   );
-};
+}
 
 export namespace TuiSplash {
   export type Props = {

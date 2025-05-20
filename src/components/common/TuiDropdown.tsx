@@ -1,9 +1,9 @@
-import { Children, cloneElement, useEffect, useRef, useState, type FC, type ReactElement, type ReactNode } from 'react';
+import { Children, cloneElement, useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
 import * as styles from './TuiDropdown.module.css';
 import { cn } from '@/utils/cn';
 import { TuiCard } from './TuiCard';
 
-export const TuiDropdown: FC<TuiDropdown.Props> = ({
+export function TuiDropdown({
   align = 'left',
   button,
   children,
@@ -11,7 +11,7 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({
   dropdownClassName,
   dropdownContentClassName,
   ...props
-}) => {
+}: TuiDropdown.Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -49,7 +49,7 @@ export const TuiDropdown: FC<TuiDropdown.Props> = ({
       </TuiCard>
     </div>
   );
-};
+}
 
 export namespace TuiDropdown {
   export type Props = {

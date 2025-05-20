@@ -1,10 +1,9 @@
 import { useCachedState } from '@ribbon-studios/react-utils';
-import { type FC } from 'react';
 import * as styles from './TuiCheckbox.module.css';
 import { cn } from '@/utils/cn';
 import { useRandomId } from '@/hooks/use-random-id';
 
-export const TuiCheckbox: FC<TuiCheckbox.Props> = ({ label, value, variant = 'checkbox', onChange, ...props }) => {
+export function TuiCheckbox({ label, value, variant = 'checkbox', onChange, ...props }: TuiCheckbox.Props) {
   const id = useRandomId('input', props.id);
   const [internalValue, setInternalValue] = useCachedState(() => value, [value]);
 
@@ -28,7 +27,7 @@ export const TuiCheckbox: FC<TuiCheckbox.Props> = ({ label, value, variant = 'ch
       <input {...props} id={id} className="hidden" type="checkbox" checked={internalValue} readOnly />
     </div>
   );
-};
+}
 
 export namespace TuiCheckbox {
   export type Props = {

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type ComponentProps, type FC, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ComponentProps, type ReactNode } from 'react';
 import * as styles from './TuiTooltip.module.css';
 import { cn } from '@/utils/cn';
 
-export const TuiTooltip: FC<TuiTooltip.Props> = ({
+export function TuiTooltip({
   children,
   className,
   tooltip,
@@ -17,7 +17,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
   preventNesting,
   noHover,
   ...props
-}) => {
+}: TuiTooltip.Props) {
   const [open, setOpen] = useState(false);
   const [isLocked, setLocked] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -100,7 +100,7 @@ export const TuiTooltip: FC<TuiTooltip.Props> = ({
       </div>
     </div>
   );
-};
+}
 
 export namespace TuiTooltip {
   export type Props = {
